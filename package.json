@@ -1,0 +1,13 @@
+{
+  "name": "box-selection",
+  "dependencies": {
+    "ol": "7.4.0"
+  },
+  "devDependencies": {
+    "": "^3.2.3"
+  },
+  "scripts": {
+    "start": "parcel index.html",
+    "build": "parcel build --public-url . index.html"
+  }
+}

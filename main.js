@@ -15,7 +15,7 @@ const vectorSource = new VectorSource({
 
 const style = new Style({
   fill: new Fill({
-    color: '#eeeeee',
+    color: '#32CD32',
   }),
 });
 
@@ -23,9 +23,9 @@ const map = new Map({
   layers: [
     new VectorLayer({
       source: vectorSource,
-      background: '#1a2b39',
+      background: '#00008B',
       style: function (feature) {
-        const color = feature.get('COLOR_BIO') || '#eeeeee';
+        const color = feature.get('COLOR_BIO') || '#32CD32';
         style.getFill().setColor(color);
         return style;
       },
@@ -41,10 +41,10 @@ const map = new Map({
 
 const selectedStyle = new Style({
   fill: new Fill({
-    color: 'rgba(255, 255, 255, 0.6)',
+    color: 'rgba(255, 255, 0, 0.6)',
   }),
   stroke: new Stroke({
-    color: 'rgba(255, 255, 255, 0.7)',
+    color: 'rgba(255, 255, 0, 0.7)',
     width: 2,
   }),
 });
@@ -52,7 +52,7 @@ const selectedStyle = new Style({
 // a normal select interaction to handle click
 const select = new Select({
   style: function (feature) {
-    const color = feature.get('COLOR_BIO') || '#eeeeee';
+    const color = feature.get('COLOR_BIO') || '#FFFF00';
     selectedStyle.getFill().setColor(color);
     return selectedStyle;
   },

@@ -3,10 +3,20 @@ import Map from 'ol/Map.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
+import TileLayer from "ol/layer/Tile.js";
+import TileWMS from "ol/source/Tile.js";
+import OSM from "ol/source/OSM.js";
 import {DragBox, Select} from 'ol/interaction.js';
 import {Fill, Stroke, Style} from 'ol/style.js';
 import {getWidth} from 'ol/extent.js';
 import {platformModifierKeyOnly} from 'ol/events/condition.js';
+import {
+  Attribution,
+  ScaleLine,
+  OverviewMap,
+  ZoomToExtent,
+  defaults as defaultControls,
+} from "ol/control";
 
 const vectorSource = new VectorSource({
   url: 'https://raw.githubusercontent.com/AnniProvietti/AnniProvietti.github.io/main/estados.geojson',
@@ -19,11 +29,34 @@ const style = new Style({
   }),
 });
 
+
+//Botão de controle
+let zoomToExtentControl = new ZoomToExtent({
+  extent: [-11409874, -41280857, 11409874, 41280857],
+});
+
+
+//Adiciona a escala do mapa
+
+function scaleControl() {
+  let control = new ScaleLine({
+    units: "metric",
+    bar: true,
+    steps: 4,
+    text: true,
+    minWidth: 140,
+  });
+  return control;
+};
+
 const map = new Map({
   layers: [
+    new TileLayer({
+      source: new OSM(),
+    }),
     new VectorLayer({
       source: vectorSource,
-      background: '#00008B',
+      // background: '#00008B',
       style: function (feature) {
         const color = feature.get('COLOR_BIO') || '#32CD32';
         style.getFill().setColor(color);
@@ -33,10 +66,13 @@ const map = new Map({
   ],
   target: 'map',
   view: new View({
-    center: [0, 0],
-    zoom: 2,
+    center: [-6000000, -1100000],
+    zoom: 4,
     constrainRotation: 16,
   }),
+  controls: defaultControls({
+    attributionOptions: { collapsible: true },
+  }).extend([zoomToExtentControl,scaleControl()]),
 });
 
 const selectedStyle = new Style({
@@ -48,6 +84,7 @@ const selectedStyle = new Style({
     width: 2,
   }),
 });
+
 
 // a normal select interaction to handle click
 const select = new Select({
@@ -140,3 +177,4 @@ selectedFeatures.on(['add', 'remove'], function () {
     infoBox.innerHTML = 'None';
   }
 });
+

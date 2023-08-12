@@ -1,5 +1,8 @@
 import GeoJSON from 'ol/format/GeoJSON.js';
 import Map from 'ol/Map.js';
+import Overlay from 'ol/Overlay.js';
+import proj from 'ol/proj.js';
+import coordinate from 'ol/coordinate.js';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
@@ -49,6 +52,7 @@ function scaleControl() {
   return control;
 };
 
+//create map geojson  
 const map = new Map({
   layers: [
     new TileLayer({
@@ -173,8 +177,55 @@ selectedFeatures.on(['add', 'remove'], function () {
   });
   if (names.length > 0) {
     infoBox.innerHTML = names.join(', ');
+    content.innerHTML = names.join(',');
   } else {
     infoBox.innerHTML = 'None';
+    content.innerHTML = 'None';
   }
 });
+
+// //pop-up
+var container = document.getElementById('popup');
+var content = document.getElementById('popup-content');
+var closer = document.getElementById('popup-closer');
+
+var overlay = new Overlay({
+    element: container,
+    autoPan: true,
+    autoPanAnimation: {
+        duration: 2
+     }
+ });
+map.addOverlay(overlay);
+
+closer.click = function() {
+    overlay.setPosition(undefined);
+    closer.blur();
+    return false;
+ };
+ 
+
+map.on(['click','boxstart'], function (event) {
+    if (map.hasFeatureAtPixel(event.pixel) === true) {
+      var coordinate = event.coordinate;
+      const names = selectedFeatures.getArray().map((feature) => {
+          return feature.get('name');
+        });
+        if (names.values != 0) {
+          // content.innerHTML = names.join(',');
+          overlay.setPosition(coordinate);
+        } else {
+          content.innerHTML = 'None';
+          overlay.setPosition(coordinate);
+        };
+         
+    } else {
+        overlay.setPosition(undefined);
+        closer.blur();
+    }
+  });
+
+
+
+
 

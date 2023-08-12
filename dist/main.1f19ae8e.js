@@ -24842,7 +24842,617 @@ function createOptionsInternal(options) {
 }
 var _default = Map;
 exports.default = _default;
-},{"./Object.js":"node_modules/ol/Object.js","./Collection.js":"node_modules/ol/Collection.js","./CollectionEventType.js":"node_modules/ol/CollectionEventType.js","./renderer/Composite.js":"node_modules/ol/renderer/Composite.js","./events/EventType.js":"node_modules/ol/events/EventType.js","./layer/Layer.js":"node_modules/ol/layer/Layer.js","./layer/Group.js":"node_modules/ol/layer/Group.js","./MapBrowserEvent.js":"node_modules/ol/MapBrowserEvent.js","./MapBrowserEventHandler.js":"node_modules/ol/MapBrowserEventHandler.js","./MapBrowserEventType.js":"node_modules/ol/MapBrowserEventType.js","./MapEvent.js":"node_modules/ol/MapEvent.js","./MapEventType.js":"node_modules/ol/MapEventType.js","./MapProperty.js":"node_modules/ol/MapProperty.js","./ObjectEventType.js":"node_modules/ol/ObjectEventType.js","./pointer/EventType.js":"node_modules/ol/pointer/EventType.js","./render/EventType.js":"node_modules/ol/render/EventType.js","./TileQueue.js":"node_modules/ol/TileQueue.js","./View.js":"node_modules/ol/View.js","./ViewHint.js":"node_modules/ol/ViewHint.js","./has.js":"node_modules/ol/has.js","./functions.js":"node_modules/ol/functions.js","./transform.js":"node_modules/ol/transform.js","./asserts.js":"node_modules/ol/asserts.js","./extent.js":"node_modules/ol/extent.js","./control/defaults.js":"node_modules/ol/control/defaults.js","./interaction/defaults.js":"node_modules/ol/interaction/defaults.js","./array.js":"node_modules/ol/array.js","./proj.js":"node_modules/ol/proj.js","./util.js":"node_modules/ol/util.js","./size.js":"node_modules/ol/size.js","./events.js":"node_modules/ol/events.js","./dom.js":"node_modules/ol/dom.js","./console.js":"node_modules/ol/console.js"}],"node_modules/rbush/rbush.min.js":[function(require,module,exports) {
+},{"./Object.js":"node_modules/ol/Object.js","./Collection.js":"node_modules/ol/Collection.js","./CollectionEventType.js":"node_modules/ol/CollectionEventType.js","./renderer/Composite.js":"node_modules/ol/renderer/Composite.js","./events/EventType.js":"node_modules/ol/events/EventType.js","./layer/Layer.js":"node_modules/ol/layer/Layer.js","./layer/Group.js":"node_modules/ol/layer/Group.js","./MapBrowserEvent.js":"node_modules/ol/MapBrowserEvent.js","./MapBrowserEventHandler.js":"node_modules/ol/MapBrowserEventHandler.js","./MapBrowserEventType.js":"node_modules/ol/MapBrowserEventType.js","./MapEvent.js":"node_modules/ol/MapEvent.js","./MapEventType.js":"node_modules/ol/MapEventType.js","./MapProperty.js":"node_modules/ol/MapProperty.js","./ObjectEventType.js":"node_modules/ol/ObjectEventType.js","./pointer/EventType.js":"node_modules/ol/pointer/EventType.js","./render/EventType.js":"node_modules/ol/render/EventType.js","./TileQueue.js":"node_modules/ol/TileQueue.js","./View.js":"node_modules/ol/View.js","./ViewHint.js":"node_modules/ol/ViewHint.js","./has.js":"node_modules/ol/has.js","./functions.js":"node_modules/ol/functions.js","./transform.js":"node_modules/ol/transform.js","./asserts.js":"node_modules/ol/asserts.js","./extent.js":"node_modules/ol/extent.js","./control/defaults.js":"node_modules/ol/control/defaults.js","./interaction/defaults.js":"node_modules/ol/interaction/defaults.js","./array.js":"node_modules/ol/array.js","./proj.js":"node_modules/ol/proj.js","./util.js":"node_modules/ol/util.js","./size.js":"node_modules/ol/size.js","./events.js":"node_modules/ol/events.js","./dom.js":"node_modules/ol/dom.js","./console.js":"node_modules/ol/console.js"}],"node_modules/ol/Overlay.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Object = _interopRequireDefault(require("./Object.js"));
+var _MapEventType = _interopRequireDefault(require("./MapEventType.js"));
+var _css = require("./css.js");
+var _extent = require("./extent.js");
+var _events = require("./events.js");
+var _dom = require("./dom.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/Overlay
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {'bottom-left' | 'bottom-center' | 'bottom-right' | 'center-left' | 'center-center' | 'center-right' | 'top-left' | 'top-center' | 'top-right'} Positioning
+ * The overlay position: `'bottom-left'`, `'bottom-center'`,  `'bottom-right'`,
+ * `'center-left'`, `'center-center'`, `'center-right'`, `'top-left'`,
+ * `'top-center'`, or `'top-right'`.
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {number|string} [id] Set the overlay id. The overlay id can be used
+ * with the {@link module:ol/Map~Map#getOverlayById} method.
+ * @property {HTMLElement} [element] The overlay element.
+ * @property {Array<number>} [offset=[0, 0]] Offsets in pixels used when positioning
+ * the overlay. The first element in the
+ * array is the horizontal offset. A positive value shifts the overlay right.
+ * The second element in the array is the vertical offset. A positive value
+ * shifts the overlay down.
+ * @property {import("./coordinate.js").Coordinate} [position] The overlay position
+ * in map projection.
+ * @property {Positioning} [positioning='top-left'] Defines how
+ * the overlay is actually positioned with respect to its `position` property.
+ * Possible values are `'bottom-left'`, `'bottom-center'`, `'bottom-right'`,
+ * `'center-left'`, `'center-center'`, `'center-right'`, `'top-left'`,
+ * `'top-center'`, and `'top-right'`.
+ * @property {boolean} [stopEvent=true] Whether event propagation to the map
+ * viewport should be stopped. If `true` the overlay is placed in the same
+ * container as that of the controls (CSS class name
+ * `ol-overlaycontainer-stopevent`); if `false` it is placed in the container
+ * with CSS class name specified by the `className` property.
+ * @property {boolean} [insertFirst=true] Whether the overlay is inserted first
+ * in the overlay container, or appended. If the overlay is placed in the same
+ * container as that of the controls (see the `stopEvent` option) you will
+ * probably set `insertFirst` to `true` so the overlay is displayed below the
+ * controls.
+ * @property {PanIntoViewOptions|boolean} [autoPan=false] Pan the map when calling
+ * `setPosition`, so that the overlay is entirely visible in the current viewport.
+ * @property {string} [className='ol-overlay-container ol-selectable'] CSS class
+ * name.
+ */
+
+/**
+ * @typedef {Object} PanOptions
+ * @property {number} [duration=1000] The duration of the animation in
+ * milliseconds.
+ * @property {function(number):number} [easing] The easing function to use. Can
+ * be one from {@link module:ol/easing} or a custom function.
+ * Default is {@link module:ol/easing.inAndOut}.
+ */
+
+/**
+ * @typedef {Object} PanIntoViewOptions
+ * @property {PanOptions} [animation={}] The animation parameters for the pan
+ * @property {number} [margin=20] The margin (in pixels) between the
+ * overlay and the borders of the map when panning into view.
+ */
+/**
+ * @enum {string}
+ * @protected
+ */
+var Property = {
+  ELEMENT: 'element',
+  MAP: 'map',
+  OFFSET: 'offset',
+  POSITION: 'position',
+  POSITIONING: 'positioning'
+};
+
+/**
+ * @typedef {import("./ObjectEventType").Types|'change:element'|'change:map'|'change:offset'|'change:position'|
+ *   'change:positioning'} OverlayObjectEventTypes
+ */
+
+/***
+ * @template Return
+ * @typedef {import("./Observable").OnSignature<import("./Observable").EventTypes, import("./events/Event.js").default, Return> &
+ *   import("./Observable").OnSignature<OverlayObjectEventTypes, import("./Object").ObjectEvent, Return> &
+ *   import("./Observable").CombinedOnSignature<import("./Observable").EventTypes|OverlayObjectEventTypes, Return>} OverlayOnSignature
+ */
+
+/**
+ * @classdesc
+ * An element to be displayed over the map and attached to a single map
+ * location.  Like {@link module:ol/control/Control~Control}, Overlays are
+ * visible widgets. Unlike Controls, they are not in a fixed position on the
+ * screen, but are tied to a geographical coordinate, so panning the map will
+ * move an Overlay but not a Control.
+ *
+ * Example:
+ *
+ *     import Overlay from 'ol/Overlay.js';
+ *
+ *     // ...
+ *     const popup = new Overlay({
+ *       element: document.getElementById('popup'),
+ *     });
+ *     popup.setPosition(coordinate);
+ *     map.addOverlay(popup);
+ *
+ * @api
+ */
+var Overlay = /*#__PURE__*/function (_BaseObject) {
+  _inherits(Overlay, _BaseObject);
+  var _super = _createSuper(Overlay);
+  /**
+   * @param {Options} options Overlay options.
+   */
+  function Overlay(options) {
+    var _this;
+    _classCallCheck(this, Overlay);
+    _this = _super.call(this);
+
+    /***
+     * @type {OverlayOnSignature<import("./events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {OverlayOnSignature<import("./events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {OverlayOnSignature<void>}
+     */
+    _this.un;
+
+    /**
+     * @protected
+     * @type {Options}
+     */
+    _this.options = options;
+
+    /**
+     * @protected
+     * @type {number|string|undefined}
+     */
+    _this.id = options.id;
+
+    /**
+     * @protected
+     * @type {boolean}
+     */
+    _this.insertFirst = options.insertFirst !== undefined ? options.insertFirst : true;
+
+    /**
+     * @protected
+     * @type {boolean}
+     */
+    _this.stopEvent = options.stopEvent !== undefined ? options.stopEvent : true;
+
+    /**
+     * @protected
+     * @type {HTMLElement}
+     */
+    _this.element = document.createElement('div');
+    _this.element.className = options.className !== undefined ? options.className : 'ol-overlay-container ' + _css.CLASS_SELECTABLE;
+    _this.element.style.position = 'absolute';
+    _this.element.style.pointerEvents = 'auto';
+
+    /**
+     * @protected
+     * @type {PanIntoViewOptions|undefined}
+     */
+    _this.autoPan = options.autoPan === true ? {} : options.autoPan || undefined;
+
+    /**
+     * @protected
+     * @type {{transform_: string,
+     *         visible: boolean}}
+     */
+    _this.rendered = {
+      transform_: '',
+      visible: true
+    };
+
+    /**
+     * @protected
+     * @type {?import("./events.js").EventsKey}
+     */
+    _this.mapPostrenderListenerKey = null;
+    _this.addChangeListener(Property.ELEMENT, _this.handleElementChanged);
+    _this.addChangeListener(Property.MAP, _this.handleMapChanged);
+    _this.addChangeListener(Property.OFFSET, _this.handleOffsetChanged);
+    _this.addChangeListener(Property.POSITION, _this.handlePositionChanged);
+    _this.addChangeListener(Property.POSITIONING, _this.handlePositioningChanged);
+    if (options.element !== undefined) {
+      _this.setElement(options.element);
+    }
+    _this.setOffset(options.offset !== undefined ? options.offset : [0, 0]);
+    _this.setPositioning(options.positioning || 'top-left');
+    if (options.position !== undefined) {
+      _this.setPosition(options.position);
+    }
+    return _this;
+  }
+
+  /**
+   * Get the DOM element of this overlay.
+   * @return {HTMLElement|undefined} The Element containing the overlay.
+   * @observable
+   * @api
+   */
+  _createClass(Overlay, [{
+    key: "getElement",
+    value: function getElement() {
+      return (/** @type {HTMLElement|undefined} */this.get(Property.ELEMENT)
+      );
+    }
+
+    /**
+     * Get the overlay identifier which is set on constructor.
+     * @return {number|string|undefined} Id.
+     * @api
+     */
+  }, {
+    key: "getId",
+    value: function getId() {
+      return this.id;
+    }
+
+    /**
+     * Get the map associated with this overlay.
+     * @return {import("./Map.js").default|null} The map that the
+     * overlay is part of.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getMap",
+    value: function getMap() {
+      return (/** @type {import("./Map.js").default|null} */
+        this.get(Property.MAP) || null
+      );
+    }
+
+    /**
+     * Get the offset of this overlay.
+     * @return {Array<number>} The offset.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getOffset",
+    value: function getOffset() {
+      return (/** @type {Array<number>} */this.get(Property.OFFSET)
+      );
+    }
+
+    /**
+     * Get the current position of this overlay.
+     * @return {import("./coordinate.js").Coordinate|undefined} The spatial point that the overlay is
+     *     anchored at.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getPosition",
+    value: function getPosition() {
+      return (/** @type {import("./coordinate.js").Coordinate|undefined} */
+        this.get(Property.POSITION)
+      );
+    }
+
+    /**
+     * Get the current positioning of this overlay.
+     * @return {Positioning} How the overlay is positioned
+     *     relative to its point on the map.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getPositioning",
+    value: function getPositioning() {
+      return (/** @type {Positioning} */this.get(Property.POSITIONING)
+      );
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handleElementChanged",
+    value: function handleElementChanged() {
+      (0, _dom.removeChildren)(this.element);
+      var element = this.getElement();
+      if (element) {
+        this.element.appendChild(element);
+      }
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handleMapChanged",
+    value: function handleMapChanged() {
+      if (this.mapPostrenderListenerKey) {
+        (0, _dom.removeNode)(this.element);
+        (0, _events.unlistenByKey)(this.mapPostrenderListenerKey);
+        this.mapPostrenderListenerKey = null;
+      }
+      var map = this.getMap();
+      if (map) {
+        this.mapPostrenderListenerKey = (0, _events.listen)(map, _MapEventType.default.POSTRENDER, this.render, this);
+        this.updatePixelPosition();
+        var container = this.stopEvent ? map.getOverlayContainerStopEvent() : map.getOverlayContainer();
+        if (this.insertFirst) {
+          container.insertBefore(this.element, container.childNodes[0] || null);
+        } else {
+          container.appendChild(this.element);
+        }
+        this.performAutoPan();
+      }
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "render",
+    value: function render() {
+      this.updatePixelPosition();
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handleOffsetChanged",
+    value: function handleOffsetChanged() {
+      this.updatePixelPosition();
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handlePositionChanged",
+    value: function handlePositionChanged() {
+      this.updatePixelPosition();
+      this.performAutoPan();
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handlePositioningChanged",
+    value: function handlePositioningChanged() {
+      this.updatePixelPosition();
+    }
+
+    /**
+     * Set the DOM element to be associated with this overlay.
+     * @param {HTMLElement|undefined} element The Element containing the overlay.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setElement",
+    value: function setElement(element) {
+      this.set(Property.ELEMENT, element);
+    }
+
+    /**
+     * Set the map to be associated with this overlay.
+     * @param {import("./Map.js").default|null} map The map that the
+     * overlay is part of. Pass `null` to just remove the overlay from the current map.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setMap",
+    value: function setMap(map) {
+      this.set(Property.MAP, map);
+    }
+
+    /**
+     * Set the offset for this overlay.
+     * @param {Array<number>} offset Offset.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setOffset",
+    value: function setOffset(offset) {
+      this.set(Property.OFFSET, offset);
+    }
+
+    /**
+     * Set the position for this overlay. If the position is `undefined` the
+     * overlay is hidden.
+     * @param {import("./coordinate.js").Coordinate|undefined} position The spatial point that the overlay
+     *     is anchored at.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setPosition",
+    value: function setPosition(position) {
+      this.set(Property.POSITION, position);
+    }
+
+    /**
+     * Pan the map so that the overlay is entirely visible in the current viewport
+     * (if necessary) using the configured autoPan parameters
+     * @protected
+     */
+  }, {
+    key: "performAutoPan",
+    value: function performAutoPan() {
+      if (this.autoPan) {
+        this.panIntoView(this.autoPan);
+      }
+    }
+
+    /**
+     * Pan the map so that the overlay is entirely visible in the current viewport
+     * (if necessary).
+     * @param {PanIntoViewOptions} [panIntoViewOptions] Options for the pan action
+     * @api
+     */
+  }, {
+    key: "panIntoView",
+    value: function panIntoView(panIntoViewOptions) {
+      var map = this.getMap();
+      if (!map || !map.getTargetElement() || !this.get(Property.POSITION)) {
+        return;
+      }
+      var mapRect = this.getRect(map.getTargetElement(), map.getSize());
+      var element = this.getElement();
+      var overlayRect = this.getRect(element, [(0, _dom.outerWidth)(element), (0, _dom.outerHeight)(element)]);
+      panIntoViewOptions = panIntoViewOptions || {};
+      var myMargin = panIntoViewOptions.margin === undefined ? 20 : panIntoViewOptions.margin;
+      if (!(0, _extent.containsExtent)(mapRect, overlayRect)) {
+        // the overlay is not completely inside the viewport, so pan the map
+        var offsetLeft = overlayRect[0] - mapRect[0];
+        var offsetRight = mapRect[2] - overlayRect[2];
+        var offsetTop = overlayRect[1] - mapRect[1];
+        var offsetBottom = mapRect[3] - overlayRect[3];
+        var delta = [0, 0];
+        if (offsetLeft < 0) {
+          // move map to the left
+          delta[0] = offsetLeft - myMargin;
+        } else if (offsetRight < 0) {
+          // move map to the right
+          delta[0] = Math.abs(offsetRight) + myMargin;
+        }
+        if (offsetTop < 0) {
+          // move map up
+          delta[1] = offsetTop - myMargin;
+        } else if (offsetBottom < 0) {
+          // move map down
+          delta[1] = Math.abs(offsetBottom) + myMargin;
+        }
+        if (delta[0] !== 0 || delta[1] !== 0) {
+          var center = /** @type {import("./coordinate.js").Coordinate} */
+          map.getView().getCenterInternal();
+          var centerPx = map.getPixelFromCoordinateInternal(center);
+          if (!centerPx) {
+            return;
+          }
+          var newCenterPx = [centerPx[0] + delta[0], centerPx[1] + delta[1]];
+          var panOptions = panIntoViewOptions.animation || {};
+          map.getView().animateInternal({
+            center: map.getCoordinateFromPixelInternal(newCenterPx),
+            duration: panOptions.duration,
+            easing: panOptions.easing
+          });
+        }
+      }
+    }
+
+    /**
+     * Get the extent of an element relative to the document
+     * @param {HTMLElement} element The element.
+     * @param {import("./size.js").Size} size The size of the element.
+     * @return {import("./extent.js").Extent} The extent.
+     * @protected
+     */
+  }, {
+    key: "getRect",
+    value: function getRect(element, size) {
+      var box = element.getBoundingClientRect();
+      var offsetX = box.left + window.pageXOffset;
+      var offsetY = box.top + window.pageYOffset;
+      return [offsetX, offsetY, offsetX + size[0], offsetY + size[1]];
+    }
+
+    /**
+     * Set the positioning for this overlay.
+     * @param {Positioning} positioning how the overlay is
+     *     positioned relative to its point on the map.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setPositioning",
+    value: function setPositioning(positioning) {
+      this.set(Property.POSITIONING, positioning);
+    }
+
+    /**
+     * Modify the visibility of the element.
+     * @param {boolean} visible Element visibility.
+     * @protected
+     */
+  }, {
+    key: "setVisible",
+    value: function setVisible(visible) {
+      if (this.rendered.visible !== visible) {
+        this.element.style.display = visible ? '' : 'none';
+        this.rendered.visible = visible;
+      }
+    }
+
+    /**
+     * Update pixel position.
+     * @protected
+     */
+  }, {
+    key: "updatePixelPosition",
+    value: function updatePixelPosition() {
+      var map = this.getMap();
+      var position = this.getPosition();
+      if (!map || !map.isRendered() || !position) {
+        this.setVisible(false);
+        return;
+      }
+      var pixel = map.getPixelFromCoordinate(position);
+      var mapSize = map.getSize();
+      this.updateRenderedPosition(pixel, mapSize);
+    }
+
+    /**
+     * @param {import("./pixel.js").Pixel} pixel The pixel location.
+     * @param {import("./size.js").Size|undefined} mapSize The map size.
+     * @protected
+     */
+  }, {
+    key: "updateRenderedPosition",
+    value: function updateRenderedPosition(pixel, mapSize) {
+      var style = this.element.style;
+      var offset = this.getOffset();
+      var positioning = this.getPositioning();
+      this.setVisible(true);
+      var x = Math.round(pixel[0] + offset[0]) + 'px';
+      var y = Math.round(pixel[1] + offset[1]) + 'px';
+      var posX = '0%';
+      var posY = '0%';
+      if (positioning == 'bottom-right' || positioning == 'center-right' || positioning == 'top-right') {
+        posX = '-100%';
+      } else if (positioning == 'bottom-center' || positioning == 'center-center' || positioning == 'top-center') {
+        posX = '-50%';
+      }
+      if (positioning == 'bottom-left' || positioning == 'bottom-center' || positioning == 'bottom-right') {
+        posY = '-100%';
+      } else if (positioning == 'center-left' || positioning == 'center-center' || positioning == 'center-right') {
+        posY = '-50%';
+      }
+      var transform = "translate(".concat(posX, ", ").concat(posY, ") translate(").concat(x, ", ").concat(y, ")");
+      if (this.rendered.transform_ != transform) {
+        this.rendered.transform_ = transform;
+        style.transform = transform;
+      }
+    }
+
+    /**
+     * returns the options this Overlay has been created with
+     * @return {Options} overlay options
+     */
+  }, {
+    key: "getOptions",
+    value: function getOptions() {
+      return this.options;
+    }
+  }]);
+  return Overlay;
+}(_Object.default);
+var _default = Overlay;
+exports.default = _default;
+},{"./Object.js":"node_modules/ol/Object.js","./MapEventType.js":"node_modules/ol/MapEventType.js","./css.js":"node_modules/ol/css.js","./extent.js":"node_modules/ol/extent.js","./events.js":"node_modules/ol/events.js","./dom.js":"node_modules/ol/dom.js"}],"node_modules/rbush/rbush.min.js":[function(require,module,exports) {
 var define;
 !function(t,i){"object"==typeof exports&&"undefined"!=typeof module?module.exports=i():"function"==typeof define&&define.amd?define(i):(t=t||self).RBush=i()}(this,function(){"use strict";function t(t,r,e,a,h){!function t(n,r,e,a,h){for(;a>e;){if(a-e>600){var o=a-e+1,s=r-e+1,l=Math.log(o),f=.5*Math.exp(2*l/3),u=.5*Math.sqrt(l*f*(o-f)/o)*(s-o/2<0?-1:1),m=Math.max(e,Math.floor(r-s*f/o+u)),c=Math.min(a,Math.floor(r+(o-s)*f/o+u));t(n,r,m,c,h)}var p=n[r],d=e,x=a;for(i(n,e,r),h(n[a],p)>0&&i(n,e,a);d<x;){for(i(n,d,x),d++,x--;h(n[d],p)<0;)d++;for(;h(n[x],p)>0;)x--}0===h(n[e],p)?i(n,e,x):i(n,++x,a),x<=r&&(e=x+1),r<=x&&(a=x-1)}}(t,r,e||0,a||t.length-1,h||n)}function i(t,i,n){var r=t[i];t[i]=t[n],t[n]=r}function n(t,i){return t<i?-1:t>i?1:0}var r=function(t){void 0===t&&(t=9),this._maxEntries=Math.max(4,t),this._minEntries=Math.max(2,Math.ceil(.4*this._maxEntries)),this.clear()};function e(t,i,n){if(!n)return i.indexOf(t);for(var r=0;r<i.length;r++)if(n(t,i[r]))return r;return-1}function a(t,i){h(t,0,t.children.length,i,t)}function h(t,i,n,r,e){e||(e=p(null)),e.minX=1/0,e.minY=1/0,e.maxX=-1/0,e.maxY=-1/0;for(var a=i;a<n;a++){var h=t.children[a];o(e,t.leaf?r(h):h)}return e}function o(t,i){return t.minX=Math.min(t.minX,i.minX),t.minY=Math.min(t.minY,i.minY),t.maxX=Math.max(t.maxX,i.maxX),t.maxY=Math.max(t.maxY,i.maxY),t}function s(t,i){return t.minX-i.minX}function l(t,i){return t.minY-i.minY}function f(t){return(t.maxX-t.minX)*(t.maxY-t.minY)}function u(t){return t.maxX-t.minX+(t.maxY-t.minY)}function m(t,i){return t.minX<=i.minX&&t.minY<=i.minY&&i.maxX<=t.maxX&&i.maxY<=t.maxY}function c(t,i){return i.minX<=t.maxX&&i.minY<=t.maxY&&i.maxX>=t.minX&&i.maxY>=t.minY}function p(t){return{children:t,height:1,leaf:!0,minX:1/0,minY:1/0,maxX:-1/0,maxY:-1/0}}function d(i,n,r,e,a){for(var h=[n,r];h.length;)if(!((r=h.pop())-(n=h.pop())<=e)){var o=n+Math.ceil((r-n)/e/2)*e;t(i,o,n,r,a),h.push(n,o,o,r)}}return r.prototype.all=function(){return this._all(this.data,[])},r.prototype.search=function(t){var i=this.data,n=[];if(!c(t,i))return n;for(var r=this.toBBox,e=[];i;){for(var a=0;a<i.children.length;a++){var h=i.children[a],o=i.leaf?r(h):h;c(t,o)&&(i.leaf?n.push(h):m(t,o)?this._all(h,n):e.push(h))}i=e.pop()}return n},r.prototype.collides=function(t){var i=this.data;if(!c(t,i))return!1;for(var n=[];i;){for(var r=0;r<i.children.length;r++){var e=i.children[r],a=i.leaf?this.toBBox(e):e;if(c(t,a)){if(i.leaf||m(t,a))return!0;n.push(e)}}i=n.pop()}return!1},r.prototype.load=function(t){if(!t||!t.length)return this;if(t.length<this._minEntries){for(var i=0;i<t.length;i++)this.insert(t[i]);return this}var n=this._build(t.slice(),0,t.length-1,0);if(this.data.children.length)if(this.data.height===n.height)this._splitRoot(this.data,n);else{if(this.data.height<n.height){var r=this.data;this.data=n,n=r}this._insert(n,this.data.height-n.height-1,!0)}else this.data=n;return this},r.prototype.insert=function(t){return t&&this._insert(t,this.data.height-1),this},r.prototype.clear=function(){return this.data=p([]),this},r.prototype.remove=function(t,i){if(!t)return this;for(var n,r,a,h=this.data,o=this.toBBox(t),s=[],l=[];h||s.length;){if(h||(h=s.pop(),r=s[s.length-1],n=l.pop(),a=!0),h.leaf){var f=e(t,h.children,i);if(-1!==f)return h.children.splice(f,1),s.push(h),this._condense(s),this}a||h.leaf||!m(h,o)?r?(n++,h=r.children[n],a=!1):h=null:(s.push(h),l.push(n),n=0,r=h,h=h.children[0])}return this},r.prototype.toBBox=function(t){return t},r.prototype.compareMinX=function(t,i){return t.minX-i.minX},r.prototype.compareMinY=function(t,i){return t.minY-i.minY},r.prototype.toJSON=function(){return this.data},r.prototype.fromJSON=function(t){return this.data=t,this},r.prototype._all=function(t,i){for(var n=[];t;)t.leaf?i.push.apply(i,t.children):n.push.apply(n,t.children),t=n.pop();return i},r.prototype._build=function(t,i,n,r){var e,h=n-i+1,o=this._maxEntries;if(h<=o)return a(e=p(t.slice(i,n+1)),this.toBBox),e;r||(r=Math.ceil(Math.log(h)/Math.log(o)),o=Math.ceil(h/Math.pow(o,r-1))),(e=p([])).leaf=!1,e.height=r;var s=Math.ceil(h/o),l=s*Math.ceil(Math.sqrt(o));d(t,i,n,l,this.compareMinX);for(var f=i;f<=n;f+=l){var u=Math.min(f+l-1,n);d(t,f,u,s,this.compareMinY);for(var m=f;m<=u;m+=s){var c=Math.min(m+s-1,u);e.children.push(this._build(t,m,c,r-1))}}return a(e,this.toBBox),e},r.prototype._chooseSubtree=function(t,i,n,r){for(;r.push(i),!i.leaf&&r.length-1!==n;){for(var e=1/0,a=1/0,h=void 0,o=0;o<i.children.length;o++){var s=i.children[o],l=f(s),u=(m=t,c=s,(Math.max(c.maxX,m.maxX)-Math.min(c.minX,m.minX))*(Math.max(c.maxY,m.maxY)-Math.min(c.minY,m.minY))-l);u<a?(a=u,e=l<e?l:e,h=s):u===a&&l<e&&(e=l,h=s)}i=h||i.children[0]}var m,c;return i},r.prototype._insert=function(t,i,n){var r=n?t:this.toBBox(t),e=[],a=this._chooseSubtree(r,this.data,i,e);for(a.children.push(t),o(a,r);i>=0&&e[i].children.length>this._maxEntries;)this._split(e,i),i--;this._adjustParentBBoxes(r,e,i)},r.prototype._split=function(t,i){var n=t[i],r=n.children.length,e=this._minEntries;this._chooseSplitAxis(n,e,r);var h=this._chooseSplitIndex(n,e,r),o=p(n.children.splice(h,n.children.length-h));o.height=n.height,o.leaf=n.leaf,a(n,this.toBBox),a(o,this.toBBox),i?t[i-1].children.push(o):this._splitRoot(n,o)},r.prototype._splitRoot=function(t,i){this.data=p([t,i]),this.data.height=t.height+1,this.data.leaf=!1,a(this.data,this.toBBox)},r.prototype._chooseSplitIndex=function(t,i,n){for(var r,e,a,o,s,l,u,m=1/0,c=1/0,p=i;p<=n-i;p++){var d=h(t,0,p,this.toBBox),x=h(t,p,n,this.toBBox),v=(e=d,a=x,o=void 0,s=void 0,l=void 0,u=void 0,o=Math.max(e.minX,a.minX),s=Math.max(e.minY,a.minY),l=Math.min(e.maxX,a.maxX),u=Math.min(e.maxY,a.maxY),Math.max(0,l-o)*Math.max(0,u-s)),M=f(d)+f(x);v<m?(m=v,r=p,c=M<c?M:c):v===m&&M<c&&(c=M,r=p)}return r||n-i},r.prototype._chooseSplitAxis=function(t,i,n){var r=t.leaf?this.compareMinX:s,e=t.leaf?this.compareMinY:l;this._allDistMargin(t,i,n,r)<this._allDistMargin(t,i,n,e)&&t.children.sort(r)},r.prototype._allDistMargin=function(t,i,n,r){t.children.sort(r);for(var e=this.toBBox,a=h(t,0,i,e),s=h(t,n-i,n,e),l=u(a)+u(s),f=i;f<n-i;f++){var m=t.children[f];o(a,t.leaf?e(m):m),l+=u(a)}for(var c=n-i-1;c>=i;c--){var p=t.children[c];o(s,t.leaf?e(p):p),l+=u(s)}return l},r.prototype._adjustParentBBoxes=function(t,i,n){for(var r=n;r>=0;r--)o(i[r],t)},r.prototype._condense=function(t){for(var i=t.length-1,n=void 0;i>=0;i--)0===t[i].children.length?i>0?(n=t[i-1].children).splice(n.indexOf(t[i]),1):this.clear():a(t[i],this.toBBox)},r});
 
@@ -38079,7 +38689,5533 @@ var VectorSource = /*#__PURE__*/function (_Source) {
 }(_Source2.default);
 var _default = VectorSource;
 exports.default = _default;
-},{"../Collection.js":"node_modules/ol/Collection.js","../CollectionEventType.js":"node_modules/ol/CollectionEventType.js","../events/Event.js":"node_modules/ol/events/Event.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../ObjectEventType.js":"node_modules/ol/ObjectEventType.js","../structs/RBush.js":"node_modules/ol/structs/RBush.js","./Source.js":"node_modules/ol/source/Source.js","./VectorEventType.js":"node_modules/ol/source/VectorEventType.js","../functions.js":"node_modules/ol/functions.js","../loadingstrategy.js":"node_modules/ol/loadingstrategy.js","../asserts.js":"node_modules/ol/asserts.js","../extent.js":"node_modules/ol/extent.js","../array.js":"node_modules/ol/array.js","../util.js":"node_modules/ol/util.js","../obj.js":"node_modules/ol/obj.js","../events.js":"node_modules/ol/events.js","../featureloader.js":"node_modules/ol/featureloader.js"}],"node_modules/ol/interaction/DblClickDragZoom.js":[function(require,module,exports) {
+},{"../Collection.js":"node_modules/ol/Collection.js","../CollectionEventType.js":"node_modules/ol/CollectionEventType.js","../events/Event.js":"node_modules/ol/events/Event.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../ObjectEventType.js":"node_modules/ol/ObjectEventType.js","../structs/RBush.js":"node_modules/ol/structs/RBush.js","./Source.js":"node_modules/ol/source/Source.js","./VectorEventType.js":"node_modules/ol/source/VectorEventType.js","../functions.js":"node_modules/ol/functions.js","../loadingstrategy.js":"node_modules/ol/loadingstrategy.js","../asserts.js":"node_modules/ol/asserts.js","../extent.js":"node_modules/ol/extent.js","../array.js":"node_modules/ol/array.js","../util.js":"node_modules/ol/util.js","../obj.js":"node_modules/ol/obj.js","../events.js":"node_modules/ol/events.js","../featureloader.js":"node_modules/ol/featureloader.js"}],"node_modules/ol/layer/TileProperty.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * @module ol/layer/TileProperty
+ */
+/**
+ * @enum {string}
+ */
+var _default = {
+  PRELOAD: 'preload',
+  USE_INTERIM_TILES_ON_ERROR: 'useInterimTilesOnError'
+};
+exports.default = _default;
+},{}],"node_modules/ol/layer/BaseTile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Layer2 = _interopRequireDefault(require("./Layer.js"));
+var _TileProperty = _interopRequireDefault(require("./TileProperty.js"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/layer/BaseTile
+                                                                                                                                                                                                                      */
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("./Base").BaseLayerObjectEventTypes|
+ *     import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError', import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").OnSignature<import("../render/EventType").LayerRenderEventTypes, import("../render/Event").default, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("./Base").BaseLayerObjectEventTypes|
+ *   import("./Layer.js").LayerEventType|'change:preload'|'change:useInterimTilesOnError'|import("../render/EventType").LayerRenderEventTypes, Return>} BaseTileLayerOnSignature
+ */
+/**
+ * @template {import("../source/Tile.js").default} TileSourceType
+ * @typedef {Object} Options
+ * @property {string} [className='ol-layer'] A CSS class name to set to the layer element.
+ * @property {number} [opacity=1] Opacity (0, 1).
+ * @property {boolean} [visible=true] Visibility.
+ * @property {import("../extent.js").Extent} [extent] The bounding extent for layer rendering.  The layer will not be
+ * rendered outside of this extent.
+ * @property {number} [zIndex] The z-index for layer rendering.  At rendering time, the layers
+ * will be ordered, first by Z-index and then by position. When `undefined`, a `zIndex` of 0 is assumed
+ * for layers that are added to the map's `layers` collection, or `Infinity` when the layer's `setMap()`
+ * method was used.
+ * @property {number} [minResolution] The minimum resolution (inclusive) at which this layer will be
+ * visible.
+ * @property {number} [maxResolution] The maximum resolution (exclusive) below which this layer will
+ * be visible.
+ * @property {number} [minZoom] The minimum view zoom level (exclusive) above which this layer will be
+ * visible.
+ * @property {number} [maxZoom] The maximum view zoom level (inclusive) at which this layer will
+ * be visible.
+ * @property {number} [preload=0] Preload. Load low-resolution tiles up to `preload` levels. `0`
+ * means no preloading.
+ * @property {TileSourceType} [source] Source for this layer.
+ * @property {import("../Map.js").default} [map] Sets the layer as overlay on a map. The map will not manage
+ * this layer in its layers collection, and the layer will be rendered on top. This is useful for
+ * temporary layers. The standard way to add a layer to a map and have it managed by the map is to
+ * use {@link import("../Map.js").default#addLayer map.addLayer()}.
+ * @property {boolean} [useInterimTilesOnError=true] Use interim tiles on error.
+ * @property {Object<string, *>} [properties] Arbitrary observable properties. Can be accessed with `#get()` and `#set()`.
+ */
+/**
+ * @classdesc
+ * For layer sources that provide pre-rendered, tiled images in grids that are
+ * organized by zoom levels for specific resolutions.
+ * Note that any property set in the options is set as a {@link module:ol/Object~BaseObject}
+ * property on the layer object; for example, setting `title: 'My Title'` in the
+ * options means that `title` is observable, and has get/set accessors.
+ *
+ * @template {import("../source/Tile.js").default} TileSourceType
+ * @template {import("../renderer/Layer.js").default} RendererType
+ * @extends {Layer<TileSourceType, RendererType>}
+ * @api
+ */
+var BaseTileLayer = /*#__PURE__*/function (_Layer) {
+  _inherits(BaseTileLayer, _Layer);
+  var _super = _createSuper(BaseTileLayer);
+  /**
+   * @param {Options<TileSourceType>} [options] Tile layer options.
+   */
+  function BaseTileLayer(options) {
+    var _this;
+    _classCallCheck(this, BaseTileLayer);
+    options = options ? options : {};
+    var baseOptions = Object.assign({}, options);
+    delete baseOptions.preload;
+    delete baseOptions.useInterimTilesOnError;
+    _this = _super.call(this, baseOptions);
+
+    /***
+     * @type {BaseTileLayerOnSignature<import("../events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {BaseTileLayerOnSignature<import("../events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {BaseTileLayerOnSignature<void>}
+     */
+    _this.un;
+    _this.setPreload(options.preload !== undefined ? options.preload : 0);
+    _this.setUseInterimTilesOnError(options.useInterimTilesOnError !== undefined ? options.useInterimTilesOnError : true);
+    return _this;
+  }
+
+  /**
+   * Return the level as number to which we will preload tiles up to.
+   * @return {number} The level to preload tiles up to.
+   * @observable
+   * @api
+   */
+  _createClass(BaseTileLayer, [{
+    key: "getPreload",
+    value: function getPreload() {
+      return (/** @type {number} */this.get(_TileProperty.default.PRELOAD)
+      );
+    }
+
+    /**
+     * Set the level as number to which we will preload tiles up to.
+     * @param {number} preload The level to preload tiles up to.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setPreload",
+    value: function setPreload(preload) {
+      this.set(_TileProperty.default.PRELOAD, preload);
+    }
+
+    /**
+     * Whether we use interim tiles on error.
+     * @return {boolean} Use interim tiles on error.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getUseInterimTilesOnError",
+    value: function getUseInterimTilesOnError() {
+      return (/** @type {boolean} */
+        this.get(_TileProperty.default.USE_INTERIM_TILES_ON_ERROR)
+      );
+    }
+
+    /**
+     * Set whether we use interim tiles on error.
+     * @param {boolean} useInterimTilesOnError Use interim tiles on error.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setUseInterimTilesOnError",
+    value: function setUseInterimTilesOnError(useInterimTilesOnError) {
+      this.set(_TileProperty.default.USE_INTERIM_TILES_ON_ERROR, useInterimTilesOnError);
+    }
+
+    /**
+     * Get data for a pixel location.  The return type depends on the source data.  For image tiles,
+     * a four element RGBA array will be returned.  For data tiles, the array length will match the
+     * number of bands in the dataset.  For requests outside the layer extent, `null` will be returned.
+     * Data for a image tiles can only be retrieved if the source's `crossOrigin` property is set.
+     *
+     * ```js
+     * // display layer data on every pointer move
+     * map.on('pointermove', (event) => {
+     *   console.log(layer.getData(event.pixel));
+     * });
+     * ```
+     * @param {import("../pixel").Pixel} pixel Pixel.
+     * @return {Uint8ClampedArray|Uint8Array|Float32Array|DataView|null} Pixel data.
+     * @api
+     */
+  }, {
+    key: "getData",
+    value: function getData(pixel) {
+      return _get(_getPrototypeOf(BaseTileLayer.prototype), "getData", this).call(this, pixel);
+    }
+  }]);
+  return BaseTileLayer;
+}(_Layer2.default);
+var _default = BaseTileLayer;
+exports.default = _default;
+},{"./Layer.js":"node_modules/ol/layer/Layer.js","./TileProperty.js":"node_modules/ol/layer/TileProperty.js"}],"node_modules/ol/Tile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Target = _interopRequireDefault(require("./events/Target.js"));
+var _EventType = _interopRequireDefault(require("./events/EventType.js"));
+var _TileState = _interopRequireDefault(require("./TileState.js"));
+var _util = require("./util.js");
+var _easing = require("./easing.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/Tile
+                                                                                                                                                                                                                      */
+/**
+ * A function that takes an {@link module:ol/Tile~Tile} for the tile and a
+ * `{string}` for the url as arguments. The default is
+ * ```js
+ * source.setTileLoadFunction(function(tile, src) {
+ *   tile.getImage().src = src;
+ * });
+ * ```
+ * For more fine grained control, the load function can use fetch or XMLHttpRequest and involve
+ * error handling:
+ *
+ * ```js
+ * import TileState from 'ol/TileState.js';
+ *
+ * source.setTileLoadFunction(function(tile, src) {
+ *   const xhr = new XMLHttpRequest();
+ *   xhr.responseType = 'blob';
+ *   xhr.addEventListener('loadend', function (evt) {
+ *     const data = this.response;
+ *     if (data !== undefined) {
+ *       tile.getImage().src = URL.createObjectURL(data);
+ *     } else {
+ *       tile.setState(TileState.ERROR);
+ *     }
+ *   });
+ *   xhr.addEventListener('error', function () {
+ *     tile.setState(TileState.ERROR);
+ *   });
+ *   xhr.open('GET', src);
+ *   xhr.send();
+ * });
+ * ```
+ *
+ * @typedef {function(Tile, string): void} LoadFunction
+ * @api
+ */
+/**
+ * {@link module:ol/source/Tile~TileSource} sources use a function of this type to get
+ * the url that provides a tile for a given tile coordinate.
+ *
+ * This function takes an {@link module:ol/tilecoord~TileCoord} for the tile
+ * coordinate, a `{number}` representing the pixel ratio and a
+ * {@link module:ol/proj/Projection~Projection} for the projection  as arguments
+ * and returns a `{string}` representing the tile URL, or undefined if no tile
+ * should be requested for the passed tile coordinate.
+ *
+ * @typedef {function(import("./tilecoord.js").TileCoord, number,
+ *           import("./proj/Projection.js").default): (string|undefined)} UrlFunction
+ * @api
+ */
+/**
+ * @typedef {Object} Options
+ * @property {number} [transition=250] A duration for tile opacity
+ * transitions in milliseconds. A duration of 0 disables the opacity transition.
+ * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
+ * the nearest neighbor is used when resampling.
+ * @api
+ */
+/**
+ * @classdesc
+ * Base class for tiles.
+ *
+ * @abstract
+ */
+var Tile = /*#__PURE__*/function (_EventTarget) {
+  _inherits(Tile, _EventTarget);
+  var _super = _createSuper(Tile);
+  /**
+   * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+   * @param {import("./TileState.js").default} state State.
+   * @param {Options} [options] Tile options.
+   */
+  function Tile(tileCoord, state, options) {
+    var _this;
+    _classCallCheck(this, Tile);
+    _this = _super.call(this);
+    options = options ? options : {};
+
+    /**
+     * @type {import("./tilecoord.js").TileCoord}
+     */
+    _this.tileCoord = tileCoord;
+
+    /**
+     * @protected
+     * @type {import("./TileState.js").default}
+     */
+    _this.state = state;
+
+    /**
+     * An "interim" tile for this tile. The interim tile may be used while this
+     * one is loading, for "smooth" transitions when changing params/dimensions
+     * on the source.
+     * @type {Tile}
+     */
+    _this.interimTile = null;
+
+    /**
+     * A key assigned to the tile. This is used by the tile source to determine
+     * if this tile can effectively be used, or if a new tile should be created
+     * and this one be used as an interim tile for this new tile.
+     * @type {string}
+     */
+    _this.key = '';
+
+    /**
+     * The duration for the opacity transition.
+     * @type {number}
+     */
+    _this.transition_ = options.transition === undefined ? 250 : options.transition;
+
+    /**
+     * Lookup of start times for rendering transitions.  If the start time is
+     * equal to -1, the transition is complete.
+     * @type {Object<string, number>}
+     */
+    _this.transitionStarts_ = {};
+
+    /**
+     * @type {boolean}
+     */
+    _this.interpolate = !!options.interpolate;
+    return _this;
+  }
+
+  /**
+   * @protected
+   */
+  _createClass(Tile, [{
+    key: "changed",
+    value: function changed() {
+      this.dispatchEvent(_EventType.default.CHANGE);
+    }
+
+    /**
+     * Called by the tile cache when the tile is removed from the cache due to expiry
+     */
+  }, {
+    key: "release",
+    value: function release() {
+      if (this.state === _TileState.default.ERROR) {
+        // to remove the `change` listener on this tile in `ol/TileQueue#handleTileChange`
+        this.setState(_TileState.default.EMPTY);
+      }
+    }
+
+    /**
+     * @return {string} Key.
+     */
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this.key + '/' + this.tileCoord;
+    }
+
+    /**
+     * Get the interim tile most suitable for rendering using the chain of interim
+     * tiles. This corresponds to the  most recent tile that has been loaded, if no
+     * such tile exists, the original tile is returned.
+     * @return {!Tile} Best tile for rendering.
+     */
+  }, {
+    key: "getInterimTile",
+    value: function getInterimTile() {
+      if (!this.interimTile) {
+        //empty chain
+        return this;
+      }
+      var tile = this.interimTile;
+
+      // find the first loaded tile and return it. Since the chain is sorted in
+      // decreasing order of creation time, there is no need to search the remainder
+      // of the list (all those tiles correspond to older requests and will be
+      // cleaned up by refreshInterimChain)
+      do {
+        if (tile.getState() == _TileState.default.LOADED) {
+          // Show tile immediately instead of fading it in after loading, because
+          // the interim tile is in place already
+          this.transition_ = 0;
+          return tile;
+        }
+        tile = tile.interimTile;
+      } while (tile);
+
+      // we can not find a better tile
+      return this;
+    }
+
+    /**
+     * Goes through the chain of interim tiles and discards sections of the chain
+     * that are no longer relevant.
+     */
+  }, {
+    key: "refreshInterimChain",
+    value: function refreshInterimChain() {
+      if (!this.interimTile) {
+        return;
+      }
+      var tile = this.interimTile;
+
+      /**
+       * @type {Tile}
+       */
+      var prev = this;
+      do {
+        if (tile.getState() == _TileState.default.LOADED) {
+          //we have a loaded tile, we can discard the rest of the list
+          //we would could abort any LOADING tile request
+          //older than this tile (i.e. any LOADING tile following this entry in the chain)
+          tile.interimTile = null;
+          break;
+        } else if (tile.getState() == _TileState.default.LOADING) {
+          //keep this LOADING tile any loaded tiles later in the chain are
+          //older than this tile, so we're still interested in the request
+          prev = tile;
+        } else if (tile.getState() == _TileState.default.IDLE) {
+          //the head of the list is the most current tile, we don't need
+          //to start any other requests for this chain
+          prev.interimTile = tile.interimTile;
+        } else {
+          prev = tile;
+        }
+        tile = prev.interimTile;
+      } while (tile);
+    }
+
+    /**
+     * Get the tile coordinate for this tile.
+     * @return {import("./tilecoord.js").TileCoord} The tile coordinate.
+     * @api
+     */
+  }, {
+    key: "getTileCoord",
+    value: function getTileCoord() {
+      return this.tileCoord;
+    }
+
+    /**
+     * @return {import("./TileState.js").default} State.
+     */
+  }, {
+    key: "getState",
+    value: function getState() {
+      return this.state;
+    }
+
+    /**
+     * Sets the state of this tile. If you write your own {@link module:ol/Tile~LoadFunction tileLoadFunction} ,
+     * it is important to set the state correctly to {@link module:ol/TileState~ERROR}
+     * when the tile cannot be loaded. Otherwise the tile cannot be removed from
+     * the tile queue and will block other requests.
+     * @param {import("./TileState.js").default} state State.
+     * @api
+     */
+  }, {
+    key: "setState",
+    value: function setState(state) {
+      if (this.state !== _TileState.default.ERROR && this.state > state) {
+        throw new Error('Tile load sequence violation');
+      }
+      this.state = state;
+      this.changed();
+    }
+
+    /**
+     * Load the image or retry if loading previously failed.
+     * Loading is taken care of by the tile queue, and calling this method is
+     * only needed for preloading or for reloading in case of an error.
+     * @abstract
+     * @api
+     */
+  }, {
+    key: "load",
+    value: function load() {
+      (0, _util.abstract)();
+    }
+
+    /**
+     * Get the alpha value for rendering.
+     * @param {string} id An id for the renderer.
+     * @param {number} time The render frame time.
+     * @return {number} A number between 0 and 1.
+     */
+  }, {
+    key: "getAlpha",
+    value: function getAlpha(id, time) {
+      if (!this.transition_) {
+        return 1;
+      }
+      var start = this.transitionStarts_[id];
+      if (!start) {
+        start = time;
+        this.transitionStarts_[id] = start;
+      } else if (start === -1) {
+        return 1;
+      }
+      var delta = time - start + 1000 / 60; // avoid rendering at 0
+      if (delta >= this.transition_) {
+        return 1;
+      }
+      return (0, _easing.easeIn)(delta / this.transition_);
+    }
+
+    /**
+     * Determine if a tile is in an alpha transition.  A tile is considered in
+     * transition if tile.getAlpha() has not yet been called or has been called
+     * and returned 1.
+     * @param {string} id An id for the renderer.
+     * @return {boolean} The tile is in transition.
+     */
+  }, {
+    key: "inTransition",
+    value: function inTransition(id) {
+      if (!this.transition_) {
+        return false;
+      }
+      return this.transitionStarts_[id] !== -1;
+    }
+
+    /**
+     * Mark a transition as complete.
+     * @param {string} id An id for the renderer.
+     */
+  }, {
+    key: "endTransition",
+    value: function endTransition(id) {
+      if (this.transition_) {
+        this.transitionStarts_[id] = -1;
+      }
+    }
+  }]);
+  return Tile;
+}(_Target.default);
+var _default = Tile;
+exports.default = _default;
+},{"./events/Target.js":"node_modules/ol/events/Target.js","./events/EventType.js":"node_modules/ol/events/EventType.js","./TileState.js":"node_modules/ol/TileState.js","./util.js":"node_modules/ol/util.js","./easing.js":"node_modules/ol/easing.js"}],"node_modules/ol/ImageTile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Tile2 = _interopRequireDefault(require("./Tile.js"));
+var _TileState = _interopRequireDefault(require("./TileState.js"));
+var _dom = require("./dom.js");
+var _Image = require("./Image.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/ImageTile
+                                                                                                                                                                                                                      */
+var ImageTile = /*#__PURE__*/function (_Tile) {
+  _inherits(ImageTile, _Tile);
+  var _super = _createSuper(ImageTile);
+  /**
+   * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+   * @param {import("./TileState.js").default} state State.
+   * @param {string} src Image source URI.
+   * @param {?string} crossOrigin Cross origin.
+   * @param {import("./Tile.js").LoadFunction} tileLoadFunction Tile load function.
+   * @param {import("./Tile.js").Options} [options] Tile options.
+   */
+  function ImageTile(tileCoord, state, src, crossOrigin, tileLoadFunction, options) {
+    var _this;
+    _classCallCheck(this, ImageTile);
+    _this = _super.call(this, tileCoord, state, options);
+
+    /**
+     * @private
+     * @type {?string}
+     */
+    _this.crossOrigin_ = crossOrigin;
+
+    /**
+     * Image URI
+     *
+     * @private
+     * @type {string}
+     */
+    _this.src_ = src;
+    _this.key = src;
+
+    /**
+     * @private
+     * @type {HTMLImageElement|HTMLCanvasElement}
+     */
+    _this.image_ = new Image();
+    if (crossOrigin !== null) {
+      _this.image_.crossOrigin = crossOrigin;
+    }
+
+    /**
+     * @private
+     * @type {?function():void}
+     */
+    _this.unlisten_ = null;
+
+    /**
+     * @private
+     * @type {import("./Tile.js").LoadFunction}
+     */
+    _this.tileLoadFunction_ = tileLoadFunction;
+    return _this;
+  }
+
+  /**
+   * Get the HTML image element for this tile (may be a Canvas, Image, or Video).
+   * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+   * @api
+   */
+  _createClass(ImageTile, [{
+    key: "getImage",
+    value: function getImage() {
+      return this.image_;
+    }
+
+    /**
+     * Sets an HTML image element for this tile (may be a Canvas or preloaded Image).
+     * @param {HTMLCanvasElement|HTMLImageElement} element Element.
+     */
+  }, {
+    key: "setImage",
+    value: function setImage(element) {
+      this.image_ = element;
+      this.state = _TileState.default.LOADED;
+      this.unlistenImage_();
+      this.changed();
+    }
+
+    /**
+     * Tracks loading or read errors.
+     *
+     * @private
+     */
+  }, {
+    key: "handleImageError_",
+    value: function handleImageError_() {
+      this.state = _TileState.default.ERROR;
+      this.unlistenImage_();
+      this.image_ = getBlankImage();
+      this.changed();
+    }
+
+    /**
+     * Tracks successful image load.
+     *
+     * @private
+     */
+  }, {
+    key: "handleImageLoad_",
+    value: function handleImageLoad_() {
+      var image = /** @type {HTMLImageElement} */this.image_;
+      if (image.naturalWidth && image.naturalHeight) {
+        this.state = _TileState.default.LOADED;
+      } else {
+        this.state = _TileState.default.EMPTY;
+      }
+      this.unlistenImage_();
+      this.changed();
+    }
+
+    /**
+     * Load the image or retry if loading previously failed.
+     * Loading is taken care of by the tile queue, and calling this method is
+     * only needed for preloading or for reloading in case of an error.
+     *
+     * To retry loading tiles on failed requests, use a custom `tileLoadFunction`
+     * that checks for error status codes and reloads only when the status code is
+     * 408, 429, 500, 502, 503 and 504, and only when not too many retries have been
+     * made already:
+     *
+     * ```js
+     * const retryCodes = [408, 429, 500, 502, 503, 504];
+     * const retries = {};
+     * source.setTileLoadFunction((tile, src) => {
+     *   const image = tile.getImage();
+     *   fetch(src)
+     *     .then((response) => {
+     *       if (retryCodes.includes(response.status)) {
+     *         retries[src] = (retries[src] || 0) + 1;
+     *         if (retries[src] <= 3) {
+     *           setTimeout(() => tile.load(), retries[src] * 1000);
+     *         }
+     *         return Promise.reject();
+     *       }
+     *       return response.blob();
+     *     })
+     *     .then((blob) => {
+     *       const imageUrl = URL.createObjectURL(blob);
+     *       image.src = imageUrl;
+     *       setTimeout(() => URL.revokeObjectURL(imageUrl), 5000);
+     *     })
+     *     .catch(() => tile.setState(3)); // error
+     * });
+     * ```
+     *
+     * @api
+     */
+  }, {
+    key: "load",
+    value: function load() {
+      if (this.state == _TileState.default.ERROR) {
+        this.state = _TileState.default.IDLE;
+        this.image_ = new Image();
+        if (this.crossOrigin_ !== null) {
+          this.image_.crossOrigin = this.crossOrigin_;
+        }
+      }
+      if (this.state == _TileState.default.IDLE) {
+        this.state = _TileState.default.LOADING;
+        this.changed();
+        this.tileLoadFunction_(this, this.src_);
+        this.unlisten_ = (0, _Image.listenImage)(this.image_, this.handleImageLoad_.bind(this), this.handleImageError_.bind(this));
+      }
+    }
+
+    /**
+     * Discards event handlers which listen for load completion or errors.
+     *
+     * @private
+     */
+  }, {
+    key: "unlistenImage_",
+    value: function unlistenImage_() {
+      if (this.unlisten_) {
+        this.unlisten_();
+        this.unlisten_ = null;
+      }
+    }
+  }]);
+  return ImageTile;
+}(_Tile2.default);
+/**
+ * Get a 1-pixel blank image.
+ * @return {HTMLCanvasElement} Blank image.
+ */
+function getBlankImage() {
+  var ctx = (0, _dom.createCanvasContext2D)(1, 1);
+  ctx.fillStyle = 'rgba(0,0,0,0)';
+  ctx.fillRect(0, 0, 1, 1);
+  return ctx.canvas;
+}
+var _default = ImageTile;
+exports.default = _default;
+},{"./Tile.js":"node_modules/ol/Tile.js","./TileState.js":"node_modules/ol/TileState.js","./dom.js":"node_modules/ol/dom.js","./Image.js":"node_modules/ol/Image.js"}],"node_modules/ol/reproj/common.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.ERROR_THRESHOLD = void 0;
+/**
+ * @module ol/reproj/common
+ */
+
+/**
+ * Default maximum allowed threshold  (in pixels) for reprojection
+ * triangulation.
+ * @type {number}
+ */
+var ERROR_THRESHOLD = 0.5;
+exports.ERROR_THRESHOLD = ERROR_THRESHOLD;
+},{}],"node_modules/ol/reproj/Triangulation.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _extent = require("../extent.js");
+var _proj = require("../proj.js");
+var _math = require("../math.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); } /**
+                                                                                                                                                                                                                                                                                                                                                                                               * @module ol/reproj/Triangulation
+                                                                                                                                                                                                                                                                                                                                                                                               */
+/**
+ * Single triangle; consists of 3 source points and 3 target points.
+ * @typedef {Object} Triangle
+ * @property {Array<import("../coordinate.js").Coordinate>} source Source.
+ * @property {Array<import("../coordinate.js").Coordinate>} target Target.
+ */
+/**
+ * Maximum number of subdivision steps during raster reprojection triangulation.
+ * Prevents high memory usage and large number of proj4 calls (for certain
+ * transformations and areas). At most `2*(2^this)` triangles are created for
+ * each triangulated extent (tile/image).
+ * @type {number}
+ */
+var MAX_SUBDIVISION = 10;
+
+/**
+ * Maximum allowed size of triangle relative to world width. When transforming
+ * corners of world extent between certain projections, the resulting
+ * triangulation seems to have zero error and no subdivision is performed. If
+ * the triangle width is more than this (relative to world width; 0-1),
+ * subdivison is forced (up to `MAX_SUBDIVISION`). Default is `0.25`.
+ * @type {number}
+ */
+var MAX_TRIANGLE_WIDTH = 0.25;
+
+/**
+ * @classdesc
+ * Class containing triangulation of the given target extent.
+ * Used for determining source data and the reprojection itself.
+ */
+var Triangulation = /*#__PURE__*/function () {
+  /**
+   * @param {import("../proj/Projection.js").default} sourceProj Source projection.
+   * @param {import("../proj/Projection.js").default} targetProj Target projection.
+   * @param {import("../extent.js").Extent} targetExtent Target extent to triangulate.
+   * @param {import("../extent.js").Extent} maxSourceExtent Maximal source extent that can be used.
+   * @param {number} errorThreshold Acceptable error (in source units).
+   * @param {?number} destinationResolution The (optional) resolution of the destination.
+   */
+  function Triangulation(sourceProj, targetProj, targetExtent, maxSourceExtent, errorThreshold, destinationResolution) {
+    var _this = this;
+    _classCallCheck(this, Triangulation);
+    /**
+     * @type {import("../proj/Projection.js").default}
+     * @private
+     */
+    this.sourceProj_ = sourceProj;
+
+    /**
+     * @type {import("../proj/Projection.js").default}
+     * @private
+     */
+    this.targetProj_ = targetProj;
+
+    /** @type {!Object<string, import("../coordinate.js").Coordinate>} */
+    var transformInvCache = {};
+    var transformInv = (0, _proj.getTransform)(this.targetProj_, this.sourceProj_);
+
+    /**
+     * @param {import("../coordinate.js").Coordinate} c A coordinate.
+     * @return {import("../coordinate.js").Coordinate} Transformed coordinate.
+     * @private
+     */
+    this.transformInv_ = function (c) {
+      var key = c[0] + '/' + c[1];
+      if (!transformInvCache[key]) {
+        transformInvCache[key] = transformInv(c);
+      }
+      return transformInvCache[key];
+    };
+
+    /**
+     * @type {import("../extent.js").Extent}
+     * @private
+     */
+    this.maxSourceExtent_ = maxSourceExtent;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    this.errorThresholdSquared_ = errorThreshold * errorThreshold;
+
+    /**
+     * @type {Array<Triangle>}
+     * @private
+     */
+    this.triangles_ = [];
+
+    /**
+     * Indicates that the triangulation crosses edge of the source projection.
+     * @type {boolean}
+     * @private
+     */
+    this.wrapsXInSource_ = false;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    this.canWrapXInSource_ = this.sourceProj_.canWrapX() && !!maxSourceExtent && !!this.sourceProj_.getExtent() && (0, _extent.getWidth)(maxSourceExtent) >= (0, _extent.getWidth)(this.sourceProj_.getExtent());
+
+    /**
+     * @type {?number}
+     * @private
+     */
+    this.sourceWorldWidth_ = this.sourceProj_.getExtent() ? (0, _extent.getWidth)(this.sourceProj_.getExtent()) : null;
+
+    /**
+     * @type {?number}
+     * @private
+     */
+    this.targetWorldWidth_ = this.targetProj_.getExtent() ? (0, _extent.getWidth)(this.targetProj_.getExtent()) : null;
+    var destinationTopLeft = (0, _extent.getTopLeft)(targetExtent);
+    var destinationTopRight = (0, _extent.getTopRight)(targetExtent);
+    var destinationBottomRight = (0, _extent.getBottomRight)(targetExtent);
+    var destinationBottomLeft = (0, _extent.getBottomLeft)(targetExtent);
+    var sourceTopLeft = this.transformInv_(destinationTopLeft);
+    var sourceTopRight = this.transformInv_(destinationTopRight);
+    var sourceBottomRight = this.transformInv_(destinationBottomRight);
+    var sourceBottomLeft = this.transformInv_(destinationBottomLeft);
+
+    /*
+     * The maxSubdivision controls how many splittings of the target area can
+     * be done. The idea here is to do a linear mapping of the target areas
+     * but the actual overall reprojection (can be) extremely non-linear. The
+     * default value of MAX_SUBDIVISION was chosen based on mapping a 256x256
+     * tile size. However this function is also called to remap canvas rendered
+     * layers which can be much larger. This calculation increases the maxSubdivision
+     * value by the right factor so that each 256x256 pixel area has
+     * MAX_SUBDIVISION divisions.
+     */
+    var maxSubdivision = MAX_SUBDIVISION + (destinationResolution ? Math.max(0, Math.ceil(Math.log2((0, _extent.getArea)(targetExtent) / (destinationResolution * destinationResolution * 256 * 256)))) : 0);
+    this.addQuad_(destinationTopLeft, destinationTopRight, destinationBottomRight, destinationBottomLeft, sourceTopLeft, sourceTopRight, sourceBottomRight, sourceBottomLeft, maxSubdivision);
+    if (this.wrapsXInSource_) {
+      var leftBound = Infinity;
+      this.triangles_.forEach(function (triangle, i, arr) {
+        leftBound = Math.min(leftBound, triangle.source[0][0], triangle.source[1][0], triangle.source[2][0]);
+      });
+
+      // Shift triangles to be as close to `leftBound` as possible
+      // (if the distance is more than `worldWidth / 2` it can be closer.
+      this.triangles_.forEach(function (triangle) {
+        if (Math.max(triangle.source[0][0], triangle.source[1][0], triangle.source[2][0]) - leftBound > _this.sourceWorldWidth_ / 2) {
+          var newTriangle = [[triangle.source[0][0], triangle.source[0][1]], [triangle.source[1][0], triangle.source[1][1]], [triangle.source[2][0], triangle.source[2][1]]];
+          if (newTriangle[0][0] - leftBound > _this.sourceWorldWidth_ / 2) {
+            newTriangle[0][0] -= _this.sourceWorldWidth_;
+          }
+          if (newTriangle[1][0] - leftBound > _this.sourceWorldWidth_ / 2) {
+            newTriangle[1][0] -= _this.sourceWorldWidth_;
+          }
+          if (newTriangle[2][0] - leftBound > _this.sourceWorldWidth_ / 2) {
+            newTriangle[2][0] -= _this.sourceWorldWidth_;
+          }
+
+          // Rarely (if the extent contains both the dateline and prime meridian)
+          // the shift can in turn break some triangles.
+          // Detect this here and don't shift in such cases.
+          var minX = Math.min(newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
+          var maxX = Math.max(newTriangle[0][0], newTriangle[1][0], newTriangle[2][0]);
+          if (maxX - minX < _this.sourceWorldWidth_ / 2) {
+            triangle.source = newTriangle;
+          }
+        }
+      });
+    }
+    transformInvCache = {};
+  }
+
+  /**
+   * Adds triangle to the triangulation.
+   * @param {import("../coordinate.js").Coordinate} a The target a coordinate.
+   * @param {import("../coordinate.js").Coordinate} b The target b coordinate.
+   * @param {import("../coordinate.js").Coordinate} c The target c coordinate.
+   * @param {import("../coordinate.js").Coordinate} aSrc The source a coordinate.
+   * @param {import("../coordinate.js").Coordinate} bSrc The source b coordinate.
+   * @param {import("../coordinate.js").Coordinate} cSrc The source c coordinate.
+   * @private
+   */
+  _createClass(Triangulation, [{
+    key: "addTriangle_",
+    value: function addTriangle_(a, b, c, aSrc, bSrc, cSrc) {
+      this.triangles_.push({
+        source: [aSrc, bSrc, cSrc],
+        target: [a, b, c]
+      });
+    }
+
+    /**
+     * Adds quad (points in clock-wise order) to the triangulation
+     * (and reprojects the vertices) if valid.
+     * Performs quad subdivision if needed to increase precision.
+     *
+     * @param {import("../coordinate.js").Coordinate} a The target a coordinate.
+     * @param {import("../coordinate.js").Coordinate} b The target b coordinate.
+     * @param {import("../coordinate.js").Coordinate} c The target c coordinate.
+     * @param {import("../coordinate.js").Coordinate} d The target d coordinate.
+     * @param {import("../coordinate.js").Coordinate} aSrc The source a coordinate.
+     * @param {import("../coordinate.js").Coordinate} bSrc The source b coordinate.
+     * @param {import("../coordinate.js").Coordinate} cSrc The source c coordinate.
+     * @param {import("../coordinate.js").Coordinate} dSrc The source d coordinate.
+     * @param {number} maxSubdivision Maximal allowed subdivision of the quad.
+     * @private
+     */
+  }, {
+    key: "addQuad_",
+    value: function addQuad_(a, b, c, d, aSrc, bSrc, cSrc, dSrc, maxSubdivision) {
+      var sourceQuadExtent = (0, _extent.boundingExtent)([aSrc, bSrc, cSrc, dSrc]);
+      var sourceCoverageX = this.sourceWorldWidth_ ? (0, _extent.getWidth)(sourceQuadExtent) / this.sourceWorldWidth_ : null;
+      var sourceWorldWidth = /** @type {number} */this.sourceWorldWidth_;
+
+      // when the quad is wrapped in the source projection
+      // it covers most of the projection extent, but not fully
+      var wrapsX = this.sourceProj_.canWrapX() && sourceCoverageX > 0.5 && sourceCoverageX < 1;
+      var needsSubdivision = false;
+      if (maxSubdivision > 0) {
+        if (this.targetProj_.isGlobal() && this.targetWorldWidth_) {
+          var targetQuadExtent = (0, _extent.boundingExtent)([a, b, c, d]);
+          var targetCoverageX = (0, _extent.getWidth)(targetQuadExtent) / this.targetWorldWidth_;
+          needsSubdivision = targetCoverageX > MAX_TRIANGLE_WIDTH || needsSubdivision;
+        }
+        if (!wrapsX && this.sourceProj_.isGlobal() && sourceCoverageX) {
+          needsSubdivision = sourceCoverageX > MAX_TRIANGLE_WIDTH || needsSubdivision;
+        }
+      }
+      if (!needsSubdivision && this.maxSourceExtent_) {
+        if (isFinite(sourceQuadExtent[0]) && isFinite(sourceQuadExtent[1]) && isFinite(sourceQuadExtent[2]) && isFinite(sourceQuadExtent[3])) {
+          if (!(0, _extent.intersects)(sourceQuadExtent, this.maxSourceExtent_)) {
+            // whole quad outside source projection extent -> ignore
+            return;
+          }
+        }
+      }
+      var isNotFinite = 0;
+      if (!needsSubdivision) {
+        if (!isFinite(aSrc[0]) || !isFinite(aSrc[1]) || !isFinite(bSrc[0]) || !isFinite(bSrc[1]) || !isFinite(cSrc[0]) || !isFinite(cSrc[1]) || !isFinite(dSrc[0]) || !isFinite(dSrc[1])) {
+          if (maxSubdivision > 0) {
+            needsSubdivision = true;
+          } else {
+            // It might be the case that only 1 of the points is infinite. In this case
+            // we can draw a single triangle with the other three points
+            isNotFinite = (!isFinite(aSrc[0]) || !isFinite(aSrc[1]) ? 8 : 0) + (!isFinite(bSrc[0]) || !isFinite(bSrc[1]) ? 4 : 0) + (!isFinite(cSrc[0]) || !isFinite(cSrc[1]) ? 2 : 0) + (!isFinite(dSrc[0]) || !isFinite(dSrc[1]) ? 1 : 0);
+            if (isNotFinite != 1 && isNotFinite != 2 && isNotFinite != 4 && isNotFinite != 8) {
+              return;
+            }
+          }
+        }
+      }
+      if (maxSubdivision > 0) {
+        if (!needsSubdivision) {
+          var center = [(a[0] + c[0]) / 2, (a[1] + c[1]) / 2];
+          var centerSrc = this.transformInv_(center);
+          var dx;
+          if (wrapsX) {
+            var centerSrcEstimX = ((0, _math.modulo)(aSrc[0], sourceWorldWidth) + (0, _math.modulo)(cSrc[0], sourceWorldWidth)) / 2;
+            dx = centerSrcEstimX - (0, _math.modulo)(centerSrc[0], sourceWorldWidth);
+          } else {
+            dx = (aSrc[0] + cSrc[0]) / 2 - centerSrc[0];
+          }
+          var dy = (aSrc[1] + cSrc[1]) / 2 - centerSrc[1];
+          var centerSrcErrorSquared = dx * dx + dy * dy;
+          needsSubdivision = centerSrcErrorSquared > this.errorThresholdSquared_;
+        }
+        if (needsSubdivision) {
+          if (Math.abs(a[0] - c[0]) <= Math.abs(a[1] - c[1])) {
+            // split horizontally (top & bottom)
+            var bc = [(b[0] + c[0]) / 2, (b[1] + c[1]) / 2];
+            var bcSrc = this.transformInv_(bc);
+            var da = [(d[0] + a[0]) / 2, (d[1] + a[1]) / 2];
+            var daSrc = this.transformInv_(da);
+            this.addQuad_(a, b, bc, da, aSrc, bSrc, bcSrc, daSrc, maxSubdivision - 1);
+            this.addQuad_(da, bc, c, d, daSrc, bcSrc, cSrc, dSrc, maxSubdivision - 1);
+          } else {
+            // split vertically (left & right)
+            var ab = [(a[0] + b[0]) / 2, (a[1] + b[1]) / 2];
+            var abSrc = this.transformInv_(ab);
+            var cd = [(c[0] + d[0]) / 2, (c[1] + d[1]) / 2];
+            var cdSrc = this.transformInv_(cd);
+            this.addQuad_(a, ab, cd, d, aSrc, abSrc, cdSrc, dSrc, maxSubdivision - 1);
+            this.addQuad_(ab, b, c, cd, abSrc, bSrc, cSrc, cdSrc, maxSubdivision - 1);
+          }
+          return;
+        }
+      }
+      if (wrapsX) {
+        if (!this.canWrapXInSource_) {
+          return;
+        }
+        this.wrapsXInSource_ = true;
+      }
+
+      // Exactly zero or one of *Src is not finite
+      // The triangles must have the diagonal line as the first side
+      // This is to allow easy code in reproj.s to make it straight for broken
+      // browsers that can't handle diagonal clipping
+      if ((isNotFinite & 0xb) == 0) {
+        this.addTriangle_(a, c, d, aSrc, cSrc, dSrc);
+      }
+      if ((isNotFinite & 0xe) == 0) {
+        this.addTriangle_(a, c, b, aSrc, cSrc, bSrc);
+      }
+      if (isNotFinite) {
+        // Try the other two triangles
+        if ((isNotFinite & 0xd) == 0) {
+          this.addTriangle_(b, d, a, bSrc, dSrc, aSrc);
+        }
+        if ((isNotFinite & 0x7) == 0) {
+          this.addTriangle_(b, d, c, bSrc, dSrc, cSrc);
+        }
+      }
+    }
+
+    /**
+     * Calculates extent of the `source` coordinates from all the triangles.
+     *
+     * @return {import("../extent.js").Extent} Calculated extent.
+     */
+  }, {
+    key: "calculateSourceExtent",
+    value: function calculateSourceExtent() {
+      var extent = (0, _extent.createEmpty)();
+      this.triangles_.forEach(function (triangle, i, arr) {
+        var src = triangle.source;
+        (0, _extent.extendCoordinate)(extent, src[0]);
+        (0, _extent.extendCoordinate)(extent, src[1]);
+        (0, _extent.extendCoordinate)(extent, src[2]);
+      });
+      return extent;
+    }
+
+    /**
+     * @return {Array<Triangle>} Array of the calculated triangles.
+     */
+  }, {
+    key: "getTriangles",
+    value: function getTriangles() {
+      return this.triangles_;
+    }
+  }]);
+  return Triangulation;
+}();
+var _default = Triangulation;
+exports.default = _default;
+},{"../extent.js":"node_modules/ol/extent.js","../proj.js":"node_modules/ol/proj.js","../math.js":"node_modules/ol/math.js"}],"node_modules/ol/reproj.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.calculateSourceExtentResolution = calculateSourceExtentResolution;
+exports.calculateSourceResolution = calculateSourceResolution;
+exports.canvasPool = void 0;
+exports.render = render;
+var _extent = require("./extent.js");
+var _dom = require("./dom.js");
+var _proj = require("./proj.js");
+var _math = require("./math.js");
+/**
+ * @module ol/reproj
+ */
+
+var brokenDiagonalRendering_;
+
+/**
+ * @type {Array<HTMLCanvasElement>}
+ */
+var canvasPool = [];
+
+/**
+ * This draws a small triangle into a canvas by setting the triangle as the clip region
+ * and then drawing a (too large) rectangle
+ *
+ * @param {CanvasRenderingContext2D} ctx The context in which to draw the triangle
+ * @param {number} u1 The x-coordinate of the second point. The first point is 0,0.
+ * @param {number} v1 The y-coordinate of the second point.
+ * @param {number} u2 The x-coordinate of the third point.
+ * @param {number} v2 The y-coordinate of the third point.
+ */
+exports.canvasPool = canvasPool;
+function drawTestTriangle(ctx, u1, v1, u2, v2) {
+  ctx.beginPath();
+  ctx.moveTo(0, 0);
+  ctx.lineTo(u1, v1);
+  ctx.lineTo(u2, v2);
+  ctx.closePath();
+  ctx.save();
+  ctx.clip();
+  ctx.fillRect(0, 0, Math.max(u1, u2) + 1, Math.max(v1, v2));
+  ctx.restore();
+}
+
+/**
+ * Given the data from getImageData, see if the right values appear at the provided offset.
+ * Returns true if either the color or transparency is off
+ *
+ * @param {Uint8ClampedArray} data The data returned from getImageData
+ * @param {number} offset The pixel offset from the start of data.
+ * @return {boolean} true if the diagonal rendering is broken
+ */
+function verifyBrokenDiagonalRendering(data, offset) {
+  // the values ought to be close to the rgba(210, 0, 0, 0.75)
+  return Math.abs(data[offset * 4] - 210) > 2 || Math.abs(data[offset * 4 + 3] - 0.75 * 255) > 2;
+}
+
+/**
+ * Determines if the current browser configuration can render triangular clip regions correctly.
+ * This value is cached so the function is only expensive the first time called.
+ * Firefox on Windows (as of now) does not if HWA is enabled. See https://bugzilla.mozilla.org/show_bug.cgi?id=1606976
+ * Chrome works, and everything seems to work on OSX and Android. This function caches the
+ * result. I suppose that it is conceivably possible that a browser might flip modes while the app is
+ * running, but lets hope not.
+ *
+ * @return {boolean} true if the Diagonal Rendering is broken.
+ */
+function isBrokenDiagonalRendering() {
+  if (brokenDiagonalRendering_ === undefined) {
+    var ctx = (0, _dom.createCanvasContext2D)(6, 6, canvasPool);
+    ctx.globalCompositeOperation = 'lighter';
+    ctx.fillStyle = 'rgba(210, 0, 0, 0.75)';
+    drawTestTriangle(ctx, 4, 5, 4, 0);
+    drawTestTriangle(ctx, 4, 5, 0, 5);
+    var data = ctx.getImageData(0, 0, 3, 3).data;
+    brokenDiagonalRendering_ = verifyBrokenDiagonalRendering(data, 0) || verifyBrokenDiagonalRendering(data, 4) || verifyBrokenDiagonalRendering(data, 8);
+    (0, _dom.releaseCanvas)(ctx);
+    canvasPool.push(ctx.canvas);
+  }
+  return brokenDiagonalRendering_;
+}
+
+/**
+ * Calculates ideal resolution to use from the source in order to achieve
+ * pixel mapping as close as possible to 1:1 during reprojection.
+ * The resolution is calculated regardless of what resolutions
+ * are actually available in the dataset (TileGrid, Image, ...).
+ *
+ * @param {import("./proj/Projection.js").default} sourceProj Source projection.
+ * @param {import("./proj/Projection.js").default} targetProj Target projection.
+ * @param {import("./coordinate.js").Coordinate} targetCenter Target center.
+ * @param {number} targetResolution Target resolution.
+ * @return {number} The best resolution to use. Can be +-Infinity, NaN or 0.
+ */
+function calculateSourceResolution(sourceProj, targetProj, targetCenter, targetResolution) {
+  var sourceCenter = (0, _proj.transform)(targetCenter, targetProj, sourceProj);
+
+  // calculate the ideal resolution of the source data
+  var sourceResolution = (0, _proj.getPointResolution)(targetProj, targetResolution, targetCenter);
+  var targetMetersPerUnit = targetProj.getMetersPerUnit();
+  if (targetMetersPerUnit !== undefined) {
+    sourceResolution *= targetMetersPerUnit;
+  }
+  var sourceMetersPerUnit = sourceProj.getMetersPerUnit();
+  if (sourceMetersPerUnit !== undefined) {
+    sourceResolution /= sourceMetersPerUnit;
+  }
+
+  // Based on the projection properties, the point resolution at the specified
+  // coordinates may be slightly different. We need to reverse-compensate this
+  // in order to achieve optimal results.
+
+  var sourceExtent = sourceProj.getExtent();
+  if (!sourceExtent || (0, _extent.containsCoordinate)(sourceExtent, sourceCenter)) {
+    var compensationFactor = (0, _proj.getPointResolution)(sourceProj, sourceResolution, sourceCenter) / sourceResolution;
+    if (isFinite(compensationFactor) && compensationFactor > 0) {
+      sourceResolution /= compensationFactor;
+    }
+  }
+  return sourceResolution;
+}
+
+/**
+ * Calculates ideal resolution to use from the source in order to achieve
+ * pixel mapping as close as possible to 1:1 during reprojection.
+ * The resolution is calculated regardless of what resolutions
+ * are actually available in the dataset (TileGrid, Image, ...).
+ *
+ * @param {import("./proj/Projection.js").default} sourceProj Source projection.
+ * @param {import("./proj/Projection.js").default} targetProj Target projection.
+ * @param {import("./extent.js").Extent} targetExtent Target extent
+ * @param {number} targetResolution Target resolution.
+ * @return {number} The best resolution to use. Can be +-Infinity, NaN or 0.
+ */
+function calculateSourceExtentResolution(sourceProj, targetProj, targetExtent, targetResolution) {
+  var targetCenter = (0, _extent.getCenter)(targetExtent);
+  var sourceResolution = calculateSourceResolution(sourceProj, targetProj, targetCenter, targetResolution);
+  if (!isFinite(sourceResolution) || sourceResolution <= 0) {
+    (0, _extent.forEachCorner)(targetExtent, function (corner) {
+      sourceResolution = calculateSourceResolution(sourceProj, targetProj, corner, targetResolution);
+      return isFinite(sourceResolution) && sourceResolution > 0;
+    });
+  }
+  return sourceResolution;
+}
+
+/**
+ * @typedef {Object} ImageExtent
+ * @property {import("./extent.js").Extent} extent Extent.
+ * @property {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} image Image.
+ */
+
+/**
+ * Renders the source data into new canvas based on the triangulation.
+ *
+ * @param {number} width Width of the canvas.
+ * @param {number} height Height of the canvas.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {number} sourceResolution Source resolution.
+ * @param {import("./extent.js").Extent} sourceExtent Extent of the data source.
+ * @param {number} targetResolution Target resolution.
+ * @param {import("./extent.js").Extent} targetExtent Target extent.
+ * @param {import("./reproj/Triangulation.js").default} triangulation Calculated triangulation.
+ * @param {Array<ImageExtent>} sources Array of sources.
+ * @param {number} gutter Gutter of the sources.
+ * @param {boolean} [renderEdges] Render reprojection edges.
+ * @param {boolean} [interpolate] Use linear interpolation when resampling.
+ * @return {HTMLCanvasElement} Canvas with reprojected data.
+ */
+function render(width, height, pixelRatio, sourceResolution, sourceExtent, targetResolution, targetExtent, triangulation, sources, gutter, renderEdges, interpolate) {
+  var context = (0, _dom.createCanvasContext2D)(Math.round(pixelRatio * width), Math.round(pixelRatio * height), canvasPool);
+  if (!interpolate) {
+    context.imageSmoothingEnabled = false;
+  }
+  if (sources.length === 0) {
+    return context.canvas;
+  }
+  context.scale(pixelRatio, pixelRatio);
+  function pixelRound(value) {
+    return Math.round(value * pixelRatio) / pixelRatio;
+  }
+  context.globalCompositeOperation = 'lighter';
+  var sourceDataExtent = (0, _extent.createEmpty)();
+  sources.forEach(function (src, i, arr) {
+    (0, _extent.extend)(sourceDataExtent, src.extent);
+  });
+  var canvasWidthInUnits = (0, _extent.getWidth)(sourceDataExtent);
+  var canvasHeightInUnits = (0, _extent.getHeight)(sourceDataExtent);
+  var stitchContext = (0, _dom.createCanvasContext2D)(Math.round(pixelRatio * canvasWidthInUnits / sourceResolution), Math.round(pixelRatio * canvasHeightInUnits / sourceResolution), canvasPool);
+  if (!interpolate) {
+    stitchContext.imageSmoothingEnabled = false;
+  }
+  var stitchScale = pixelRatio / sourceResolution;
+  sources.forEach(function (src, i, arr) {
+    var xPos = src.extent[0] - sourceDataExtent[0];
+    var yPos = -(src.extent[3] - sourceDataExtent[3]);
+    var srcWidth = (0, _extent.getWidth)(src.extent);
+    var srcHeight = (0, _extent.getHeight)(src.extent);
+
+    // This test should never fail -- but it does. Need to find a fix the upstream condition
+    if (src.image.width > 0 && src.image.height > 0) {
+      stitchContext.drawImage(src.image, gutter, gutter, src.image.width - 2 * gutter, src.image.height - 2 * gutter, xPos * stitchScale, yPos * stitchScale, srcWidth * stitchScale, srcHeight * stitchScale);
+    }
+  });
+  var targetTopLeft = (0, _extent.getTopLeft)(targetExtent);
+  triangulation.getTriangles().forEach(function (triangle, i, arr) {
+    /* Calculate affine transform (src -> dst)
+     * Resulting matrix can be used to transform coordinate
+     * from `sourceProjection` to destination pixels.
+     *
+     * To optimize number of context calls and increase numerical stability,
+     * we also do the following operations:
+     * trans(-topLeftExtentCorner), scale(1 / targetResolution), scale(1, -1)
+     * here before solving the linear system so [ui, vi] are pixel coordinates.
+     *
+     * Src points: xi, yi
+     * Dst points: ui, vi
+     * Affine coefficients: aij
+     *
+     * | x0 y0 1  0  0 0 |   |a00|   |u0|
+     * | x1 y1 1  0  0 0 |   |a01|   |u1|
+     * | x2 y2 1  0  0 0 | x |a02| = |u2|
+     * |  0  0 0 x0 y0 1 |   |a10|   |v0|
+     * |  0  0 0 x1 y1 1 |   |a11|   |v1|
+     * |  0  0 0 x2 y2 1 |   |a12|   |v2|
+     */
+    var source = triangle.source;
+    var target = triangle.target;
+    var x0 = source[0][0],
+      y0 = source[0][1];
+    var x1 = source[1][0],
+      y1 = source[1][1];
+    var x2 = source[2][0],
+      y2 = source[2][1];
+    // Make sure that everything is on pixel boundaries
+    var u0 = pixelRound((target[0][0] - targetTopLeft[0]) / targetResolution);
+    var v0 = pixelRound(-(target[0][1] - targetTopLeft[1]) / targetResolution);
+    var u1 = pixelRound((target[1][0] - targetTopLeft[0]) / targetResolution);
+    var v1 = pixelRound(-(target[1][1] - targetTopLeft[1]) / targetResolution);
+    var u2 = pixelRound((target[2][0] - targetTopLeft[0]) / targetResolution);
+    var v2 = pixelRound(-(target[2][1] - targetTopLeft[1]) / targetResolution);
+
+    // Shift all the source points to improve numerical stability
+    // of all the subsequent calculations. The [x0, y0] is used here.
+    // This is also used to simplify the linear system.
+    var sourceNumericalShiftX = x0;
+    var sourceNumericalShiftY = y0;
+    x0 = 0;
+    y0 = 0;
+    x1 -= sourceNumericalShiftX;
+    y1 -= sourceNumericalShiftY;
+    x2 -= sourceNumericalShiftX;
+    y2 -= sourceNumericalShiftY;
+    var augmentedMatrix = [[x1, y1, 0, 0, u1 - u0], [x2, y2, 0, 0, u2 - u0], [0, 0, x1, y1, v1 - v0], [0, 0, x2, y2, v2 - v0]];
+    var affineCoefs = (0, _math.solveLinearSystem)(augmentedMatrix);
+    if (!affineCoefs) {
+      return;
+    }
+    context.save();
+    context.beginPath();
+    if (isBrokenDiagonalRendering() || !interpolate) {
+      // Make sure that all lines are horizontal or vertical
+      context.moveTo(u1, v1);
+      // This is the diagonal line. Do it in 4 steps
+      var steps = 4;
+      var ud = u0 - u1;
+      var vd = v0 - v1;
+      for (var step = 0; step < steps; step++) {
+        // Go horizontally
+        context.lineTo(u1 + pixelRound((step + 1) * ud / steps), v1 + pixelRound(step * vd / (steps - 1)));
+        // Go vertically
+        if (step != steps - 1) {
+          context.lineTo(u1 + pixelRound((step + 1) * ud / steps), v1 + pixelRound((step + 1) * vd / (steps - 1)));
+        }
+      }
+      // We are almost at u0r, v0r
+      context.lineTo(u2, v2);
+    } else {
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
+      context.lineTo(u2, v2);
+    }
+    context.clip();
+    context.transform(affineCoefs[0], affineCoefs[2], affineCoefs[1], affineCoefs[3], u0, v0);
+    context.translate(sourceDataExtent[0] - sourceNumericalShiftX, sourceDataExtent[3] - sourceNumericalShiftY);
+    context.scale(sourceResolution / pixelRatio, -sourceResolution / pixelRatio);
+    context.drawImage(stitchContext.canvas, 0, 0);
+    context.restore();
+  });
+  (0, _dom.releaseCanvas)(stitchContext);
+  canvasPool.push(stitchContext.canvas);
+  if (renderEdges) {
+    context.save();
+    context.globalCompositeOperation = 'source-over';
+    context.strokeStyle = 'black';
+    context.lineWidth = 1;
+    triangulation.getTriangles().forEach(function (triangle, i, arr) {
+      var target = triangle.target;
+      var u0 = (target[0][0] - targetTopLeft[0]) / targetResolution;
+      var v0 = -(target[0][1] - targetTopLeft[1]) / targetResolution;
+      var u1 = (target[1][0] - targetTopLeft[0]) / targetResolution;
+      var v1 = -(target[1][1] - targetTopLeft[1]) / targetResolution;
+      var u2 = (target[2][0] - targetTopLeft[0]) / targetResolution;
+      var v2 = -(target[2][1] - targetTopLeft[1]) / targetResolution;
+      context.beginPath();
+      context.moveTo(u1, v1);
+      context.lineTo(u0, v0);
+      context.lineTo(u2, v2);
+      context.closePath();
+      context.stroke();
+    });
+    context.restore();
+  }
+  return context.canvas;
+}
+},{"./extent.js":"node_modules/ol/extent.js","./dom.js":"node_modules/ol/dom.js","./proj.js":"node_modules/ol/proj.js","./math.js":"node_modules/ol/math.js"}],"node_modules/ol/reproj/Tile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _common = require("./common.js");
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _Tile2 = _interopRequireDefault(require("../Tile.js"));
+var _TileState = _interopRequireDefault(require("../TileState.js"));
+var _Triangulation = _interopRequireDefault(require("./Triangulation.js"));
+var _reproj = require("../reproj.js");
+var _math = require("../math.js");
+var _extent = require("../extent.js");
+var _events = require("../events.js");
+var _dom = require("../dom.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/reproj/Tile
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {function(number, number, number, number) : (import("../ImageTile.js").default)} FunctionType
+ */
+/**
+ * @classdesc
+ * Class encapsulating single reprojected tile.
+ * See {@link module:ol/source/TileImage~TileImage}.
+ *
+ */
+var ReprojTile = /*#__PURE__*/function (_Tile) {
+  _inherits(ReprojTile, _Tile);
+  var _super = _createSuper(ReprojTile);
+  /**
+   * @param {import("../proj/Projection.js").default} sourceProj Source projection.
+   * @param {import("../tilegrid/TileGrid.js").default} sourceTileGrid Source tile grid.
+   * @param {import("../proj/Projection.js").default} targetProj Target projection.
+   * @param {import("../tilegrid/TileGrid.js").default} targetTileGrid Target tile grid.
+   * @param {import("../tilecoord.js").TileCoord} tileCoord Coordinate of the tile.
+   * @param {import("../tilecoord.js").TileCoord} wrappedTileCoord Coordinate of the tile wrapped in X.
+   * @param {number} pixelRatio Pixel ratio.
+   * @param {number} gutter Gutter of the source tiles.
+   * @param {FunctionType} getTileFunction
+   *     Function returning source tiles (z, x, y, pixelRatio).
+   * @param {number} [errorThreshold] Acceptable reprojection error (in px).
+   * @param {boolean} [renderEdges] Render reprojection edges.
+   * @param {boolean} [interpolate] Use linear interpolation when resampling.
+   */
+  function ReprojTile(sourceProj, sourceTileGrid, targetProj, targetTileGrid, tileCoord, wrappedTileCoord, pixelRatio, gutter, getTileFunction, errorThreshold, renderEdges, interpolate) {
+    var _this;
+    _classCallCheck(this, ReprojTile);
+    _this = _super.call(this, tileCoord, _TileState.default.IDLE, {
+      interpolate: !!interpolate
+    });
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.renderEdges_ = renderEdges !== undefined ? renderEdges : false;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.pixelRatio_ = pixelRatio;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.gutter_ = gutter;
+
+    /**
+     * @private
+     * @type {HTMLCanvasElement}
+     */
+    _this.canvas_ = null;
+
+    /**
+     * @private
+     * @type {import("../tilegrid/TileGrid.js").default}
+     */
+    _this.sourceTileGrid_ = sourceTileGrid;
+
+    /**
+     * @private
+     * @type {import("../tilegrid/TileGrid.js").default}
+     */
+    _this.targetTileGrid_ = targetTileGrid;
+
+    /**
+     * @private
+     * @type {import("../tilecoord.js").TileCoord}
+     */
+    _this.wrappedTileCoord_ = wrappedTileCoord ? wrappedTileCoord : tileCoord;
+
+    /**
+     * @private
+     * @type {!Array<import("../ImageTile.js").default>}
+     */
+    _this.sourceTiles_ = [];
+
+    /**
+     * @private
+     * @type {?Array<import("../events.js").EventsKey>}
+     */
+    _this.sourcesListenerKeys_ = null;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.sourceZ_ = 0;
+    var targetExtent = targetTileGrid.getTileCoordExtent(_this.wrappedTileCoord_);
+    var maxTargetExtent = _this.targetTileGrid_.getExtent();
+    var maxSourceExtent = _this.sourceTileGrid_.getExtent();
+    var limitedTargetExtent = maxTargetExtent ? (0, _extent.getIntersection)(targetExtent, maxTargetExtent) : targetExtent;
+    if ((0, _extent.getArea)(limitedTargetExtent) === 0) {
+      // Tile is completely outside range -> EMPTY
+      // TODO: is it actually correct that the source even creates the tile ?
+      _this.state = _TileState.default.EMPTY;
+      return _possibleConstructorReturn(_this);
+    }
+    var sourceProjExtent = sourceProj.getExtent();
+    if (sourceProjExtent) {
+      if (!maxSourceExtent) {
+        maxSourceExtent = sourceProjExtent;
+      } else {
+        maxSourceExtent = (0, _extent.getIntersection)(maxSourceExtent, sourceProjExtent);
+      }
+    }
+    var targetResolution = targetTileGrid.getResolution(_this.wrappedTileCoord_[0]);
+    var sourceResolution = (0, _reproj.calculateSourceExtentResolution)(sourceProj, targetProj, limitedTargetExtent, targetResolution);
+    if (!isFinite(sourceResolution) || sourceResolution <= 0) {
+      // invalid sourceResolution -> EMPTY
+      // probably edges of the projections when no extent is defined
+      _this.state = _TileState.default.EMPTY;
+      return _possibleConstructorReturn(_this);
+    }
+    var errorThresholdInPixels = errorThreshold !== undefined ? errorThreshold : _common.ERROR_THRESHOLD;
+
+    /**
+     * @private
+     * @type {!import("./Triangulation.js").default}
+     */
+    _this.triangulation_ = new _Triangulation.default(sourceProj, targetProj, limitedTargetExtent, maxSourceExtent, sourceResolution * errorThresholdInPixels, targetResolution);
+    if (_this.triangulation_.getTriangles().length === 0) {
+      // no valid triangles -> EMPTY
+      _this.state = _TileState.default.EMPTY;
+      return _possibleConstructorReturn(_this);
+    }
+    _this.sourceZ_ = sourceTileGrid.getZForResolution(sourceResolution);
+    var sourceExtent = _this.triangulation_.calculateSourceExtent();
+    if (maxSourceExtent) {
+      if (sourceProj.canWrapX()) {
+        sourceExtent[1] = (0, _math.clamp)(sourceExtent[1], maxSourceExtent[1], maxSourceExtent[3]);
+        sourceExtent[3] = (0, _math.clamp)(sourceExtent[3], maxSourceExtent[1], maxSourceExtent[3]);
+      } else {
+        sourceExtent = (0, _extent.getIntersection)(sourceExtent, maxSourceExtent);
+      }
+    }
+    if (!(0, _extent.getArea)(sourceExtent)) {
+      _this.state = _TileState.default.EMPTY;
+    } else {
+      var sourceRange = sourceTileGrid.getTileRangeForExtentAndZ(sourceExtent, _this.sourceZ_);
+      for (var srcX = sourceRange.minX; srcX <= sourceRange.maxX; srcX++) {
+        for (var srcY = sourceRange.minY; srcY <= sourceRange.maxY; srcY++) {
+          var tile = getTileFunction(_this.sourceZ_, srcX, srcY, pixelRatio);
+          if (tile) {
+            _this.sourceTiles_.push(tile);
+          }
+        }
+      }
+      if (_this.sourceTiles_.length === 0) {
+        _this.state = _TileState.default.EMPTY;
+      }
+    }
+    return _this;
+  }
+
+  /**
+   * Get the HTML Canvas element for this tile.
+   * @return {HTMLCanvasElement} Canvas.
+   */
+  _createClass(ReprojTile, [{
+    key: "getImage",
+    value: function getImage() {
+      return this.canvas_;
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "reproject_",
+    value: function reproject_() {
+      var _this2 = this;
+      var sources = [];
+      this.sourceTiles_.forEach(function (tile) {
+        if (tile && tile.getState() == _TileState.default.LOADED) {
+          sources.push({
+            extent: _this2.sourceTileGrid_.getTileCoordExtent(tile.tileCoord),
+            image: tile.getImage()
+          });
+        }
+      });
+      this.sourceTiles_.length = 0;
+      if (sources.length === 0) {
+        this.state = _TileState.default.ERROR;
+      } else {
+        var z = this.wrappedTileCoord_[0];
+        var size = this.targetTileGrid_.getTileSize(z);
+        var width = typeof size === 'number' ? size : size[0];
+        var height = typeof size === 'number' ? size : size[1];
+        var targetResolution = this.targetTileGrid_.getResolution(z);
+        var sourceResolution = this.sourceTileGrid_.getResolution(this.sourceZ_);
+        var targetExtent = this.targetTileGrid_.getTileCoordExtent(this.wrappedTileCoord_);
+        this.canvas_ = (0, _reproj.render)(width, height, this.pixelRatio_, sourceResolution, this.sourceTileGrid_.getExtent(), targetResolution, targetExtent, this.triangulation_, sources, this.gutter_, this.renderEdges_, this.interpolate);
+        this.state = _TileState.default.LOADED;
+      }
+      this.changed();
+    }
+
+    /**
+     * Load not yet loaded URI.
+     */
+  }, {
+    key: "load",
+    value: function load() {
+      var _this3 = this;
+      if (this.state == _TileState.default.IDLE) {
+        this.state = _TileState.default.LOADING;
+        this.changed();
+        var leftToLoad = 0;
+        this.sourcesListenerKeys_ = [];
+        this.sourceTiles_.forEach(function (tile) {
+          var state = tile.getState();
+          if (state == _TileState.default.IDLE || state == _TileState.default.LOADING) {
+            leftToLoad++;
+            var sourceListenKey = (0, _events.listen)(tile, _EventType.default.CHANGE, function (e) {
+              var state = tile.getState();
+              if (state == _TileState.default.LOADED || state == _TileState.default.ERROR || state == _TileState.default.EMPTY) {
+                (0, _events.unlistenByKey)(sourceListenKey);
+                leftToLoad--;
+                if (leftToLoad === 0) {
+                  this.unlistenSources_();
+                  this.reproject_();
+                }
+              }
+            }, _this3);
+            _this3.sourcesListenerKeys_.push(sourceListenKey);
+          }
+        });
+        if (leftToLoad === 0) {
+          setTimeout(this.reproject_.bind(this), 0);
+        } else {
+          this.sourceTiles_.forEach(function (tile, i, arr) {
+            var state = tile.getState();
+            if (state == _TileState.default.IDLE) {
+              tile.load();
+            }
+          });
+        }
+      }
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "unlistenSources_",
+    value: function unlistenSources_() {
+      this.sourcesListenerKeys_.forEach(_events.unlistenByKey);
+      this.sourcesListenerKeys_ = null;
+    }
+
+    /**
+     * Remove from the cache due to expiry
+     */
+  }, {
+    key: "release",
+    value: function release() {
+      if (this.canvas_) {
+        (0, _dom.releaseCanvas)(this.canvas_.getContext('2d'));
+        _reproj.canvasPool.push(this.canvas_);
+        this.canvas_ = null;
+      }
+      _get(_getPrototypeOf(ReprojTile.prototype), "release", this).call(this);
+    }
+  }]);
+  return ReprojTile;
+}(_Tile2.default);
+var _default = ReprojTile;
+exports.default = _default;
+},{"./common.js":"node_modules/ol/reproj/common.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../Tile.js":"node_modules/ol/Tile.js","../TileState.js":"node_modules/ol/TileState.js","./Triangulation.js":"node_modules/ol/reproj/Triangulation.js","../reproj.js":"node_modules/ol/reproj.js","../math.js":"node_modules/ol/math.js","../extent.js":"node_modules/ol/extent.js","../events.js":"node_modules/ol/events.js","../dom.js":"node_modules/ol/dom.js"}],"node_modules/ol/TileRange.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createOrUpdate = createOrUpdate;
+exports.default = void 0;
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+/**
+ * @module ol/TileRange
+ */
+/**
+ * A representation of a contiguous block of tiles.  A tile range is specified
+ * by its min/max tile coordinates and is inclusive of coordinates.
+ */
+var TileRange = /*#__PURE__*/function () {
+  /**
+   * @param {number} minX Minimum X.
+   * @param {number} maxX Maximum X.
+   * @param {number} minY Minimum Y.
+   * @param {number} maxY Maximum Y.
+   */
+  function TileRange(minX, maxX, minY, maxY) {
+    _classCallCheck(this, TileRange);
+    /**
+     * @type {number}
+     */
+    this.minX = minX;
+
+    /**
+     * @type {number}
+     */
+    this.maxX = maxX;
+
+    /**
+     * @type {number}
+     */
+    this.minY = minY;
+
+    /**
+     * @type {number}
+     */
+    this.maxY = maxY;
+  }
+
+  /**
+   * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+   * @return {boolean} Contains tile coordinate.
+   */
+  _createClass(TileRange, [{
+    key: "contains",
+    value: function contains(tileCoord) {
+      return this.containsXY(tileCoord[1], tileCoord[2]);
+    }
+
+    /**
+     * @param {TileRange} tileRange Tile range.
+     * @return {boolean} Contains.
+     */
+  }, {
+    key: "containsTileRange",
+    value: function containsTileRange(tileRange) {
+      return this.minX <= tileRange.minX && tileRange.maxX <= this.maxX && this.minY <= tileRange.minY && tileRange.maxY <= this.maxY;
+    }
+
+    /**
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @return {boolean} Contains coordinate.
+     */
+  }, {
+    key: "containsXY",
+    value: function containsXY(x, y) {
+      return this.minX <= x && x <= this.maxX && this.minY <= y && y <= this.maxY;
+    }
+
+    /**
+     * @param {TileRange} tileRange Tile range.
+     * @return {boolean} Equals.
+     */
+  }, {
+    key: "equals",
+    value: function equals(tileRange) {
+      return this.minX == tileRange.minX && this.minY == tileRange.minY && this.maxX == tileRange.maxX && this.maxY == tileRange.maxY;
+    }
+
+    /**
+     * @param {TileRange} tileRange Tile range.
+     */
+  }, {
+    key: "extend",
+    value: function extend(tileRange) {
+      if (tileRange.minX < this.minX) {
+        this.minX = tileRange.minX;
+      }
+      if (tileRange.maxX > this.maxX) {
+        this.maxX = tileRange.maxX;
+      }
+      if (tileRange.minY < this.minY) {
+        this.minY = tileRange.minY;
+      }
+      if (tileRange.maxY > this.maxY) {
+        this.maxY = tileRange.maxY;
+      }
+    }
+
+    /**
+     * @return {number} Height.
+     */
+  }, {
+    key: "getHeight",
+    value: function getHeight() {
+      return this.maxY - this.minY + 1;
+    }
+
+    /**
+     * @return {import("./size.js").Size} Size.
+     */
+  }, {
+    key: "getSize",
+    value: function getSize() {
+      return [this.getWidth(), this.getHeight()];
+    }
+
+    /**
+     * @return {number} Width.
+     */
+  }, {
+    key: "getWidth",
+    value: function getWidth() {
+      return this.maxX - this.minX + 1;
+    }
+
+    /**
+     * @param {TileRange} tileRange Tile range.
+     * @return {boolean} Intersects.
+     */
+  }, {
+    key: "intersects",
+    value: function intersects(tileRange) {
+      return this.minX <= tileRange.maxX && this.maxX >= tileRange.minX && this.minY <= tileRange.maxY && this.maxY >= tileRange.minY;
+    }
+  }]);
+  return TileRange;
+}();
+/**
+ * @param {number} minX Minimum X.
+ * @param {number} maxX Maximum X.
+ * @param {number} minY Minimum Y.
+ * @param {number} maxY Maximum Y.
+ * @param {TileRange} [tileRange] TileRange.
+ * @return {TileRange} Tile range.
+ */
+function createOrUpdate(minX, maxX, minY, maxY, tileRange) {
+  if (tileRange !== undefined) {
+    tileRange.minX = minX;
+    tileRange.maxX = maxX;
+    tileRange.minY = minY;
+    tileRange.maxY = maxY;
+    return tileRange;
+  }
+  return new TileRange(minX, maxX, minY, maxY);
+}
+var _default = TileRange;
+exports.default = _default;
+},{}],"node_modules/ol/renderer/canvas/TileLayer.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Layer = _interopRequireDefault(require("./Layer.js"));
+var _ImageTile = _interopRequireDefault(require("../../ImageTile.js"));
+var _Tile = _interopRequireDefault(require("../../reproj/Tile.js"));
+var _TileRange = _interopRequireDefault(require("../../TileRange.js"));
+var _TileState = _interopRequireDefault(require("../../TileState.js"));
+var _transform = require("../../transform.js");
+var _array = require("../../array.js");
+var _extent = require("../../extent.js");
+var _proj = require("../../proj.js");
+var _util = require("../../util.js");
+var _size = require("../../size.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/renderer/canvas/TileLayer
+                                                                                                                                                                                                                      */
+/**
+ * @classdesc
+ * Canvas renderer for tile layers.
+ * @api
+ * @template {import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default} [LayerType=import("../../layer/Tile.js").default<import("../../source/Tile.js").default>|import("../../layer/VectorTile.js").default]
+ * @extends {CanvasLayerRenderer<LayerType>}
+ */
+var CanvasTileLayerRenderer = /*#__PURE__*/function (_CanvasLayerRenderer) {
+  _inherits(CanvasTileLayerRenderer, _CanvasLayerRenderer);
+  var _super = _createSuper(CanvasTileLayerRenderer);
+  /**
+   * @param {LayerType} tileLayer Tile layer.
+   */
+  function CanvasTileLayerRenderer(tileLayer) {
+    var _this;
+    _classCallCheck(this, CanvasTileLayerRenderer);
+    _this = _super.call(this, tileLayer);
+
+    /**
+     * Rendered extent has changed since the previous `renderFrame()` call
+     * @type {boolean}
+     */
+    _this.extentChanged = true;
+
+    /**
+     * @private
+     * @type {?import("../../extent.js").Extent}
+     */
+    _this.renderedExtent_ = null;
+
+    /**
+     * @protected
+     * @type {number}
+     */
+    _this.renderedPixelRatio;
+
+    /**
+     * @protected
+     * @type {import("../../proj/Projection.js").default}
+     */
+    _this.renderedProjection = null;
+
+    /**
+     * @protected
+     * @type {number}
+     */
+    _this.renderedRevision;
+
+    /**
+     * @protected
+     * @type {!Array<import("../../Tile.js").default>}
+     */
+    _this.renderedTiles = [];
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.newTiles_ = false;
+
+    /**
+     * @protected
+     * @type {import("../../extent.js").Extent}
+     */
+    _this.tmpExtent = (0, _extent.createEmpty)();
+
+    /**
+     * @private
+     * @type {import("../../TileRange.js").default}
+     */
+    _this.tmpTileRange_ = new _TileRange.default(0, 0, 0, 0);
+    return _this;
+  }
+
+  /**
+   * @protected
+   * @param {import("../../Tile.js").default} tile Tile.
+   * @return {boolean} Tile is drawable.
+   */
+  _createClass(CanvasTileLayerRenderer, [{
+    key: "isDrawableTile",
+    value: function isDrawableTile(tile) {
+      var tileLayer = this.getLayer();
+      var tileState = tile.getState();
+      var useInterimTilesOnError = tileLayer.getUseInterimTilesOnError();
+      return tileState == _TileState.default.LOADED || tileState == _TileState.default.EMPTY || tileState == _TileState.default.ERROR && !useInterimTilesOnError;
+    }
+
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @return {!import("../../Tile.js").default} Tile.
+     */
+  }, {
+    key: "getTile",
+    value: function getTile(z, x, y, frameState) {
+      var pixelRatio = frameState.pixelRatio;
+      var projection = frameState.viewState.projection;
+      var tileLayer = this.getLayer();
+      var tileSource = tileLayer.getSource();
+      var tile = tileSource.getTile(z, x, y, pixelRatio, projection);
+      if (tile.getState() == _TileState.default.ERROR) {
+        if (tileLayer.getUseInterimTilesOnError() && tileLayer.getPreload() > 0) {
+          // Preloaded tiles for lower resolutions might have finished loading.
+          this.newTiles_ = true;
+        }
+      }
+      if (!this.isDrawableTile(tile)) {
+        tile = tile.getInterimTile();
+      }
+      return tile;
+    }
+
+    /**
+     * @param {import("../../pixel.js").Pixel} pixel Pixel.
+     * @return {Uint8ClampedArray} Data at the pixel location.
+     */
+  }, {
+    key: "getData",
+    value: function getData(pixel) {
+      var frameState = this.frameState;
+      if (!frameState) {
+        return null;
+      }
+      var layer = this.getLayer();
+      var coordinate = (0, _transform.apply)(frameState.pixelToCoordinateTransform, pixel.slice());
+      var layerExtent = layer.getExtent();
+      if (layerExtent) {
+        if (!(0, _extent.containsCoordinate)(layerExtent, coordinate)) {
+          return null;
+        }
+      }
+      var pixelRatio = frameState.pixelRatio;
+      var projection = frameState.viewState.projection;
+      var viewState = frameState.viewState;
+      var source = layer.getRenderSource();
+      var tileGrid = source.getTileGridForProjection(viewState.projection);
+      var tilePixelRatio = source.getTilePixelRatio(frameState.pixelRatio);
+      for (var z = tileGrid.getZForResolution(viewState.resolution); z >= tileGrid.getMinZoom(); --z) {
+        var tileCoord = tileGrid.getTileCoordForCoordAndZ(coordinate, z);
+        var tile = source.getTile(z, tileCoord[1], tileCoord[2], pixelRatio, projection);
+        if (!(tile instanceof _ImageTile.default || tile instanceof _Tile.default) || tile instanceof _Tile.default && tile.getState() === _TileState.default.EMPTY) {
+          return null;
+        }
+        if (tile.getState() !== _TileState.default.LOADED) {
+          continue;
+        }
+        var tileOrigin = tileGrid.getOrigin(z);
+        var tileSize = (0, _size.toSize)(tileGrid.getTileSize(z));
+        var tileResolution = tileGrid.getResolution(z);
+        var col = Math.floor(tilePixelRatio * ((coordinate[0] - tileOrigin[0]) / tileResolution - tileCoord[1] * tileSize[0]));
+        var row = Math.floor(tilePixelRatio * ((tileOrigin[1] - coordinate[1]) / tileResolution - tileCoord[2] * tileSize[1]));
+        var gutter = Math.round(tilePixelRatio * source.getGutterForProjection(viewState.projection));
+        return this.getImageData(tile.getImage(), col + gutter, row + gutter);
+      }
+      return null;
+    }
+
+    /**
+     * @param {Object<number, Object<string, import("../../Tile.js").default>>} tiles Lookup of loaded tiles by zoom level.
+     * @param {number} zoom Zoom level.
+     * @param {import("../../Tile.js").default} tile Tile.
+     * @return {boolean|void} If `false`, the tile will not be considered loaded.
+     */
+  }, {
+    key: "loadedTileCallback",
+    value: function loadedTileCallback(tiles, zoom, tile) {
+      if (this.isDrawableTile(tile)) {
+        return _get(_getPrototypeOf(CanvasTileLayerRenderer.prototype), "loadedTileCallback", this).call(this, tiles, zoom, tile);
+      }
+      return false;
+    }
+
+    /**
+     * Determine whether render should be called.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @return {boolean} Layer is ready to be rendered.
+     */
+  }, {
+    key: "prepareFrame",
+    value: function prepareFrame(frameState) {
+      return !!this.getLayer().getSource();
+    }
+
+    /**
+     * Render the layer.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {HTMLElement} target Target that may be used to render content to.
+     * @return {HTMLElement} The rendered element.
+     */
+  }, {
+    key: "renderFrame",
+    value: function renderFrame(frameState, target) {
+      var layerState = frameState.layerStatesArray[frameState.layerIndex];
+      var viewState = frameState.viewState;
+      var projection = viewState.projection;
+      var viewResolution = viewState.resolution;
+      var viewCenter = viewState.center;
+      var rotation = viewState.rotation;
+      var pixelRatio = frameState.pixelRatio;
+      var tileLayer = this.getLayer();
+      var tileSource = tileLayer.getSource();
+      var sourceRevision = tileSource.getRevision();
+      var tileGrid = tileSource.getTileGridForProjection(projection);
+      var z = tileGrid.getZForResolution(viewResolution, tileSource.zDirection);
+      var tileResolution = tileGrid.getResolution(z);
+      var extent = frameState.extent;
+      var resolution = frameState.viewState.resolution;
+      var tilePixelRatio = tileSource.getTilePixelRatio(pixelRatio);
+      // desired dimensions of the canvas in pixels
+      var width = Math.round((0, _extent.getWidth)(extent) / resolution * pixelRatio);
+      var height = Math.round((0, _extent.getHeight)(extent) / resolution * pixelRatio);
+      var layerExtent = layerState.extent && (0, _proj.fromUserExtent)(layerState.extent, projection);
+      if (layerExtent) {
+        extent = (0, _extent.getIntersection)(extent, (0, _proj.fromUserExtent)(layerState.extent, projection));
+      }
+      var dx = tileResolution * width / 2 / tilePixelRatio;
+      var dy = tileResolution * height / 2 / tilePixelRatio;
+      var canvasExtent = [viewCenter[0] - dx, viewCenter[1] - dy, viewCenter[0] + dx, viewCenter[1] + dy];
+      var tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z);
+
+      /**
+       * @type {Object<number, Object<string, import("../../Tile.js").default>>}
+       */
+      var tilesToDrawByZ = {};
+      tilesToDrawByZ[z] = {};
+      var findLoadedTiles = this.createLoadedTileFinder(tileSource, projection, tilesToDrawByZ);
+      var tmpExtent = this.tmpExtent;
+      var tmpTileRange = this.tmpTileRange_;
+      this.newTiles_ = false;
+      var viewport = rotation ? (0, _extent.getRotatedViewport)(viewState.center, resolution, rotation, frameState.size) : undefined;
+      for (var x = tileRange.minX; x <= tileRange.maxX; ++x) {
+        for (var y = tileRange.minY; y <= tileRange.maxY; ++y) {
+          if (rotation && !tileGrid.tileCoordIntersectsViewport([z, x, y], viewport)) {
+            continue;
+          }
+          var tile = this.getTile(z, x, y, frameState);
+          if (this.isDrawableTile(tile)) {
+            var uid = (0, _util.getUid)(this);
+            if (tile.getState() == _TileState.default.LOADED) {
+              tilesToDrawByZ[z][tile.tileCoord.toString()] = tile;
+              var inTransition = tile.inTransition(uid);
+              if (inTransition && layerState.opacity !== 1) {
+                // Skipping transition when layer is not fully opaque avoids visual artifacts.
+                tile.endTransition(uid);
+                inTransition = false;
+              }
+              if (!this.newTiles_ && (inTransition || !this.renderedTiles.includes(tile))) {
+                this.newTiles_ = true;
+              }
+            }
+            if (tile.getAlpha(uid, frameState.time) === 1) {
+              // don't look for alt tiles if alpha is 1
+              continue;
+            }
+          }
+          var childTileRange = tileGrid.getTileCoordChildTileRange(tile.tileCoord, tmpTileRange, tmpExtent);
+          var covered = false;
+          if (childTileRange) {
+            covered = findLoadedTiles(z + 1, childTileRange);
+          }
+          if (!covered) {
+            tileGrid.forEachTileCoordParentTileRange(tile.tileCoord, findLoadedTiles, tmpTileRange, tmpExtent);
+          }
+        }
+      }
+      var canvasScale = tileResolution / viewResolution * pixelRatio / tilePixelRatio;
+
+      // set forward and inverse pixel transforms
+      (0, _transform.compose)(this.pixelTransform, frameState.size[0] / 2, frameState.size[1] / 2, 1 / pixelRatio, 1 / pixelRatio, rotation, -width / 2, -height / 2);
+      var canvasTransform = (0, _transform.toString)(this.pixelTransform);
+      this.useContainer(target, canvasTransform, this.getBackground(frameState));
+      var context = this.context;
+      var canvas = context.canvas;
+      (0, _transform.makeInverse)(this.inversePixelTransform, this.pixelTransform);
+
+      // set scale transform for calculating tile positions on the canvas
+      (0, _transform.compose)(this.tempTransform, width / 2, height / 2, canvasScale, canvasScale, 0, -width / 2, -height / 2);
+      if (canvas.width != width || canvas.height != height) {
+        canvas.width = width;
+        canvas.height = height;
+      } else if (!this.containerReused) {
+        context.clearRect(0, 0, width, height);
+      }
+      if (layerExtent) {
+        this.clipUnrotated(context, frameState, layerExtent);
+      }
+      if (!tileSource.getInterpolate()) {
+        context.imageSmoothingEnabled = false;
+      }
+      this.preRender(context, frameState);
+      this.renderedTiles.length = 0;
+      /** @type {Array<number>} */
+      var zs = Object.keys(tilesToDrawByZ).map(Number);
+      zs.sort(_array.ascending);
+      var clips, clipZs, currentClip;
+      if (layerState.opacity === 1 && (!this.containerReused || tileSource.getOpaque(frameState.viewState.projection))) {
+        zs = zs.reverse();
+      } else {
+        clips = [];
+        clipZs = [];
+      }
+      for (var i = zs.length - 1; i >= 0; --i) {
+        var currentZ = zs[i];
+        var currentTilePixelSize = tileSource.getTilePixelSize(currentZ, pixelRatio, projection);
+        var currentResolution = tileGrid.getResolution(currentZ);
+        var currentScale = currentResolution / tileResolution;
+        var _dx = currentTilePixelSize[0] * currentScale * canvasScale;
+        var _dy = currentTilePixelSize[1] * currentScale * canvasScale;
+        var originTileCoord = tileGrid.getTileCoordForCoordAndZ((0, _extent.getTopLeft)(canvasExtent), currentZ);
+        var originTileExtent = tileGrid.getTileCoordExtent(originTileCoord);
+        var origin = (0, _transform.apply)(this.tempTransform, [tilePixelRatio * (originTileExtent[0] - canvasExtent[0]) / tileResolution, tilePixelRatio * (canvasExtent[3] - originTileExtent[3]) / tileResolution]);
+        var tileGutter = tilePixelRatio * tileSource.getGutterForProjection(projection);
+        var tilesToDraw = tilesToDrawByZ[currentZ];
+        for (var tileCoordKey in tilesToDraw) {
+          var _tile = /** @type {import("../../ImageTile.js").default} */
+          tilesToDraw[tileCoordKey];
+          var tileCoord = _tile.tileCoord;
+
+          // Calculate integer positions and sizes so that tiles align
+          var xIndex = originTileCoord[1] - tileCoord[1];
+          var nextX = Math.round(origin[0] - (xIndex - 1) * _dx);
+          var yIndex = originTileCoord[2] - tileCoord[2];
+          var nextY = Math.round(origin[1] - (yIndex - 1) * _dy);
+          var _x = Math.round(origin[0] - xIndex * _dx);
+          var _y = Math.round(origin[1] - yIndex * _dy);
+          var w = nextX - _x;
+          var h = nextY - _y;
+          var transition = z === currentZ;
+          var _inTransition = transition && _tile.getAlpha((0, _util.getUid)(this), frameState.time) !== 1;
+          var contextSaved = false;
+          if (!_inTransition) {
+            if (clips) {
+              // Clip mask for regions in this tile that already filled by a higher z tile
+              currentClip = [_x, _y, _x + w, _y, _x + w, _y + h, _x, _y + h];
+              for (var _i = 0, ii = clips.length; _i < ii; ++_i) {
+                if (z !== currentZ && currentZ < clipZs[_i]) {
+                  var clip = clips[_i];
+                  if ((0, _extent.intersects)([_x, _y, _x + w, _y + h], [clip[0], clip[3], clip[4], clip[7]])) {
+                    if (!contextSaved) {
+                      context.save();
+                      contextSaved = true;
+                    }
+                    context.beginPath();
+                    // counter-clockwise (outer ring) for current tile
+                    context.moveTo(currentClip[0], currentClip[1]);
+                    context.lineTo(currentClip[2], currentClip[3]);
+                    context.lineTo(currentClip[4], currentClip[5]);
+                    context.lineTo(currentClip[6], currentClip[7]);
+                    // clockwise (inner ring) for higher z tile
+                    context.moveTo(clip[6], clip[7]);
+                    context.lineTo(clip[4], clip[5]);
+                    context.lineTo(clip[2], clip[3]);
+                    context.lineTo(clip[0], clip[1]);
+                    context.clip();
+                  }
+                }
+              }
+              clips.push(currentClip);
+              clipZs.push(currentZ);
+            } else {
+              context.clearRect(_x, _y, w, h);
+            }
+          }
+          this.drawTileImage(_tile, frameState, _x, _y, w, h, tileGutter, transition);
+          if (clips && !_inTransition) {
+            if (contextSaved) {
+              context.restore();
+            }
+            this.renderedTiles.unshift(_tile);
+          } else {
+            this.renderedTiles.push(_tile);
+          }
+          this.updateUsedTiles(frameState.usedTiles, tileSource, _tile);
+        }
+      }
+      this.renderedRevision = sourceRevision;
+      this.renderedResolution = tileResolution;
+      this.extentChanged = !this.renderedExtent_ || !(0, _extent.equals)(this.renderedExtent_, canvasExtent);
+      this.renderedExtent_ = canvasExtent;
+      this.renderedPixelRatio = pixelRatio;
+      this.renderedProjection = projection;
+      this.manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio, projection, extent, z, tileLayer.getPreload());
+      this.scheduleExpireCache(frameState, tileSource);
+      this.postRender(context, frameState);
+      if (layerState.extent) {
+        context.restore();
+      }
+      context.imageSmoothingEnabled = true;
+      if (canvasTransform !== canvas.style.transform) {
+        canvas.style.transform = canvasTransform;
+      }
+      return this.container;
+    }
+
+    /**
+     * @param {import("../../ImageTile.js").default} tile Tile.
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {number} x Left of the tile.
+     * @param {number} y Top of the tile.
+     * @param {number} w Width of the tile.
+     * @param {number} h Height of the tile.
+     * @param {number} gutter Tile gutter.
+     * @param {boolean} transition Apply an alpha transition.
+     */
+  }, {
+    key: "drawTileImage",
+    value: function drawTileImage(tile, frameState, x, y, w, h, gutter, transition) {
+      var image = this.getTileImage(tile);
+      if (!image) {
+        return;
+      }
+      var uid = (0, _util.getUid)(this);
+      var layerState = frameState.layerStatesArray[frameState.layerIndex];
+      var alpha = layerState.opacity * (transition ? tile.getAlpha(uid, frameState.time) : 1);
+      var alphaChanged = alpha !== this.context.globalAlpha;
+      if (alphaChanged) {
+        this.context.save();
+        this.context.globalAlpha = alpha;
+      }
+      this.context.drawImage(image, gutter, gutter, image.width - 2 * gutter, image.height - 2 * gutter, x, y, w, h);
+      if (alphaChanged) {
+        this.context.restore();
+      }
+      if (alpha !== layerState.opacity) {
+        frameState.animate = true;
+      } else if (transition) {
+        tile.endTransition(uid);
+      }
+    }
+
+    /**
+     * @return {HTMLCanvasElement} Image
+     */
+  }, {
+    key: "getImage",
+    value: function getImage() {
+      var context = this.context;
+      return context ? context.canvas : null;
+    }
+
+    /**
+     * Get the image from a tile.
+     * @param {import("../../ImageTile.js").default} tile Tile.
+     * @return {HTMLCanvasElement|HTMLImageElement|HTMLVideoElement} Image.
+     * @protected
+     */
+  }, {
+    key: "getTileImage",
+    value: function getTileImage(tile) {
+      return tile.getImage();
+    }
+
+    /**
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {import("../../source/Tile.js").default} tileSource Tile source.
+     * @protected
+     */
+  }, {
+    key: "scheduleExpireCache",
+    value: function scheduleExpireCache(frameState, tileSource) {
+      if (tileSource.canExpireCache()) {
+        /**
+         * @param {import("../../source/Tile.js").default} tileSource Tile source.
+         * @param {import("../../Map.js").default} map Map.
+         * @param {import("../../Map.js").FrameState} frameState Frame state.
+         */
+        var postRenderFunction = function (tileSource, map, frameState) {
+          var tileSourceKey = (0, _util.getUid)(tileSource);
+          if (tileSourceKey in frameState.usedTiles) {
+            tileSource.expireCache(frameState.viewState.projection, frameState.usedTiles[tileSourceKey]);
+          }
+        }.bind(null, tileSource);
+        frameState.postRenderFunctions.push( /** @type {import("../../Map.js").PostRenderFunction} */
+        postRenderFunction);
+      }
+    }
+
+    /**
+     * @param {!Object<string, !Object<string, boolean>>} usedTiles Used tiles.
+     * @param {import("../../source/Tile.js").default} tileSource Tile source.
+     * @param {import('../../Tile.js').default} tile Tile.
+     * @protected
+     */
+  }, {
+    key: "updateUsedTiles",
+    value: function updateUsedTiles(usedTiles, tileSource, tile) {
+      // FIXME should we use tilesToDrawByZ instead?
+      var tileSourceKey = (0, _util.getUid)(tileSource);
+      if (!(tileSourceKey in usedTiles)) {
+        usedTiles[tileSourceKey] = {};
+      }
+      usedTiles[tileSourceKey][tile.getKey()] = true;
+    }
+
+    /**
+     * Manage tile pyramid.
+     * This function performs a number of functions related to the tiles at the
+     * current zoom and lower zoom levels:
+     * - registers idle tiles in frameState.wantedTiles so that they are not
+     *   discarded by the tile queue
+     * - enqueues missing tiles
+     * @param {import("../../Map.js").FrameState} frameState Frame state.
+     * @param {import("../../source/Tile.js").default} tileSource Tile source.
+     * @param {import("../../tilegrid/TileGrid.js").default} tileGrid Tile grid.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../../proj/Projection.js").default} projection Projection.
+     * @param {import("../../extent.js").Extent} extent Extent.
+     * @param {number} currentZ Current Z.
+     * @param {number} preload Load low resolution tiles up to `preload` levels.
+     * @param {function(import("../../Tile.js").default):void} [tileCallback] Tile callback.
+     * @protected
+     */
+  }, {
+    key: "manageTilePyramid",
+    value: function manageTilePyramid(frameState, tileSource, tileGrid, pixelRatio, projection, extent, currentZ, preload, tileCallback) {
+      var tileSourceKey = (0, _util.getUid)(tileSource);
+      if (!(tileSourceKey in frameState.wantedTiles)) {
+        frameState.wantedTiles[tileSourceKey] = {};
+      }
+      var wantedTiles = frameState.wantedTiles[tileSourceKey];
+      var tileQueue = frameState.tileQueue;
+      var minZoom = tileGrid.getMinZoom();
+      var rotation = frameState.viewState.rotation;
+      var viewport = rotation ? (0, _extent.getRotatedViewport)(frameState.viewState.center, frameState.viewState.resolution, rotation, frameState.size) : undefined;
+      var tileCount = 0;
+      var tile, tileRange, tileResolution, x, y, z;
+      for (z = minZoom; z <= currentZ; ++z) {
+        tileRange = tileGrid.getTileRangeForExtentAndZ(extent, z, tileRange);
+        tileResolution = tileGrid.getResolution(z);
+        for (x = tileRange.minX; x <= tileRange.maxX; ++x) {
+          for (y = tileRange.minY; y <= tileRange.maxY; ++y) {
+            if (rotation && !tileGrid.tileCoordIntersectsViewport([z, x, y], viewport)) {
+              continue;
+            }
+            if (currentZ - z <= preload) {
+              ++tileCount;
+              tile = tileSource.getTile(z, x, y, pixelRatio, projection);
+              if (tile.getState() == _TileState.default.IDLE) {
+                wantedTiles[tile.getKey()] = true;
+                if (!tileQueue.isKeyQueued(tile.getKey())) {
+                  tileQueue.enqueue([tile, tileSourceKey, tileGrid.getTileCoordCenter(tile.tileCoord), tileResolution]);
+                }
+              }
+              if (tileCallback !== undefined) {
+                tileCallback(tile);
+              }
+            } else {
+              tileSource.useTile(z, x, y, projection);
+            }
+          }
+        }
+      }
+      tileSource.updateCacheSize(tileCount, projection);
+    }
+  }]);
+  return CanvasTileLayerRenderer;
+}(_Layer.default);
+var _default = CanvasTileLayerRenderer;
+exports.default = _default;
+},{"./Layer.js":"node_modules/ol/renderer/canvas/Layer.js","../../ImageTile.js":"node_modules/ol/ImageTile.js","../../reproj/Tile.js":"node_modules/ol/reproj/Tile.js","../../TileRange.js":"node_modules/ol/TileRange.js","../../TileState.js":"node_modules/ol/TileState.js","../../transform.js":"node_modules/ol/transform.js","../../array.js":"node_modules/ol/array.js","../../extent.js":"node_modules/ol/extent.js","../../proj.js":"node_modules/ol/proj.js","../../util.js":"node_modules/ol/util.js","../../size.js":"node_modules/ol/size.js"}],"node_modules/ol/layer/Tile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _BaseTile = _interopRequireDefault(require("./BaseTile.js"));
+var _TileLayer = _interopRequireDefault(require("../renderer/canvas/TileLayer.js"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/layer/Tile
+                                                                                                                                                                                                                      */
+/**
+ * @classdesc
+ * For layer sources that provide pre-rendered, tiled images in grids that are
+ * organized by zoom levels for specific resolutions.
+ * Note that any property set in the options is set as a {@link module:ol/Object~BaseObject}
+ * property on the layer object; for example, setting `title: 'My Title'` in the
+ * options means that `title` is observable, and has get/set accessors.
+ *
+ * @template {import("../source/Tile.js").default} TileSourceType
+ * @extends BaseTileLayer<TileSourceType, CanvasTileLayerRenderer>
+ * @api
+ */
+var TileLayer = /*#__PURE__*/function (_BaseTileLayer) {
+  _inherits(TileLayer, _BaseTileLayer);
+  var _super = _createSuper(TileLayer);
+  /**
+   * @param {import("./BaseTile.js").Options<TileSourceType>} [options] Tile layer options.
+   */
+  function TileLayer(options) {
+    _classCallCheck(this, TileLayer);
+    return _super.call(this, options);
+  }
+  _createClass(TileLayer, [{
+    key: "createRenderer",
+    value: function createRenderer() {
+      return new _TileLayer.default(this);
+    }
+  }]);
+  return TileLayer;
+}(_BaseTile.default);
+var _default = TileLayer;
+exports.default = _default;
+},{"./BaseTile.js":"node_modules/ol/layer/BaseTile.js","../renderer/canvas/TileLayer.js":"node_modules/ol/renderer/canvas/TileLayer.js"}],"node_modules/ol/structs/LRUCache.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _asserts = require("../asserts.js");
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); } /**
+                                                                                                                                                                                                                                                                                                                                                                                               * @module ol/structs/LRUCache
+                                                                                                                                                                                                                                                                                                                                                                                               */
+/**
+ * @typedef {Object} Entry
+ * @property {string} key_ Key.
+ * @property {Object} newer Newer.
+ * @property {Object} older Older.
+ * @property {*} value_ Value.
+ */
+/**
+ * @classdesc
+ * Implements a Least-Recently-Used cache where the keys do not conflict with
+ * Object's properties (e.g. 'hasOwnProperty' is not allowed as a key). Expiring
+ * items from the cache is the responsibility of the user.
+ *
+ * @fires import("../events/Event.js").default
+ * @template T
+ */
+var LRUCache = /*#__PURE__*/function () {
+  /**
+   * @param {number} [highWaterMark] High water mark.
+   */
+  function LRUCache(highWaterMark) {
+    _classCallCheck(this, LRUCache);
+    /**
+     * Desired max cache size after expireCache(). If set to 0, no cache entries
+     * will be pruned at all.
+     * @type {number}
+     */
+    this.highWaterMark = highWaterMark !== undefined ? highWaterMark : 2048;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    this.count_ = 0;
+
+    /**
+     * @private
+     * @type {!Object<string, Entry>}
+     */
+    this.entries_ = {};
+
+    /**
+     * @private
+     * @type {?Entry}
+     */
+    this.oldest_ = null;
+
+    /**
+     * @private
+     * @type {?Entry}
+     */
+    this.newest_ = null;
+  }
+
+  /**
+   * @return {boolean} Can expire cache.
+   */
+  _createClass(LRUCache, [{
+    key: "canExpireCache",
+    value: function canExpireCache() {
+      return this.highWaterMark > 0 && this.getCount() > this.highWaterMark;
+    }
+
+    /**
+     * Expire the cache.
+     * @param {!Object<string, boolean>} [keep] Keys to keep. To be implemented by subclasses.
+     */
+  }, {
+    key: "expireCache",
+    value: function expireCache(keep) {
+      while (this.canExpireCache()) {
+        this.pop();
+      }
+    }
+
+    /**
+     * FIXME empty description for jsdoc
+     */
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.count_ = 0;
+      this.entries_ = {};
+      this.oldest_ = null;
+      this.newest_ = null;
+    }
+
+    /**
+     * @param {string} key Key.
+     * @return {boolean} Contains key.
+     */
+  }, {
+    key: "containsKey",
+    value: function containsKey(key) {
+      return this.entries_.hasOwnProperty(key);
+    }
+
+    /**
+     * @param {function(T, string, LRUCache<T>): ?} f The function
+     *     to call for every entry from the oldest to the newer. This function takes
+     *     3 arguments (the entry value, the entry key and the LRUCache object).
+     *     The return value is ignored.
+     */
+  }, {
+    key: "forEach",
+    value: function forEach(f) {
+      var entry = this.oldest_;
+      while (entry) {
+        f(entry.value_, entry.key_, this);
+        entry = entry.newer;
+      }
+    }
+
+    /**
+     * @param {string} key Key.
+     * @param {*} [options] Options (reserved for subclasses).
+     * @return {T} Value.
+     */
+  }, {
+    key: "get",
+    value: function get(key, options) {
+      var entry = this.entries_[key];
+      (0, _asserts.assert)(entry !== undefined, 15); // Tried to get a value for a key that does not exist in the cache
+      if (entry === this.newest_) {
+        return entry.value_;
+      }
+      if (entry === this.oldest_) {
+        this.oldest_ = /** @type {Entry} */this.oldest_.newer;
+        this.oldest_.older = null;
+      } else {
+        entry.newer.older = entry.older;
+        entry.older.newer = entry.newer;
+      }
+      entry.newer = null;
+      entry.older = this.newest_;
+      this.newest_.newer = entry;
+      this.newest_ = entry;
+      return entry.value_;
+    }
+
+    /**
+     * Remove an entry from the cache.
+     * @param {string} key The entry key.
+     * @return {T} The removed entry.
+     */
+  }, {
+    key: "remove",
+    value: function remove(key) {
+      var entry = this.entries_[key];
+      (0, _asserts.assert)(entry !== undefined, 15); // Tried to get a value for a key that does not exist in the cache
+      if (entry === this.newest_) {
+        this.newest_ = /** @type {Entry} */entry.older;
+        if (this.newest_) {
+          this.newest_.newer = null;
+        }
+      } else if (entry === this.oldest_) {
+        this.oldest_ = /** @type {Entry} */entry.newer;
+        if (this.oldest_) {
+          this.oldest_.older = null;
+        }
+      } else {
+        entry.newer.older = entry.older;
+        entry.older.newer = entry.newer;
+      }
+      delete this.entries_[key];
+      --this.count_;
+      return entry.value_;
+    }
+
+    /**
+     * @return {number} Count.
+     */
+  }, {
+    key: "getCount",
+    value: function getCount() {
+      return this.count_;
+    }
+
+    /**
+     * @return {Array<string>} Keys.
+     */
+  }, {
+    key: "getKeys",
+    value: function getKeys() {
+      var keys = new Array(this.count_);
+      var i = 0;
+      var entry;
+      for (entry = this.newest_; entry; entry = entry.older) {
+        keys[i++] = entry.key_;
+      }
+      return keys;
+    }
+
+    /**
+     * @return {Array<T>} Values.
+     */
+  }, {
+    key: "getValues",
+    value: function getValues() {
+      var values = new Array(this.count_);
+      var i = 0;
+      var entry;
+      for (entry = this.newest_; entry; entry = entry.older) {
+        values[i++] = entry.value_;
+      }
+      return values;
+    }
+
+    /**
+     * @return {T} Last value.
+     */
+  }, {
+    key: "peekLast",
+    value: function peekLast() {
+      return this.oldest_.value_;
+    }
+
+    /**
+     * @return {string} Last key.
+     */
+  }, {
+    key: "peekLastKey",
+    value: function peekLastKey() {
+      return this.oldest_.key_;
+    }
+
+    /**
+     * Get the key of the newest item in the cache.  Throws if the cache is empty.
+     * @return {string} The newest key.
+     */
+  }, {
+    key: "peekFirstKey",
+    value: function peekFirstKey() {
+      return this.newest_.key_;
+    }
+
+    /**
+     * Return an entry without updating least recently used time.
+     * @param {string} key Key.
+     * @return {T} Value.
+     */
+  }, {
+    key: "peek",
+    value: function peek(key) {
+      if (!this.containsKey(key)) {
+        return undefined;
+      }
+      return this.entries_[key].value_;
+    }
+
+    /**
+     * @return {T} value Value.
+     */
+  }, {
+    key: "pop",
+    value: function pop() {
+      var entry = this.oldest_;
+      delete this.entries_[entry.key_];
+      if (entry.newer) {
+        entry.newer.older = null;
+      }
+      this.oldest_ = /** @type {Entry} */entry.newer;
+      if (!this.oldest_) {
+        this.newest_ = null;
+      }
+      --this.count_;
+      return entry.value_;
+    }
+
+    /**
+     * @param {string} key Key.
+     * @param {T} value Value.
+     */
+  }, {
+    key: "replace",
+    value: function replace(key, value) {
+      this.get(key); // update `newest_`
+      this.entries_[key].value_ = value;
+    }
+
+    /**
+     * @param {string} key Key.
+     * @param {T} value Value.
+     */
+  }, {
+    key: "set",
+    value: function set(key, value) {
+      (0, _asserts.assert)(!(key in this.entries_), 16); // Tried to set a value for a key that is used already
+      var entry = {
+        key_: key,
+        newer: null,
+        older: this.newest_,
+        value_: value
+      };
+      if (!this.newest_) {
+        this.oldest_ = entry;
+      } else {
+        this.newest_.newer = entry;
+      }
+      this.newest_ = entry;
+      this.entries_[key] = entry;
+      ++this.count_;
+    }
+
+    /**
+     * Set a maximum number of entries for the cache.
+     * @param {number} size Cache size.
+     * @api
+     */
+  }, {
+    key: "setSize",
+    value: function setSize(size) {
+      this.highWaterMark = size;
+    }
+  }]);
+  return LRUCache;
+}();
+var _default = LRUCache;
+exports.default = _default;
+},{"../asserts.js":"node_modules/ol/asserts.js"}],"node_modules/ol/tilecoord.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createOrUpdate = createOrUpdate;
+exports.fromKey = fromKey;
+exports.getCacheKeyForTileKey = getCacheKeyForTileKey;
+exports.getKey = getKey;
+exports.getKeyZXY = getKeyZXY;
+exports.hash = hash;
+exports.withinExtentAndZ = withinExtentAndZ;
+function _slicedToArray(arr, i) { return _arrayWithHoles(arr) || _iterableToArrayLimit(arr, i) || _unsupportedIterableToArray(arr, i) || _nonIterableRest(); }
+function _nonIterableRest() { throw new TypeError("Invalid attempt to destructure non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _iterableToArrayLimit(arr, i) { var _i = null == arr ? null : "undefined" != typeof Symbol && arr[Symbol.iterator] || arr["@@iterator"]; if (null != _i) { var _s, _e, _x, _r, _arr = [], _n = !0, _d = !1; try { if (_x = (_i = _i.call(arr)).next, 0 === i) { if (Object(_i) !== _i) return; _n = !1; } else for (; !(_n = (_s = _x.call(_i)).done) && (_arr.push(_s.value), _arr.length !== i); _n = !0); } catch (err) { _d = !0, _e = err; } finally { try { if (!_n && null != _i.return && (_r = _i.return(), Object(_r) !== _r)) return; } finally { if (_d) throw _e; } } return _arr; } }
+function _arrayWithHoles(arr) { if (Array.isArray(arr)) return arr; }
+/**
+ * @module ol/tilecoord
+ */
+
+/**
+ * An array of three numbers representing the location of a tile in a tile
+ * grid. The order is `z` (zoom level), `x` (column), and `y` (row).
+ * @typedef {Array<number>} TileCoord
+ * @api
+ */
+
+/**
+ * @param {number} z Z.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @param {TileCoord} [tileCoord] Tile coordinate.
+ * @return {TileCoord} Tile coordinate.
+ */
+function createOrUpdate(z, x, y, tileCoord) {
+  if (tileCoord !== undefined) {
+    tileCoord[0] = z;
+    tileCoord[1] = x;
+    tileCoord[2] = y;
+    return tileCoord;
+  }
+  return [z, x, y];
+}
+
+/**
+ * @param {number} z Z.
+ * @param {number} x X.
+ * @param {number} y Y.
+ * @return {string} Key.
+ */
+function getKeyZXY(z, x, y) {
+  return z + '/' + x + '/' + y;
+}
+
+/**
+ * Get the key for a tile coord.
+ * @param {TileCoord} tileCoord The tile coord.
+ * @return {string} Key.
+ */
+function getKey(tileCoord) {
+  return getKeyZXY(tileCoord[0], tileCoord[1], tileCoord[2]);
+}
+
+/**
+ * Get the tile cache key for a tile key obtained through `tile.getKey()`.
+ * @param {string} tileKey The tile key.
+ * @return {string} The cache key.
+ */
+function getCacheKeyForTileKey(tileKey) {
+  var _tileKey$substring$sp = tileKey.substring(tileKey.lastIndexOf('/') + 1, tileKey.length).split(',').map(Number),
+    _tileKey$substring$sp2 = _slicedToArray(_tileKey$substring$sp, 3),
+    z = _tileKey$substring$sp2[0],
+    x = _tileKey$substring$sp2[1],
+    y = _tileKey$substring$sp2[2];
+  return getKeyZXY(z, x, y);
+}
+
+/**
+ * Get a tile coord given a key.
+ * @param {string} key The tile coord key.
+ * @return {TileCoord} The tile coord.
+ */
+function fromKey(key) {
+  return key.split('/').map(Number);
+}
+
+/**
+ * @param {TileCoord} tileCoord Tile coord.
+ * @return {number} Hash.
+ */
+function hash(tileCoord) {
+  return (tileCoord[1] << tileCoord[0]) + tileCoord[2];
+}
+
+/**
+ * @param {TileCoord} tileCoord Tile coordinate.
+ * @param {!import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+ * @return {boolean} Tile coordinate is within extent and zoom level range.
+ */
+function withinExtentAndZ(tileCoord, tileGrid) {
+  var z = tileCoord[0];
+  var x = tileCoord[1];
+  var y = tileCoord[2];
+  if (tileGrid.getMinZoom() > z || z > tileGrid.getMaxZoom()) {
+    return false;
+  }
+  var tileRange = tileGrid.getFullTileRange(z);
+  if (!tileRange) {
+    return true;
+  }
+  return tileRange.containsXY(x, y);
+}
+},{}],"node_modules/ol/TileCache.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _LRUCache2 = _interopRequireDefault(require("./structs/LRUCache.js"));
+var _tilecoord = require("./tilecoord.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/TileCache
+                                                                                                                                                                                                                      */
+var TileCache = /*#__PURE__*/function (_LRUCache) {
+  _inherits(TileCache, _LRUCache);
+  var _super = _createSuper(TileCache);
+  function TileCache() {
+    _classCallCheck(this, TileCache);
+    return _super.apply(this, arguments);
+  }
+  _createClass(TileCache, [{
+    key: "clear",
+    value: function clear() {
+      while (this.getCount() > 0) {
+        this.pop().release();
+      }
+      _get(_getPrototypeOf(TileCache.prototype), "clear", this).call(this);
+    }
+
+    /**
+     * @param {!Object<string, boolean>} usedTiles Used tiles.
+     */
+  }, {
+    key: "expireCache",
+    value: function expireCache(usedTiles) {
+      while (this.canExpireCache()) {
+        var tile = this.peekLast();
+        if (tile.getKey() in usedTiles) {
+          break;
+        } else {
+          this.pop().release();
+        }
+      }
+    }
+
+    /**
+     * Prune all tiles from the cache that don't have the same z as the newest tile.
+     */
+  }, {
+    key: "pruneExceptNewestZ",
+    value: function pruneExceptNewestZ() {
+      var _this = this;
+      if (this.getCount() === 0) {
+        return;
+      }
+      var key = this.peekFirstKey();
+      var tileCoord = (0, _tilecoord.fromKey)(key);
+      var z = tileCoord[0];
+      this.forEach(function (tile) {
+        if (tile.tileCoord[0] !== z) {
+          _this.remove((0, _tilecoord.getKey)(tile.tileCoord));
+          tile.release();
+        }
+      });
+    }
+  }]);
+  return TileCache;
+}(_LRUCache2.default);
+var _default = TileCache;
+exports.default = _default;
+},{"./structs/LRUCache.js":"node_modules/ol/structs/LRUCache.js","./tilecoord.js":"node_modules/ol/tilecoord.js"}],"node_modules/ol/tilegrid/TileGrid.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _TileRange = _interopRequireWildcard(require("../TileRange.js"));
+var _common = require("./common.js");
+var _asserts = require("../asserts.js");
+var _math = require("../math.js");
+var _extent = require("../extent.js");
+var _tilecoord = require("../tilecoord.js");
+var _intersectsextent = require("../geom/flat/intersectsextent.js");
+var _array = require("../array.js");
+var _size = require("../size.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); } /**
+                                                                                                                                                                                                                                                                                                                                                                                               * @module ol/tilegrid/TileGrid
+                                                                                                                                                                                                                                                                                                                                                                                               */
+/**
+ * @private
+ * @type {import("../tilecoord.js").TileCoord}
+ */
+var tmpTileCoord = [0, 0, 0];
+
+/**
+ * Number of decimal digits to consider in integer values when rounding.
+ * @type {number}
+ */
+var DECIMALS = 5;
+
+/**
+ * @typedef {Object} Options
+ * @property {import("../extent.js").Extent} [extent] Extent for the tile grid. No tiles outside this
+ * extent will be requested by {@link module:ol/source/Tile~TileSource} sources. When no `origin` or
+ * `origins` are configured, the `origin` will be set to the top-left corner of the extent.
+ * @property {number} [minZoom=0] Minimum zoom.
+ * @property {import("../coordinate.js").Coordinate} [origin] The tile grid origin, i.e. where the `x`
+ * and `y` axes meet (`[z, 0, 0]`). Tile coordinates increase left to right and downwards. If not
+ * specified, `extent` or `origins` must be provided.
+ * @property {Array<import("../coordinate.js").Coordinate>} [origins] Tile grid origins, i.e. where
+ * the `x` and `y` axes meet (`[z, 0, 0]`), for each zoom level. If given, the array length
+ * should match the length of the `resolutions` array, i.e. each resolution can have a different
+ * origin. Tile coordinates increase left to right and downwards. If not specified, `extent` or
+ * `origin` must be provided.
+ * @property {!Array<number>} resolutions Resolutions. The array index of each resolution needs
+ * to match the zoom level. This means that even if a `minZoom` is configured, the resolutions
+ * array will have a length of `maxZoom + 1`.
+ * @property {Array<import("../size.js").Size>} [sizes] Number of tile rows and columns
+ * of the grid for each zoom level. If specified the values
+ * define each zoom level's extent together with the `origin` or `origins`.
+ * A grid `extent` can be configured in addition, and will further limit the extent
+ * for which tile requests are made by sources. If the bottom-left corner of
+ * an extent is used as `origin` or `origins`, then the `y` value must be
+ * negative because OpenLayers tile coordinates use the top left as the origin.
+ * @property {number|import("../size.js").Size} [tileSize] Tile size.
+ * Default is `[256, 256]`.
+ * @property {Array<number|import("../size.js").Size>} [tileSizes] Tile sizes. If given, the array length
+ * should match the length of the `resolutions` array, i.e. each resolution can have a different
+ * tile size.
+ */
+
+/**
+ * @classdesc
+ * Base class for setting the grid pattern for sources accessing tiled-image
+ * servers.
+ * @api
+ */
+var TileGrid = /*#__PURE__*/function () {
+  /**
+   * @param {Options} options Tile grid options.
+   */
+  function TileGrid(options) {
+    _classCallCheck(this, TileGrid);
+    /**
+     * @protected
+     * @type {number}
+     */
+    this.minZoom = options.minZoom !== undefined ? options.minZoom : 0;
+
+    /**
+     * @private
+     * @type {!Array<number>}
+     */
+    this.resolutions_ = options.resolutions;
+    (0, _asserts.assert)((0, _array.isSorted)(this.resolutions_, function (a, b) {
+      return b - a;
+    }, true), 17); // `resolutions` must be sorted in descending order
+
+    // check if we've got a consistent zoom factor and origin
+    var zoomFactor;
+    if (!options.origins) {
+      for (var i = 0, ii = this.resolutions_.length - 1; i < ii; ++i) {
+        if (!zoomFactor) {
+          zoomFactor = this.resolutions_[i] / this.resolutions_[i + 1];
+        } else {
+          if (this.resolutions_[i] / this.resolutions_[i + 1] !== zoomFactor) {
+            zoomFactor = undefined;
+            break;
+          }
+        }
+      }
+    }
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    this.zoomFactor_ = zoomFactor;
+
+    /**
+     * @protected
+     * @type {number}
+     */
+    this.maxZoom = this.resolutions_.length - 1;
+
+    /**
+     * @private
+     * @type {import("../coordinate.js").Coordinate|null}
+     */
+    this.origin_ = options.origin !== undefined ? options.origin : null;
+
+    /**
+     * @private
+     * @type {Array<import("../coordinate.js").Coordinate>}
+     */
+    this.origins_ = null;
+    if (options.origins !== undefined) {
+      this.origins_ = options.origins;
+      (0, _asserts.assert)(this.origins_.length == this.resolutions_.length, 20); // Number of `origins` and `resolutions` must be equal
+    }
+
+    var extent = options.extent;
+    if (extent !== undefined && !this.origin_ && !this.origins_) {
+      this.origin_ = (0, _extent.getTopLeft)(extent);
+    }
+    (0, _asserts.assert)(!this.origin_ && this.origins_ || this.origin_ && !this.origins_, 18); // Either `origin` or `origins` must be configured, never both
+
+    /**
+     * @private
+     * @type {Array<number|import("../size.js").Size>}
+     */
+    this.tileSizes_ = null;
+    if (options.tileSizes !== undefined) {
+      this.tileSizes_ = options.tileSizes;
+      (0, _asserts.assert)(this.tileSizes_.length == this.resolutions_.length, 19); // Number of `tileSizes` and `resolutions` must be equal
+    }
+
+    /**
+     * @private
+     * @type {number|import("../size.js").Size}
+     */
+    this.tileSize_ = options.tileSize !== undefined ? options.tileSize : !this.tileSizes_ ? _common.DEFAULT_TILE_SIZE : null;
+    (0, _asserts.assert)(!this.tileSize_ && this.tileSizes_ || this.tileSize_ && !this.tileSizes_, 22); // Either `tileSize` or `tileSizes` must be configured, never both
+
+    /**
+     * @private
+     * @type {import("../extent.js").Extent}
+     */
+    this.extent_ = extent !== undefined ? extent : null;
+
+    /**
+     * @private
+     * @type {Array<import("../TileRange.js").default>}
+     */
+    this.fullTileRanges_ = null;
+
+    /**
+     * @private
+     * @type {import("../size.js").Size}
+     */
+    this.tmpSize_ = [0, 0];
+
+    /**
+     * @private
+     * @type {import("../extent.js").Extent}
+     */
+    this.tmpExtent_ = [0, 0, 0, 0];
+    if (options.sizes !== undefined) {
+      this.fullTileRanges_ = options.sizes.map(function (size, z) {
+        var tileRange = new _TileRange.default(Math.min(0, size[0]), Math.max(size[0] - 1, -1), Math.min(0, size[1]), Math.max(size[1] - 1, -1));
+        if (extent) {
+          var restrictedTileRange = this.getTileRangeForExtentAndZ(extent, z);
+          tileRange.minX = Math.max(restrictedTileRange.minX, tileRange.minX);
+          tileRange.maxX = Math.min(restrictedTileRange.maxX, tileRange.maxX);
+          tileRange.minY = Math.max(restrictedTileRange.minY, tileRange.minY);
+          tileRange.maxY = Math.min(restrictedTileRange.maxY, tileRange.maxY);
+        }
+        return tileRange;
+      }, this);
+    } else if (extent) {
+      this.calculateTileRanges_(extent);
+    }
+  }
+
+  /**
+   * Call a function with each tile coordinate for a given extent and zoom level.
+   *
+   * @param {import("../extent.js").Extent} extent Extent.
+   * @param {number} zoom Integer zoom level.
+   * @param {function(import("../tilecoord.js").TileCoord): void} callback Function called with each tile coordinate.
+   * @api
+   */
+  _createClass(TileGrid, [{
+    key: "forEachTileCoord",
+    value: function forEachTileCoord(extent, zoom, callback) {
+      var tileRange = this.getTileRangeForExtentAndZ(extent, zoom);
+      for (var i = tileRange.minX, ii = tileRange.maxX; i <= ii; ++i) {
+        for (var j = tileRange.minY, jj = tileRange.maxY; j <= jj; ++j) {
+          callback([zoom, i, j]);
+        }
+      }
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {function(number, import("../TileRange.js").default): boolean} callback Callback.
+     * @param {import("../TileRange.js").default} [tempTileRange] Temporary import("../TileRange.js").default object.
+     * @param {import("../extent.js").Extent} [tempExtent] Temporary import("../extent.js").Extent object.
+     * @return {boolean} Callback succeeded.
+     */
+  }, {
+    key: "forEachTileCoordParentTileRange",
+    value: function forEachTileCoordParentTileRange(tileCoord, callback, tempTileRange, tempExtent) {
+      var tileRange, x, y;
+      var tileCoordExtent = null;
+      var z = tileCoord[0] - 1;
+      if (this.zoomFactor_ === 2) {
+        x = tileCoord[1];
+        y = tileCoord[2];
+      } else {
+        tileCoordExtent = this.getTileCoordExtent(tileCoord, tempExtent);
+      }
+      while (z >= this.minZoom) {
+        if (this.zoomFactor_ === 2) {
+          x = Math.floor(x / 2);
+          y = Math.floor(y / 2);
+          tileRange = (0, _TileRange.createOrUpdate)(x, x, y, y, tempTileRange);
+        } else {
+          tileRange = this.getTileRangeForExtentAndZ(tileCoordExtent, z, tempTileRange);
+        }
+        if (callback(z, tileRange)) {
+          return true;
+        }
+        --z;
+      }
+      return false;
+    }
+
+    /**
+     * Get the extent for this tile grid, if it was configured.
+     * @return {import("../extent.js").Extent} Extent.
+     * @api
+     */
+  }, {
+    key: "getExtent",
+    value: function getExtent() {
+      return this.extent_;
+    }
+
+    /**
+     * Get the maximum zoom level for the grid.
+     * @return {number} Max zoom.
+     * @api
+     */
+  }, {
+    key: "getMaxZoom",
+    value: function getMaxZoom() {
+      return this.maxZoom;
+    }
+
+    /**
+     * Get the minimum zoom level for the grid.
+     * @return {number} Min zoom.
+     * @api
+     */
+  }, {
+    key: "getMinZoom",
+    value: function getMinZoom() {
+      return this.minZoom;
+    }
+
+    /**
+     * Get the origin for the grid at the given zoom level.
+     * @param {number} z Integer zoom level.
+     * @return {import("../coordinate.js").Coordinate} Origin.
+     * @api
+     */
+  }, {
+    key: "getOrigin",
+    value: function getOrigin(z) {
+      if (this.origin_) {
+        return this.origin_;
+      }
+      return this.origins_[z];
+    }
+
+    /**
+     * Get the resolution for the given zoom level.
+     * @param {number} z Integer zoom level.
+     * @return {number} Resolution.
+     * @api
+     */
+  }, {
+    key: "getResolution",
+    value: function getResolution(z) {
+      return this.resolutions_[z];
+    }
+
+    /**
+     * Get the list of resolutions for the tile grid.
+     * @return {Array<number>} Resolutions.
+     * @api
+     */
+  }, {
+    key: "getResolutions",
+    value: function getResolutions() {
+      return this.resolutions_;
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {import("../TileRange.js").default} [tempTileRange] Temporary import("../TileRange.js").default object.
+     * @param {import("../extent.js").Extent} [tempExtent] Temporary import("../extent.js").Extent object.
+     * @return {import("../TileRange.js").default|null} Tile range.
+     */
+  }, {
+    key: "getTileCoordChildTileRange",
+    value: function getTileCoordChildTileRange(tileCoord, tempTileRange, tempExtent) {
+      if (tileCoord[0] < this.maxZoom) {
+        if (this.zoomFactor_ === 2) {
+          var minX = tileCoord[1] * 2;
+          var minY = tileCoord[2] * 2;
+          return (0, _TileRange.createOrUpdate)(minX, minX + 1, minY, minY + 1, tempTileRange);
+        }
+        var tileCoordExtent = this.getTileCoordExtent(tileCoord, tempExtent || this.tmpExtent_);
+        return this.getTileRangeForExtentAndZ(tileCoordExtent, tileCoord[0] + 1, tempTileRange);
+      }
+      return null;
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {number} z Integer zoom level.
+     * @param {import("../TileRange.js").default} [tempTileRange] Temporary import("../TileRange.js").default object.
+     * @return {import("../TileRange.js").default|null} Tile range.
+     */
+  }, {
+    key: "getTileRangeForTileCoordAndZ",
+    value: function getTileRangeForTileCoordAndZ(tileCoord, z, tempTileRange) {
+      if (z > this.maxZoom || z < this.minZoom) {
+        return null;
+      }
+      var tileCoordZ = tileCoord[0];
+      var tileCoordX = tileCoord[1];
+      var tileCoordY = tileCoord[2];
+      if (z === tileCoordZ) {
+        return (0, _TileRange.createOrUpdate)(tileCoordX, tileCoordY, tileCoordX, tileCoordY, tempTileRange);
+      }
+      if (this.zoomFactor_) {
+        var factor = Math.pow(this.zoomFactor_, z - tileCoordZ);
+        var minX = Math.floor(tileCoordX * factor);
+        var minY = Math.floor(tileCoordY * factor);
+        if (z < tileCoordZ) {
+          return (0, _TileRange.createOrUpdate)(minX, minX, minY, minY, tempTileRange);
+        }
+        var maxX = Math.floor(factor * (tileCoordX + 1)) - 1;
+        var maxY = Math.floor(factor * (tileCoordY + 1)) - 1;
+        return (0, _TileRange.createOrUpdate)(minX, maxX, minY, maxY, tempTileRange);
+      }
+      var tileCoordExtent = this.getTileCoordExtent(tileCoord, this.tmpExtent_);
+      return this.getTileRangeForExtentAndZ(tileCoordExtent, z, tempTileRange);
+    }
+
+    /**
+     * Get a tile range for the given extent and integer zoom level.
+     * @param {import("../extent.js").Extent} extent Extent.
+     * @param {number} z Integer zoom level.
+     * @param {import("../TileRange.js").default} [tempTileRange] Temporary tile range object.
+     * @return {import("../TileRange.js").default} Tile range.
+     */
+  }, {
+    key: "getTileRangeForExtentAndZ",
+    value: function getTileRangeForExtentAndZ(extent, z, tempTileRange) {
+      this.getTileCoordForXYAndZ_(extent[0], extent[3], z, false, tmpTileCoord);
+      var minX = tmpTileCoord[1];
+      var minY = tmpTileCoord[2];
+      this.getTileCoordForXYAndZ_(extent[2], extent[1], z, true, tmpTileCoord);
+      var maxX = tmpTileCoord[1];
+      var maxY = tmpTileCoord[2];
+      return (0, _TileRange.createOrUpdate)(minX, maxX, minY, maxY, tempTileRange);
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @return {import("../coordinate.js").Coordinate} Tile center.
+     */
+  }, {
+    key: "getTileCoordCenter",
+    value: function getTileCoordCenter(tileCoord) {
+      var origin = this.getOrigin(tileCoord[0]);
+      var resolution = this.getResolution(tileCoord[0]);
+      var tileSize = (0, _size.toSize)(this.getTileSize(tileCoord[0]), this.tmpSize_);
+      return [origin[0] + (tileCoord[1] + 0.5) * tileSize[0] * resolution, origin[1] - (tileCoord[2] + 0.5) * tileSize[1] * resolution];
+    }
+
+    /**
+     * Get the extent of a tile coordinate.
+     *
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {import("../extent.js").Extent} [tempExtent] Temporary extent object.
+     * @return {import("../extent.js").Extent} Extent.
+     * @api
+     */
+  }, {
+    key: "getTileCoordExtent",
+    value: function getTileCoordExtent(tileCoord, tempExtent) {
+      var origin = this.getOrigin(tileCoord[0]);
+      var resolution = this.getResolution(tileCoord[0]);
+      var tileSize = (0, _size.toSize)(this.getTileSize(tileCoord[0]), this.tmpSize_);
+      var minX = origin[0] + tileCoord[1] * tileSize[0] * resolution;
+      var minY = origin[1] - (tileCoord[2] + 1) * tileSize[1] * resolution;
+      var maxX = minX + tileSize[0] * resolution;
+      var maxY = minY + tileSize[1] * resolution;
+      return (0, _extent.createOrUpdate)(minX, minY, maxX, maxY, tempExtent);
+    }
+
+    /**
+     * Get the tile coordinate for the given map coordinate and resolution.  This
+     * method considers that coordinates that intersect tile boundaries should be
+     * assigned the higher tile coordinate.
+     *
+     * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+     * @param {number} resolution Resolution.
+     * @param {import("../tilecoord.js").TileCoord} [opt_tileCoord] Destination import("../tilecoord.js").TileCoord object.
+     * @return {import("../tilecoord.js").TileCoord} Tile coordinate.
+     * @api
+     */
+  }, {
+    key: "getTileCoordForCoordAndResolution",
+    value: function getTileCoordForCoordAndResolution(coordinate, resolution, opt_tileCoord) {
+      return this.getTileCoordForXYAndResolution_(coordinate[0], coordinate[1], resolution, false, opt_tileCoord);
+    }
+
+    /**
+     * Note that this method should not be called for resolutions that correspond
+     * to an integer zoom level.  Instead call the `getTileCoordForXYAndZ_` method.
+     * @param {number} x X.
+     * @param {number} y Y.
+     * @param {number} resolution Resolution (for a non-integer zoom level).
+     * @param {boolean} reverseIntersectionPolicy Instead of letting edge
+     *     intersections go to the higher tile coordinate, let edge intersections
+     *     go to the lower tile coordinate.
+     * @param {import("../tilecoord.js").TileCoord} [opt_tileCoord] Temporary import("../tilecoord.js").TileCoord object.
+     * @return {import("../tilecoord.js").TileCoord} Tile coordinate.
+     * @private
+     */
+  }, {
+    key: "getTileCoordForXYAndResolution_",
+    value: function getTileCoordForXYAndResolution_(x, y, resolution, reverseIntersectionPolicy, opt_tileCoord) {
+      var z = this.getZForResolution(resolution);
+      var scale = resolution / this.getResolution(z);
+      var origin = this.getOrigin(z);
+      var tileSize = (0, _size.toSize)(this.getTileSize(z), this.tmpSize_);
+      var tileCoordX = scale * (x - origin[0]) / resolution / tileSize[0];
+      var tileCoordY = scale * (origin[1] - y) / resolution / tileSize[1];
+      if (reverseIntersectionPolicy) {
+        tileCoordX = (0, _math.ceil)(tileCoordX, DECIMALS) - 1;
+        tileCoordY = (0, _math.ceil)(tileCoordY, DECIMALS) - 1;
+      } else {
+        tileCoordX = (0, _math.floor)(tileCoordX, DECIMALS);
+        tileCoordY = (0, _math.floor)(tileCoordY, DECIMALS);
+      }
+      return (0, _tilecoord.createOrUpdate)(z, tileCoordX, tileCoordY, opt_tileCoord);
+    }
+
+    /**
+     * Although there is repetition between this method and `getTileCoordForXYAndResolution_`,
+     * they should have separate implementations.  This method is for integer zoom
+     * levels.  The other method should only be called for resolutions corresponding
+     * to non-integer zoom levels.
+     * @param {number} x Map x coordinate.
+     * @param {number} y Map y coordinate.
+     * @param {number} z Integer zoom level.
+     * @param {boolean} reverseIntersectionPolicy Instead of letting edge
+     *     intersections go to the higher tile coordinate, let edge intersections
+     *     go to the lower tile coordinate.
+     * @param {import("../tilecoord.js").TileCoord} [opt_tileCoord] Temporary import("../tilecoord.js").TileCoord object.
+     * @return {import("../tilecoord.js").TileCoord} Tile coordinate.
+     * @private
+     */
+  }, {
+    key: "getTileCoordForXYAndZ_",
+    value: function getTileCoordForXYAndZ_(x, y, z, reverseIntersectionPolicy, opt_tileCoord) {
+      var origin = this.getOrigin(z);
+      var resolution = this.getResolution(z);
+      var tileSize = (0, _size.toSize)(this.getTileSize(z), this.tmpSize_);
+      var tileCoordX = (x - origin[0]) / resolution / tileSize[0];
+      var tileCoordY = (origin[1] - y) / resolution / tileSize[1];
+      if (reverseIntersectionPolicy) {
+        tileCoordX = (0, _math.ceil)(tileCoordX, DECIMALS) - 1;
+        tileCoordY = (0, _math.ceil)(tileCoordY, DECIMALS) - 1;
+      } else {
+        tileCoordX = (0, _math.floor)(tileCoordX, DECIMALS);
+        tileCoordY = (0, _math.floor)(tileCoordY, DECIMALS);
+      }
+      return (0, _tilecoord.createOrUpdate)(z, tileCoordX, tileCoordY, opt_tileCoord);
+    }
+
+    /**
+     * Get a tile coordinate given a map coordinate and zoom level.
+     * @param {import("../coordinate.js").Coordinate} coordinate Coordinate.
+     * @param {number} z Zoom level.
+     * @param {import("../tilecoord.js").TileCoord} [opt_tileCoord] Destination import("../tilecoord.js").TileCoord object.
+     * @return {import("../tilecoord.js").TileCoord} Tile coordinate.
+     * @api
+     */
+  }, {
+    key: "getTileCoordForCoordAndZ",
+    value: function getTileCoordForCoordAndZ(coordinate, z, opt_tileCoord) {
+      return this.getTileCoordForXYAndZ_(coordinate[0], coordinate[1], z, false, opt_tileCoord);
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @return {number} Tile resolution.
+     */
+  }, {
+    key: "getTileCoordResolution",
+    value: function getTileCoordResolution(tileCoord) {
+      return this.resolutions_[tileCoord[0]];
+    }
+
+    /**
+     * Get the tile size for a zoom level. The type of the return value matches the
+     * `tileSize` or `tileSizes` that the tile grid was configured with. To always
+     * get an {@link import("../size.js").Size}, run the result through {@link module:ol/size.toSize}.
+     * @param {number} z Z.
+     * @return {number|import("../size.js").Size} Tile size.
+     * @api
+     */
+  }, {
+    key: "getTileSize",
+    value: function getTileSize(z) {
+      if (this.tileSize_) {
+        return this.tileSize_;
+      }
+      return this.tileSizes_[z];
+    }
+
+    /**
+     * @param {number} z Zoom level.
+     * @return {import("../TileRange.js").default} Extent tile range for the specified zoom level.
+     */
+  }, {
+    key: "getFullTileRange",
+    value: function getFullTileRange(z) {
+      if (!this.fullTileRanges_) {
+        return this.extent_ ? this.getTileRangeForExtentAndZ(this.extent_, z) : null;
+      }
+      return this.fullTileRanges_[z];
+    }
+
+    /**
+     * @param {number} resolution Resolution.
+     * @param {number|import("../array.js").NearestDirectionFunction} [opt_direction]
+     *     If 0, the nearest resolution will be used.
+     *     If 1, the nearest higher resolution (lower Z) will be used. If -1, the
+     *     nearest lower resolution (higher Z) will be used. Default is 0.
+     *     Use a {@link module:ol/array~NearestDirectionFunction} for more precise control.
+     *
+     * For example to change tile Z at the midpoint of zoom levels
+     * ```js
+     * function(value, high, low) {
+     *   return value - low * Math.sqrt(high / low);
+     * }
+     * ```
+     * @return {number} Z.
+     * @api
+     */
+  }, {
+    key: "getZForResolution",
+    value: function getZForResolution(resolution, opt_direction) {
+      var z = (0, _array.linearFindNearest)(this.resolutions_, resolution, opt_direction || 0);
+      return (0, _math.clamp)(z, this.minZoom, this.maxZoom);
+    }
+
+    /**
+     * The tile with the provided tile coordinate intersects the given viewport.
+     * @param {import('../tilecoord.js').TileCoord} tileCoord Tile coordinate.
+     * @param {Array<number>} viewport Viewport as returned from {@link module:ol/extent.getRotatedViewport}.
+     * @return {boolean} The tile with the provided tile coordinate intersects the given viewport.
+     */
+  }, {
+    key: "tileCoordIntersectsViewport",
+    value: function tileCoordIntersectsViewport(tileCoord, viewport) {
+      return (0, _intersectsextent.intersectsLinearRing)(viewport, 0, viewport.length, 2, this.getTileCoordExtent(tileCoord));
+    }
+
+    /**
+     * @param {!import("../extent.js").Extent} extent Extent for this tile grid.
+     * @private
+     */
+  }, {
+    key: "calculateTileRanges_",
+    value: function calculateTileRanges_(extent) {
+      var length = this.resolutions_.length;
+      var fullTileRanges = new Array(length);
+      for (var z = this.minZoom; z < length; ++z) {
+        fullTileRanges[z] = this.getTileRangeForExtentAndZ(extent, z);
+      }
+      this.fullTileRanges_ = fullTileRanges;
+    }
+  }]);
+  return TileGrid;
+}();
+var _default = TileGrid;
+exports.default = _default;
+},{"../TileRange.js":"node_modules/ol/TileRange.js","./common.js":"node_modules/ol/tilegrid/common.js","../asserts.js":"node_modules/ol/asserts.js","../math.js":"node_modules/ol/math.js","../extent.js":"node_modules/ol/extent.js","../tilecoord.js":"node_modules/ol/tilecoord.js","../geom/flat/intersectsextent.js":"node_modules/ol/geom/flat/intersectsextent.js","../array.js":"node_modules/ol/array.js","../size.js":"node_modules/ol/size.js"}],"node_modules/ol/tilegrid.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createForExtent = createForExtent;
+exports.createForProjection = createForProjection;
+exports.createXYZ = createXYZ;
+exports.extentFromProjection = extentFromProjection;
+exports.getForProjection = getForProjection;
+exports.wrapX = wrapX;
+var _TileGrid = _interopRequireDefault(require("./tilegrid/TileGrid.js"));
+var _common = require("./tilegrid/common.js");
+var _proj = require("./proj.js");
+var _extent = require("./extent.js");
+var _size = require("./size.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+/**
+ * @module ol/tilegrid
+ */
+
+/**
+ * @param {import("./proj/Projection.js").default} projection Projection.
+ * @return {!TileGrid} Default tile grid for the
+ * passed projection.
+ */
+function getForProjection(projection) {
+  var tileGrid = projection.getDefaultTileGrid();
+  if (!tileGrid) {
+    tileGrid = createForProjection(projection);
+    projection.setDefaultTileGrid(tileGrid);
+  }
+  return tileGrid;
+}
+
+/**
+ * @param {TileGrid} tileGrid Tile grid.
+ * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+ * @param {import("./proj/Projection.js").default} projection Projection.
+ * @return {import("./tilecoord.js").TileCoord} Tile coordinate.
+ */
+function wrapX(tileGrid, tileCoord, projection) {
+  var z = tileCoord[0];
+  var center = tileGrid.getTileCoordCenter(tileCoord);
+  var projectionExtent = extentFromProjection(projection);
+  if (!(0, _extent.containsCoordinate)(projectionExtent, center)) {
+    var worldWidth = (0, _extent.getWidth)(projectionExtent);
+    var worldsAway = Math.ceil((projectionExtent[0] - center[0]) / worldWidth);
+    center[0] += worldWidth * worldsAway;
+    return tileGrid.getTileCoordForCoordAndZ(center, z);
+  }
+  return tileCoord;
+}
+
+/**
+ * @param {import("./extent.js").Extent} extent Extent.
+ * @param {number} [maxZoom] Maximum zoom level (default is
+ *     DEFAULT_MAX_ZOOM).
+ * @param {number|import("./size.js").Size} [tileSize] Tile size (default uses
+ *     DEFAULT_TILE_SIZE).
+ * @param {import("./extent.js").Corner} [corner] Extent corner (default is `'top-left'`).
+ * @return {!TileGrid} TileGrid instance.
+ */
+function createForExtent(extent, maxZoom, tileSize, corner) {
+  corner = corner !== undefined ? corner : 'top-left';
+  var resolutions = resolutionsFromExtent(extent, maxZoom, tileSize);
+  return new _TileGrid.default({
+    extent: extent,
+    origin: (0, _extent.getCorner)(extent, corner),
+    resolutions: resolutions,
+    tileSize: tileSize
+  });
+}
+
+/**
+ * @typedef {Object} XYZOptions
+ * @property {import("./extent.js").Extent} [extent] Extent for the tile grid. The origin for an XYZ tile grid is the
+ * top-left corner of the extent. If `maxResolution` is not provided the zero level of the grid is defined by the resolution
+ * at which one tile fits in the provided extent. If not provided, the extent of the EPSG:3857 projection is used.
+ * @property {number} [maxResolution] Resolution at level zero.
+ * @property {number} [maxZoom] Maximum zoom. The default is `42`. This determines the number of levels
+ * in the grid set. For example, a `maxZoom` of 21 means there are 22 levels in the grid set.
+ * @property {number} [minZoom=0] Minimum zoom.
+ * @property {number|import("./size.js").Size} [tileSize=[256, 256]] Tile size in pixels.
+ */
+
+/**
+ * Creates a tile grid with a standard XYZ tiling scheme.
+ * @param {XYZOptions} [options] Tile grid options.
+ * @return {!TileGrid} Tile grid instance.
+ * @api
+ */
+function createXYZ(options) {
+  var xyzOptions = options || {};
+  var extent = xyzOptions.extent || (0, _proj.get)('EPSG:3857').getExtent();
+  var gridOptions = {
+    extent: extent,
+    minZoom: xyzOptions.minZoom,
+    tileSize: xyzOptions.tileSize,
+    resolutions: resolutionsFromExtent(extent, xyzOptions.maxZoom, xyzOptions.tileSize, xyzOptions.maxResolution)
+  };
+  return new _TileGrid.default(gridOptions);
+}
+
+/**
+ * Create a resolutions array from an extent.  A zoom factor of 2 is assumed.
+ * @param {import("./extent.js").Extent} extent Extent.
+ * @param {number} [maxZoom] Maximum zoom level (default is
+ *     DEFAULT_MAX_ZOOM).
+ * @param {number|import("./size.js").Size} [tileSize] Tile size (default uses
+ *     DEFAULT_TILE_SIZE).
+ * @param {number} [maxResolution] Resolution at level zero.
+ * @return {!Array<number>} Resolutions array.
+ */
+function resolutionsFromExtent(extent, maxZoom, tileSize, maxResolution) {
+  maxZoom = maxZoom !== undefined ? maxZoom : _common.DEFAULT_MAX_ZOOM;
+  tileSize = (0, _size.toSize)(tileSize !== undefined ? tileSize : _common.DEFAULT_TILE_SIZE);
+  var height = (0, _extent.getHeight)(extent);
+  var width = (0, _extent.getWidth)(extent);
+  maxResolution = maxResolution > 0 ? maxResolution : Math.max(width / tileSize[0], height / tileSize[1]);
+  var length = maxZoom + 1;
+  var resolutions = new Array(length);
+  for (var z = 0; z < length; ++z) {
+    resolutions[z] = maxResolution / Math.pow(2, z);
+  }
+  return resolutions;
+}
+
+/**
+ * @param {import("./proj.js").ProjectionLike} projection Projection.
+ * @param {number} [maxZoom] Maximum zoom level (default is
+ *     DEFAULT_MAX_ZOOM).
+ * @param {number|import("./size.js").Size} [tileSize] Tile size (default uses
+ *     DEFAULT_TILE_SIZE).
+ * @param {import("./extent.js").Corner} [corner] Extent corner (default is `'top-left'`).
+ * @return {!TileGrid} TileGrid instance.
+ */
+function createForProjection(projection, maxZoom, tileSize, corner) {
+  var extent = extentFromProjection(projection);
+  return createForExtent(extent, maxZoom, tileSize, corner);
+}
+
+/**
+ * Generate a tile grid extent from a projection.  If the projection has an
+ * extent, it is used.  If not, a global extent is assumed.
+ * @param {import("./proj.js").ProjectionLike} projection Projection.
+ * @return {import("./extent.js").Extent} Extent.
+ */
+function extentFromProjection(projection) {
+  projection = (0, _proj.get)(projection);
+  var extent = projection.getExtent();
+  if (!extent) {
+    var half = 180 * _proj.METERS_PER_UNIT.degrees / projection.getMetersPerUnit();
+    extent = (0, _extent.createOrUpdate)(-half, -half, half, half);
+  }
+  return extent;
+}
+},{"./tilegrid/TileGrid.js":"node_modules/ol/tilegrid/TileGrid.js","./tilegrid/common.js":"node_modules/ol/tilegrid/common.js","./proj.js":"node_modules/ol/proj.js","./extent.js":"node_modules/ol/extent.js","./size.js":"node_modules/ol/size.js"}],"node_modules/ol/source/Tile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.TileSourceEvent = void 0;
+var _Event2 = _interopRequireDefault(require("../events/Event.js"));
+var _Source2 = _interopRequireDefault(require("./Source.js"));
+var _TileCache = _interopRequireDefault(require("../TileCache.js"));
+var _TileState = _interopRequireDefault(require("../TileState.js"));
+var _util = require("../util.js");
+var _asserts = require("../asserts.js");
+var _proj = require("../proj.js");
+var _tilecoord = require("../tilecoord.js");
+var _tilegrid = require("../tilegrid.js");
+var _size = require("../size.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/source/Tile
+                                                                                                                                                                                                                      */
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").OnSignature<import("./TileEventType").TileSourceEventTypes, TileSourceEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ *     import("./TileEventType").TileSourceEventTypes, Return>} TileSourceOnSignature
+ */
+/**
+ * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+ * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+ * @property {number} [cacheSize] CacheSize.
+ * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {number} [tilePixelRatio] TilePixelRatio.
+ * @property {import("../proj.js").ProjectionLike} [projection] Projection.
+ * @property {import("./Source.js").State} [state] State.
+ * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] TileGrid.
+ * @property {boolean} [wrapX=false] WrapX.
+ * @property {number} [transition] Transition.
+ * @property {string} [key] Key.
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0] ZDirection.
+ * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
+ * the nearest neighbor is used when resampling.
+ */
+/**
+ * @classdesc
+ * Abstract base class; normally only used for creating subclasses and not
+ * instantiated in apps.
+ * Base class for sources providing images divided into a tile grid.
+ * @abstract
+ * @api
+ */
+var TileSource = /*#__PURE__*/function (_Source) {
+  _inherits(TileSource, _Source);
+  var _super = _createSuper(TileSource);
+  /**
+   * @param {Options} options SourceTile source options.
+   */
+  function TileSource(options) {
+    var _this;
+    _classCallCheck(this, TileSource);
+    _this = _super.call(this, {
+      attributions: options.attributions,
+      attributionsCollapsible: options.attributionsCollapsible,
+      projection: options.projection,
+      state: options.state,
+      wrapX: options.wrapX,
+      interpolate: options.interpolate
+    });
+
+    /***
+     * @type {TileSourceOnSignature<import("../events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {TileSourceOnSignature<import("../events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {TileSourceOnSignature<void>}
+     */
+    _this.un;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.opaque_ = options.opaque !== undefined ? options.opaque : false;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.tilePixelRatio_ = options.tilePixelRatio !== undefined ? options.tilePixelRatio : 1;
+
+    /**
+     * @type {import("../tilegrid/TileGrid.js").default|null}
+     */
+    _this.tileGrid = options.tileGrid !== undefined ? options.tileGrid : null;
+    var tileSize = [256, 256];
+    if (_this.tileGrid) {
+      (0, _size.toSize)(_this.tileGrid.getTileSize(_this.tileGrid.getMinZoom()), tileSize);
+    }
+
+    /**
+     * @protected
+     * @type {import("../TileCache.js").default}
+     */
+    _this.tileCache = new _TileCache.default(options.cacheSize || 0);
+
+    /**
+     * @protected
+     * @type {import("../size.js").Size}
+     */
+    _this.tmpSize = [0, 0];
+
+    /**
+     * @private
+     * @type {string}
+     */
+    _this.key_ = options.key || '';
+
+    /**
+     * @protected
+     * @type {import("../Tile.js").Options}
+     */
+    _this.tileOptions = {
+      transition: options.transition,
+      interpolate: options.interpolate
+    };
+
+    /**
+     * zDirection hint, read by the renderer. Indicates which resolution should be used
+     * by a renderer if the views resolution does not match any resolution of the tile source.
+     * If 0, the nearest resolution will be used. If 1, the nearest lower resolution
+     * will be used. If -1, the nearest higher resolution will be used.
+     * @type {number|import("../array.js").NearestDirectionFunction}
+     */
+    _this.zDirection = options.zDirection ? options.zDirection : 0;
+    return _this;
+  }
+
+  /**
+   * @return {boolean} Can expire cache.
+   */
+  _createClass(TileSource, [{
+    key: "canExpireCache",
+    value: function canExpireCache() {
+      return this.tileCache.canExpireCache();
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {!Object<string, boolean>} usedTiles Used tiles.
+     */
+  }, {
+    key: "expireCache",
+    value: function expireCache(projection, usedTiles) {
+      var tileCache = this.getTileCacheForProjection(projection);
+      if (tileCache) {
+        tileCache.expireCache(usedTiles);
+      }
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {number} z Zoom level.
+     * @param {import("../TileRange.js").default} tileRange Tile range.
+     * @param {function(import("../Tile.js").default):(boolean|void)} callback Called with each
+     *     loaded tile.  If the callback returns `false`, the tile will not be
+     *     considered loaded.
+     * @return {boolean} The tile range is fully covered with loaded tiles.
+     */
+  }, {
+    key: "forEachLoadedTile",
+    value: function forEachLoadedTile(projection, z, tileRange, callback) {
+      var tileCache = this.getTileCacheForProjection(projection);
+      if (!tileCache) {
+        return false;
+      }
+      var covered = true;
+      var tile, tileCoordKey, loaded;
+      for (var x = tileRange.minX; x <= tileRange.maxX; ++x) {
+        for (var y = tileRange.minY; y <= tileRange.maxY; ++y) {
+          tileCoordKey = (0, _tilecoord.getKeyZXY)(z, x, y);
+          loaded = false;
+          if (tileCache.containsKey(tileCoordKey)) {
+            tile = /** @type {!import("../Tile.js").default} */
+            tileCache.get(tileCoordKey);
+            loaded = tile.getState() === _TileState.default.LOADED;
+            if (loaded) {
+              loaded = callback(tile) !== false;
+            }
+          }
+          if (!loaded) {
+            covered = false;
+          }
+        }
+      }
+      return covered;
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {number} Gutter.
+     */
+  }, {
+    key: "getGutterForProjection",
+    value: function getGutterForProjection(projection) {
+      return 0;
+    }
+
+    /**
+     * Return the key to be used for all tiles in the source.
+     * @return {string} The key for all tiles.
+     */
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      return this.key_;
+    }
+
+    /**
+     * Set the value to be used as the key for all tiles in the source.
+     * @param {string} key The key for tiles.
+     * @protected
+     */
+  }, {
+    key: "setKey",
+    value: function setKey(key) {
+      if (this.key_ !== key) {
+        this.key_ = key;
+        this.changed();
+      }
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {boolean} Opaque.
+     */
+  }, {
+    key: "getOpaque",
+    value: function getOpaque(projection) {
+      return this.opaque_;
+    }
+
+    /**
+     * @param {import("../proj/Projection").default} [projection] Projection.
+     * @return {Array<number>|null} Resolutions.
+     */
+  }, {
+    key: "getResolutions",
+    value: function getResolutions(projection) {
+      var tileGrid = projection ? this.getTileGridForProjection(projection) : this.tileGrid;
+      if (!tileGrid) {
+        return null;
+      }
+      return tileGrid.getResolutions();
+    }
+
+    /**
+     * @abstract
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {!import("../Tile.js").default} Tile.
+     */
+  }, {
+    key: "getTile",
+    value: function getTile(z, x, y, pixelRatio, projection) {
+      return (0, _util.abstract)();
+    }
+
+    /**
+     * Return the tile grid of the tile source.
+     * @return {import("../tilegrid/TileGrid.js").default|null} Tile grid.
+     * @api
+     */
+  }, {
+    key: "getTileGrid",
+    value: function getTileGrid() {
+      return this.tileGrid;
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {!import("../tilegrid/TileGrid.js").default} Tile grid.
+     */
+  }, {
+    key: "getTileGridForProjection",
+    value: function getTileGridForProjection(projection) {
+      if (!this.tileGrid) {
+        return (0, _tilegrid.getForProjection)(projection);
+      }
+      return this.tileGrid;
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {import("../TileCache.js").default} Tile cache.
+     * @protected
+     */
+  }, {
+    key: "getTileCacheForProjection",
+    value: function getTileCacheForProjection(projection) {
+      var sourceProjection = this.getProjection();
+      (0, _asserts.assert)(sourceProjection === null || (0, _proj.equivalent)(sourceProjection, projection), 68 // A VectorTile source can only be rendered if it has a projection compatible with the view projection.
+      );
+
+      return this.tileCache;
+    }
+
+    /**
+     * Get the tile pixel ratio for this source. Subclasses may override this
+     * method, which is meant to return a supported pixel ratio that matches the
+     * provided `pixelRatio` as close as possible.
+     * @param {number} pixelRatio Pixel ratio.
+     * @return {number} Tile pixel ratio.
+     */
+  }, {
+    key: "getTilePixelRatio",
+    value: function getTilePixelRatio(pixelRatio) {
+      return this.tilePixelRatio_;
+    }
+
+    /**
+     * @param {number} z Z.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {import("../size.js").Size} Tile size.
+     */
+  }, {
+    key: "getTilePixelSize",
+    value: function getTilePixelSize(z, pixelRatio, projection) {
+      var tileGrid = this.getTileGridForProjection(projection);
+      var tilePixelRatio = this.getTilePixelRatio(pixelRatio);
+      var tileSize = (0, _size.toSize)(tileGrid.getTileSize(z), this.tmpSize);
+      if (tilePixelRatio == 1) {
+        return tileSize;
+      }
+      return (0, _size.scale)(tileSize, tilePixelRatio, this.tmpSize);
+    }
+
+    /**
+     * Returns a tile coordinate wrapped around the x-axis. When the tile coordinate
+     * is outside the resolution and extent range of the tile grid, `null` will be
+     * returned.
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {import("../proj/Projection.js").default} [projection] Projection.
+     * @return {import("../tilecoord.js").TileCoord} Tile coordinate to be passed to the tileUrlFunction or
+     *     null if no tile URL should be created for the passed `tileCoord`.
+     */
+  }, {
+    key: "getTileCoordForTileUrlFunction",
+    value: function getTileCoordForTileUrlFunction(tileCoord, projection) {
+      projection = projection !== undefined ? projection : this.getProjection();
+      var tileGrid = this.getTileGridForProjection(projection);
+      if (this.getWrapX() && projection.isGlobal()) {
+        tileCoord = (0, _tilegrid.wrapX)(tileGrid, tileCoord, projection);
+      }
+      return (0, _tilecoord.withinExtentAndZ)(tileCoord, tileGrid) ? tileCoord : null;
+    }
+
+    /**
+     * Remove all cached tiles from the source. The next render cycle will fetch new tiles.
+     * @api
+     */
+  }, {
+    key: "clear",
+    value: function clear() {
+      this.tileCache.clear();
+    }
+  }, {
+    key: "refresh",
+    value: function refresh() {
+      this.clear();
+      _get(_getPrototypeOf(TileSource.prototype), "refresh", this).call(this);
+    }
+
+    /**
+     * Increases the cache size if needed
+     * @param {number} tileCount Minimum number of tiles needed.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     */
+  }, {
+    key: "updateCacheSize",
+    value: function updateCacheSize(tileCount, projection) {
+      var tileCache = this.getTileCacheForProjection(projection);
+      if (tileCount > tileCache.highWaterMark) {
+        tileCache.highWaterMark = tileCount;
+      }
+    }
+
+    /**
+     * Marks a tile coord as being used, without triggering a load.
+     * @abstract
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     */
+  }, {
+    key: "useTile",
+    value: function useTile(z, x, y, projection) {}
+  }]);
+  return TileSource;
+}(_Source2.default);
+/**
+ * @classdesc
+ * Events emitted by {@link module:ol/source/Tile~TileSource} instances are instances of this
+ * type.
+ */
+var TileSourceEvent = /*#__PURE__*/function (_Event) {
+  _inherits(TileSourceEvent, _Event);
+  var _super2 = _createSuper(TileSourceEvent);
+  /**
+   * @param {string} type Type.
+   * @param {import("../Tile.js").default} tile The tile.
+   */
+  function TileSourceEvent(type, tile) {
+    var _this2;
+    _classCallCheck(this, TileSourceEvent);
+    _this2 = _super2.call(this, type);
+
+    /**
+     * The tile related to the event.
+     * @type {import("../Tile.js").default}
+     * @api
+     */
+    _this2.tile = tile;
+    return _this2;
+  }
+  return _createClass(TileSourceEvent);
+}(_Event2.default);
+exports.TileSourceEvent = TileSourceEvent;
+var _default = TileSource;
+exports.default = _default;
+},{"../events/Event.js":"node_modules/ol/events/Event.js","./Source.js":"node_modules/ol/source/Source.js","../TileCache.js":"node_modules/ol/TileCache.js","../TileState.js":"node_modules/ol/TileState.js","../util.js":"node_modules/ol/util.js","../asserts.js":"node_modules/ol/asserts.js","../proj.js":"node_modules/ol/proj.js","../tilecoord.js":"node_modules/ol/tilecoord.js","../tilegrid.js":"node_modules/ol/tilegrid.js","../size.js":"node_modules/ol/size.js"}],"node_modules/ol/source/TileEventType.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+/**
+ * @module ol/source/TileEventType
+ */
+/**
+ * @enum {string}
+ */
+var _default = {
+  /**
+   * Triggered when a tile starts loading.
+   * @event module:ol/source/Tile.TileSourceEvent#tileloadstart
+   * @api
+   */
+  TILELOADSTART: 'tileloadstart',
+  /**
+   * Triggered when a tile finishes loading, either when its data is loaded,
+   * or when loading was aborted because the tile is no longer needed.
+   * @event module:ol/source/Tile.TileSourceEvent#tileloadend
+   * @api
+   */
+  TILELOADEND: 'tileloadend',
+  /**
+   * Triggered if tile loading results in an error. Note that this is not the
+   * right place to re-fetch tiles. See {@link module:ol/ImageTile~ImageTile#load}
+   * for details.
+   * @event module:ol/source/Tile.TileSourceEvent#tileloaderror
+   * @api
+   */
+  TILELOADERROR: 'tileloaderror'
+};
+/**
+ * @typedef {'tileloadstart'|'tileloadend'|'tileloaderror'} TileSourceEventTypes
+ */
+exports.default = _default;
+},{}],"node_modules/ol/tileurlfunction.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.createFromTemplate = createFromTemplate;
+exports.createFromTemplates = createFromTemplates;
+exports.createFromTileUrlFunctions = createFromTileUrlFunctions;
+exports.expandUrl = expandUrl;
+exports.nullTileUrlFunction = nullTileUrlFunction;
+var _asserts = require("./asserts.js");
+var _math = require("./math.js");
+var _tilecoord = require("./tilecoord.js");
+/**
+ * @module ol/tileurlfunction
+ */
+
+/**
+ * @param {string} template Template.
+ * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+ * @return {import("./Tile.js").UrlFunction} Tile URL function.
+ */
+function createFromTemplate(template, tileGrid) {
+  var zRegEx = /\{z\}/g;
+  var xRegEx = /\{x\}/g;
+  var yRegEx = /\{y\}/g;
+  var dashYRegEx = /\{-y\}/g;
+  return (
+    /**
+     * @param {import("./tilecoord.js").TileCoord} tileCoord Tile Coordinate.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("./proj/Projection.js").default} projection Projection.
+     * @return {string|undefined} Tile URL.
+     */
+    function (tileCoord, pixelRatio, projection) {
+      if (!tileCoord) {
+        return undefined;
+      }
+      return template.replace(zRegEx, tileCoord[0].toString()).replace(xRegEx, tileCoord[1].toString()).replace(yRegEx, tileCoord[2].toString()).replace(dashYRegEx, function () {
+        var z = tileCoord[0];
+        var range = tileGrid.getFullTileRange(z);
+        (0, _asserts.assert)(range, 55); // The {-y} placeholder requires a tile grid with extent
+        var y = range.getHeight() - tileCoord[2] - 1;
+        return y.toString();
+      });
+    }
+  );
+}
+
+/**
+ * @param {Array<string>} templates Templates.
+ * @param {import("./tilegrid/TileGrid.js").default} tileGrid Tile grid.
+ * @return {import("./Tile.js").UrlFunction} Tile URL function.
+ */
+function createFromTemplates(templates, tileGrid) {
+  var len = templates.length;
+  var tileUrlFunctions = new Array(len);
+  for (var i = 0; i < len; ++i) {
+    tileUrlFunctions[i] = createFromTemplate(templates[i], tileGrid);
+  }
+  return createFromTileUrlFunctions(tileUrlFunctions);
+}
+
+/**
+ * @param {Array<import("./Tile.js").UrlFunction>} tileUrlFunctions Tile URL Functions.
+ * @return {import("./Tile.js").UrlFunction} Tile URL function.
+ */
+function createFromTileUrlFunctions(tileUrlFunctions) {
+  if (tileUrlFunctions.length === 1) {
+    return tileUrlFunctions[0];
+  }
+  return (
+    /**
+     * @param {import("./tilecoord.js").TileCoord} tileCoord Tile Coordinate.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("./proj/Projection.js").default} projection Projection.
+     * @return {string|undefined} Tile URL.
+     */
+    function (tileCoord, pixelRatio, projection) {
+      if (!tileCoord) {
+        return undefined;
+      }
+      var h = (0, _tilecoord.hash)(tileCoord);
+      var index = (0, _math.modulo)(h, tileUrlFunctions.length);
+      return tileUrlFunctions[index](tileCoord, pixelRatio, projection);
+    }
+  );
+}
+
+/**
+ * @param {import("./tilecoord.js").TileCoord} tileCoord Tile coordinate.
+ * @param {number} pixelRatio Pixel ratio.
+ * @param {import("./proj/Projection.js").default} projection Projection.
+ * @return {string|undefined} Tile URL.
+ */
+function nullTileUrlFunction(tileCoord, pixelRatio, projection) {
+  return undefined;
+}
+
+/**
+ * @param {string} url URL.
+ * @return {Array<string>} Array of urls.
+ */
+function expandUrl(url) {
+  var urls = [];
+  var match = /\{([a-z])-([a-z])\}/.exec(url);
+  if (match) {
+    // char range
+    var startCharCode = match[1].charCodeAt(0);
+    var stopCharCode = match[2].charCodeAt(0);
+    var charCode;
+    for (charCode = startCharCode; charCode <= stopCharCode; ++charCode) {
+      urls.push(url.replace(match[0], String.fromCharCode(charCode)));
+    }
+    return urls;
+  }
+  match = /\{(\d+)-(\d+)\}/.exec(url);
+  if (match) {
+    // number range
+    var stop = parseInt(match[2], 10);
+    for (var i = parseInt(match[1], 10); i <= stop; i++) {
+      urls.push(url.replace(match[0], i.toString()));
+    }
+    return urls;
+  }
+  urls.push(url);
+  return urls;
+}
+},{"./asserts.js":"node_modules/ol/asserts.js","./math.js":"node_modules/ol/math.js","./tilecoord.js":"node_modules/ol/tilecoord.js"}],"node_modules/ol/source/UrlTile.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _TileEventType = _interopRequireDefault(require("./TileEventType.js"));
+var _Tile = _interopRequireWildcard(require("./Tile.js"));
+var _TileState = _interopRequireDefault(require("../TileState.js"));
+var _tileurlfunction = require("../tileurlfunction.js");
+var _tilecoord = require("../tilecoord.js");
+var _util = require("../util.js");
+function _getRequireWildcardCache(nodeInterop) { if (typeof WeakMap !== "function") return null; var cacheBabelInterop = new WeakMap(); var cacheNodeInterop = new WeakMap(); return (_getRequireWildcardCache = function (nodeInterop) { return nodeInterop ? cacheNodeInterop : cacheBabelInterop; })(nodeInterop); }
+function _interopRequireWildcard(obj, nodeInterop) { if (!nodeInterop && obj && obj.__esModule) { return obj; } if (obj === null || typeof obj !== "object" && typeof obj !== "function") { return { default: obj }; } var cache = _getRequireWildcardCache(nodeInterop); if (cache && cache.has(obj)) { return cache.get(obj); } var newObj = {}; var hasPropertyDescriptor = Object.defineProperty && Object.getOwnPropertyDescriptor; for (var key in obj) { if (key !== "default" && Object.prototype.hasOwnProperty.call(obj, key)) { var desc = hasPropertyDescriptor ? Object.getOwnPropertyDescriptor(obj, key) : null; if (desc && (desc.get || desc.set)) { Object.defineProperty(newObj, key, desc); } else { newObj[key] = obj[key]; } } } newObj.default = obj; if (cache) { cache.set(obj, newObj); } return newObj; }
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/source/UrlTile
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+ * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+ * @property {number} [cacheSize] Cache size.
+ * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {import("../proj.js").ProjectionLike} [projection] Projection.
+ * @property {import("./Source.js").State} [state] State.
+ * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] TileGrid.
+ * @property {import("../Tile.js").LoadFunction} tileLoadFunction TileLoadFunction.
+ * @property {number} [tilePixelRatio] TilePixelRatio.
+ * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] TileUrlFunction.
+ * @property {string} [url] Url.
+ * @property {Array<string>} [urls] Urls.
+ * @property {boolean} [wrapX=true] WrapX.
+ * @property {number} [transition] Transition.
+ * @property {string} [key] Key.
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0] ZDirection.
+ * @property {boolean} [interpolate=false] Use interpolated values when resampling.  By default,
+ * the nearest neighbor is used when resampling.
+ */
+/**
+ * @classdesc
+ * Base class for sources providing tiles divided into a tile grid over http.
+ *
+ * @fires import("./Tile.js").TileSourceEvent
+ */
+var UrlTile = /*#__PURE__*/function (_TileSource) {
+  _inherits(UrlTile, _TileSource);
+  var _super = _createSuper(UrlTile);
+  /**
+   * @param {Options} options Image tile options.
+   */
+  function UrlTile(options) {
+    var _this;
+    _classCallCheck(this, UrlTile);
+    _this = _super.call(this, {
+      attributions: options.attributions,
+      cacheSize: options.cacheSize,
+      opaque: options.opaque,
+      projection: options.projection,
+      state: options.state,
+      tileGrid: options.tileGrid,
+      tilePixelRatio: options.tilePixelRatio,
+      wrapX: options.wrapX,
+      transition: options.transition,
+      interpolate: options.interpolate,
+      key: options.key,
+      attributionsCollapsible: options.attributionsCollapsible,
+      zDirection: options.zDirection
+    });
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.generateTileUrlFunction_ = _this.tileUrlFunction === UrlTile.prototype.tileUrlFunction;
+
+    /**
+     * @protected
+     * @type {import("../Tile.js").LoadFunction}
+     */
+    _this.tileLoadFunction = options.tileLoadFunction;
+    if (options.tileUrlFunction) {
+      _this.tileUrlFunction = options.tileUrlFunction;
+    }
+
+    /**
+     * @protected
+     * @type {!Array<string>|null}
+     */
+    _this.urls = null;
+    if (options.urls) {
+      _this.setUrls(options.urls);
+    } else if (options.url) {
+      _this.setUrl(options.url);
+    }
+
+    /**
+     * @private
+     * @type {!Object<string, boolean>}
+     */
+    _this.tileLoadingKeys_ = {};
+    return _this;
+  }
+
+  /**
+   * Return the tile load function of the source.
+   * @return {import("../Tile.js").LoadFunction} TileLoadFunction
+   * @api
+   */
+  _createClass(UrlTile, [{
+    key: "getTileLoadFunction",
+    value: function getTileLoadFunction() {
+      return this.tileLoadFunction;
+    }
+
+    /**
+     * Return the tile URL function of the source.
+     * @return {import("../Tile.js").UrlFunction} TileUrlFunction
+     * @api
+     */
+  }, {
+    key: "getTileUrlFunction",
+    value: function getTileUrlFunction() {
+      return Object.getPrototypeOf(this).tileUrlFunction === this.tileUrlFunction ? this.tileUrlFunction.bind(this) : this.tileUrlFunction;
+    }
+
+    /**
+     * Return the URLs used for this source.
+     * When a tileUrlFunction is used instead of url or urls,
+     * null will be returned.
+     * @return {!Array<string>|null} URLs.
+     * @api
+     */
+  }, {
+    key: "getUrls",
+    value: function getUrls() {
+      return this.urls;
+    }
+
+    /**
+     * Handle tile change events.
+     * @param {import("../events/Event.js").default} event Event.
+     * @protected
+     */
+  }, {
+    key: "handleTileChange",
+    value: function handleTileChange(event) {
+      var tile = /** @type {import("../Tile.js").default} */event.target;
+      var uid = (0, _util.getUid)(tile);
+      var tileState = tile.getState();
+      var type;
+      if (tileState == _TileState.default.LOADING) {
+        this.tileLoadingKeys_[uid] = true;
+        type = _TileEventType.default.TILELOADSTART;
+      } else if (uid in this.tileLoadingKeys_) {
+        delete this.tileLoadingKeys_[uid];
+        type = tileState == _TileState.default.ERROR ? _TileEventType.default.TILELOADERROR : tileState == _TileState.default.LOADED ? _TileEventType.default.TILELOADEND : undefined;
+      }
+      if (type != undefined) {
+        this.dispatchEvent(new _Tile.TileSourceEvent(type, tile));
+      }
+    }
+
+    /**
+     * Set the tile load function of the source.
+     * @param {import("../Tile.js").LoadFunction} tileLoadFunction Tile load function.
+     * @api
+     */
+  }, {
+    key: "setTileLoadFunction",
+    value: function setTileLoadFunction(tileLoadFunction) {
+      this.tileCache.clear();
+      this.tileLoadFunction = tileLoadFunction;
+      this.changed();
+    }
+
+    /**
+     * Set the tile URL function of the source.
+     * @param {import("../Tile.js").UrlFunction} tileUrlFunction Tile URL function.
+     * @param {string} [key] Optional new tile key for the source.
+     * @api
+     */
+  }, {
+    key: "setTileUrlFunction",
+    value: function setTileUrlFunction(tileUrlFunction, key) {
+      this.tileUrlFunction = tileUrlFunction;
+      this.tileCache.pruneExceptNewestZ();
+      if (typeof key !== 'undefined') {
+        this.setKey(key);
+      } else {
+        this.changed();
+      }
+    }
+
+    /**
+     * Set the URL to use for requests.
+     * @param {string} url URL.
+     * @api
+     */
+  }, {
+    key: "setUrl",
+    value: function setUrl(url) {
+      var urls = (0, _tileurlfunction.expandUrl)(url);
+      this.urls = urls;
+      this.setUrls(urls);
+    }
+
+    /**
+     * Set the URLs to use for requests.
+     * @param {Array<string>} urls URLs.
+     * @api
+     */
+  }, {
+    key: "setUrls",
+    value: function setUrls(urls) {
+      this.urls = urls;
+      var key = urls.join('\n');
+      if (this.generateTileUrlFunction_) {
+        this.setTileUrlFunction((0, _tileurlfunction.createFromTemplates)(urls, this.tileGrid), key);
+      } else {
+        this.setKey(key);
+      }
+    }
+
+    /**
+     * @param {import("../tilecoord.js").TileCoord} tileCoord Tile coordinate.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {string|undefined} Tile URL.
+     */
+  }, {
+    key: "tileUrlFunction",
+    value: function tileUrlFunction(tileCoord, pixelRatio, projection) {
+      return undefined;
+    }
+
+    /**
+     * Marks a tile coord as being used, without triggering a load.
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     */
+  }, {
+    key: "useTile",
+    value: function useTile(z, x, y) {
+      var tileCoordKey = (0, _tilecoord.getKeyZXY)(z, x, y);
+      if (this.tileCache.containsKey(tileCoordKey)) {
+        this.tileCache.get(tileCoordKey);
+      }
+    }
+  }]);
+  return UrlTile;
+}(_Tile.default);
+var _default = UrlTile;
+exports.default = _default;
+},{"./TileEventType.js":"node_modules/ol/source/TileEventType.js","./Tile.js":"node_modules/ol/source/Tile.js","../TileState.js":"node_modules/ol/TileState.js","../tileurlfunction.js":"node_modules/ol/tileurlfunction.js","../tilecoord.js":"node_modules/ol/tilecoord.js","../util.js":"node_modules/ol/util.js"}],"node_modules/ol/source/TileImage.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _ImageTile = _interopRequireDefault(require("../ImageTile.js"));
+var _Tile = _interopRequireDefault(require("../reproj/Tile.js"));
+var _TileCache = _interopRequireDefault(require("../TileCache.js"));
+var _TileState = _interopRequireDefault(require("../TileState.js"));
+var _UrlTile2 = _interopRequireDefault(require("./UrlTile.js"));
+var _proj = require("../proj.js");
+var _tilecoord = require("../tilecoord.js");
+var _tilegrid = require("../tilegrid.js");
+var _util = require("../util.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/source/TileImage
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+ * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+ * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
+ * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
+ * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
+ * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
+ * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
+ * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {import("../proj.js").ProjectionLike} [projection] Projection. Default is the view projection.
+ * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
+ * Higher values can increase reprojection performance, but decrease precision.
+ * @property {import("./Source.js").State} [state] Source state.
+ * @property {typeof import("../ImageTile.js").default} [tileClass] Class used to instantiate image tiles.
+ * Default is {@link module:ol/ImageTile~ImageTile}.
+ * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] Tile grid.
+ * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
+ * ```js
+ * function(imageTile, src) {
+ *   imageTile.getImage().src = src;
+ * };
+ * ```
+ * @property {number} [tilePixelRatio=1] The pixel ratio used by the tile service. For example, if the tile
+ * service advertizes 256px by 256px tiles but actually sends 512px
+ * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
+ * should be set to `2`.
+ * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Optional function to get tile URL given a tile coordinate and the projection.
+ * @property {string} [url] URL template. Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
+ * A `{?-?}` template pattern, for example `subdomain{a-f}.domain.com`, may be
+ * used instead of defining each one separately in the `urls` option.
+ * @property {Array<string>} [urls] An array of URL templates.
+ * @property {boolean} [wrapX] Whether to wrap the world horizontally. The default, is to
+ * request out-of-bounds tiles from the server. When set to `false`, only one
+ * world will be rendered. When set to `true`, tiles will be requested for one
+ * world only, but they will be wrapped horizontally to render multiple worlds.
+ * @property {number} [transition] Duration of the opacity transition for rendering.
+ * To disable the opacity transition, pass `transition: 0`.
+ * @property {string} [key] Optional tile key for proper cache fetching
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
+ * Choose whether to use tiles with a higher or lower zoom level when between integer
+ * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+ */
+/**
+ * @classdesc
+ * Base class for sources providing images divided into a tile grid.
+ *
+ * @fires import("./Tile.js").TileSourceEvent
+ * @api
+ */
+var TileImage = /*#__PURE__*/function (_UrlTile) {
+  _inherits(TileImage, _UrlTile);
+  var _super = _createSuper(TileImage);
+  /**
+   * @param {!Options} options Image tile options.
+   */
+  function TileImage(options) {
+    var _this;
+    _classCallCheck(this, TileImage);
+    _this = _super.call(this, {
+      attributions: options.attributions,
+      cacheSize: options.cacheSize,
+      opaque: options.opaque,
+      projection: options.projection,
+      state: options.state,
+      tileGrid: options.tileGrid,
+      tileLoadFunction: options.tileLoadFunction ? options.tileLoadFunction : defaultTileLoadFunction,
+      tilePixelRatio: options.tilePixelRatio,
+      tileUrlFunction: options.tileUrlFunction,
+      url: options.url,
+      urls: options.urls,
+      wrapX: options.wrapX,
+      transition: options.transition,
+      interpolate: options.interpolate !== undefined ? options.interpolate : true,
+      key: options.key,
+      attributionsCollapsible: options.attributionsCollapsible,
+      zDirection: options.zDirection
+    });
+
+    /**
+     * @protected
+     * @type {?string}
+     */
+    _this.crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : null;
+
+    /**
+     * @protected
+     * @type {typeof ImageTile}
+     */
+    _this.tileClass = options.tileClass !== undefined ? options.tileClass : _ImageTile.default;
+
+    /**
+     * @protected
+     * @type {!Object<string, TileCache>}
+     */
+    _this.tileCacheForProjection = {};
+
+    /**
+     * @protected
+     * @type {!Object<string, import("../tilegrid/TileGrid.js").default>}
+     */
+    _this.tileGridForProjection = {};
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    _this.reprojectionErrorThreshold_ = options.reprojectionErrorThreshold;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.renderReprojectionEdges_ = false;
+    return _this;
+  }
+
+  /**
+   * @return {boolean} Can expire cache.
+   */
+  _createClass(TileImage, [{
+    key: "canExpireCache",
+    value: function canExpireCache() {
+      if (this.tileCache.canExpireCache()) {
+        return true;
+      }
+      for (var key in this.tileCacheForProjection) {
+        if (this.tileCacheForProjection[key].canExpireCache()) {
+          return true;
+        }
+      }
+      return false;
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {!Object<string, boolean>} usedTiles Used tiles.
+     */
+  }, {
+    key: "expireCache",
+    value: function expireCache(projection, usedTiles) {
+      var usedTileCache = this.getTileCacheForProjection(projection);
+      this.tileCache.expireCache(this.tileCache == usedTileCache ? usedTiles : {});
+      for (var id in this.tileCacheForProjection) {
+        var tileCache = this.tileCacheForProjection[id];
+        tileCache.expireCache(tileCache == usedTileCache ? usedTiles : {});
+      }
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {number} Gutter.
+     */
+  }, {
+    key: "getGutterForProjection",
+    value: function getGutterForProjection(projection) {
+      if (this.getProjection() && projection && !(0, _proj.equivalent)(this.getProjection(), projection)) {
+        return 0;
+      }
+      return this.getGutter();
+    }
+
+    /**
+     * @return {number} Gutter.
+     */
+  }, {
+    key: "getGutter",
+    value: function getGutter() {
+      return 0;
+    }
+
+    /**
+     * Return the key to be used for all tiles in the source.
+     * @return {string} The key for all tiles.
+     */
+  }, {
+    key: "getKey",
+    value: function getKey() {
+      var key = _get(_getPrototypeOf(TileImage.prototype), "getKey", this).call(this);
+      if (!this.getInterpolate()) {
+        key += ':disable-interpolation';
+      }
+      return key;
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {boolean} Opaque.
+     */
+  }, {
+    key: "getOpaque",
+    value: function getOpaque(projection) {
+      if (this.getProjection() && projection && !(0, _proj.equivalent)(this.getProjection(), projection)) {
+        return false;
+      }
+      return _get(_getPrototypeOf(TileImage.prototype), "getOpaque", this).call(this, projection);
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {!import("../tilegrid/TileGrid.js").default} Tile grid.
+     */
+  }, {
+    key: "getTileGridForProjection",
+    value: function getTileGridForProjection(projection) {
+      var thisProj = this.getProjection();
+      if (this.tileGrid && (!thisProj || (0, _proj.equivalent)(thisProj, projection))) {
+        return this.tileGrid;
+      }
+      var projKey = (0, _util.getUid)(projection);
+      if (!(projKey in this.tileGridForProjection)) {
+        this.tileGridForProjection[projKey] = (0, _tilegrid.getForProjection)(projection);
+      }
+      return this.tileGridForProjection[projKey];
+    }
+
+    /**
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {import("../TileCache.js").default} Tile cache.
+     */
+  }, {
+    key: "getTileCacheForProjection",
+    value: function getTileCacheForProjection(projection) {
+      var thisProj = this.getProjection();
+      if (!thisProj || (0, _proj.equivalent)(thisProj, projection)) {
+        return this.tileCache;
+      }
+      var projKey = (0, _util.getUid)(projection);
+      if (!(projKey in this.tileCacheForProjection)) {
+        this.tileCacheForProjection[projKey] = new _TileCache.default(this.tileCache.highWaterMark);
+      }
+      return this.tileCacheForProjection[projKey];
+    }
+
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @param {string} key The key set on the tile.
+     * @return {!ImageTile} Tile.
+     * @private
+     */
+  }, {
+    key: "createTile_",
+    value: function createTile_(z, x, y, pixelRatio, projection, key) {
+      var tileCoord = [z, x, y];
+      var urlTileCoord = this.getTileCoordForTileUrlFunction(tileCoord, projection);
+      var tileUrl = urlTileCoord ? this.tileUrlFunction(urlTileCoord, pixelRatio, projection) : undefined;
+      var tile = new this.tileClass(tileCoord, tileUrl !== undefined ? _TileState.default.IDLE : _TileState.default.EMPTY, tileUrl !== undefined ? tileUrl : '', this.crossOrigin, this.tileLoadFunction, this.tileOptions);
+      tile.key = key;
+      tile.addEventListener(_EventType.default.CHANGE, this.handleTileChange.bind(this));
+      return tile;
+    }
+
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {import("../proj/Projection.js").default} projection Projection.
+     * @return {!(ImageTile|ReprojTile)} Tile.
+     */
+  }, {
+    key: "getTile",
+    value: function getTile(z, x, y, pixelRatio, projection) {
+      var _this2 = this;
+      var sourceProjection = this.getProjection();
+      if (!sourceProjection || !projection || (0, _proj.equivalent)(sourceProjection, projection)) {
+        return this.getTileInternal(z, x, y, pixelRatio, sourceProjection || projection);
+      }
+      var cache = this.getTileCacheForProjection(projection);
+      var tileCoord = [z, x, y];
+      var tile;
+      var tileCoordKey = (0, _tilecoord.getKey)(tileCoord);
+      if (cache.containsKey(tileCoordKey)) {
+        tile = cache.get(tileCoordKey);
+      }
+      var key = this.getKey();
+      if (tile && tile.key == key) {
+        return tile;
+      }
+      var sourceTileGrid = this.getTileGridForProjection(sourceProjection);
+      var targetTileGrid = this.getTileGridForProjection(projection);
+      var wrappedTileCoord = this.getTileCoordForTileUrlFunction(tileCoord, projection);
+      var newTile = new _Tile.default(sourceProjection, sourceTileGrid, projection, targetTileGrid, tileCoord, wrappedTileCoord, this.getTilePixelRatio(pixelRatio), this.getGutter(), function (z, x, y, pixelRatio) {
+        return _this2.getTileInternal(z, x, y, pixelRatio, sourceProjection);
+      }, this.reprojectionErrorThreshold_, this.renderReprojectionEdges_, this.getInterpolate());
+      newTile.key = key;
+      if (tile) {
+        newTile.interimTile = tile;
+        newTile.refreshInterimChain();
+        cache.replace(tileCoordKey, newTile);
+      } else {
+        cache.set(tileCoordKey, newTile);
+      }
+      return newTile;
+    }
+
+    /**
+     * @param {number} z Tile coordinate z.
+     * @param {number} x Tile coordinate x.
+     * @param {number} y Tile coordinate y.
+     * @param {number} pixelRatio Pixel ratio.
+     * @param {!import("../proj/Projection.js").default} projection Projection.
+     * @return {!ImageTile} Tile.
+     * @protected
+     */
+  }, {
+    key: "getTileInternal",
+    value: function getTileInternal(z, x, y, pixelRatio, projection) {
+      var tile = null;
+      var tileCoordKey = (0, _tilecoord.getKeyZXY)(z, x, y);
+      var key = this.getKey();
+      if (!this.tileCache.containsKey(tileCoordKey)) {
+        tile = this.createTile_(z, x, y, pixelRatio, projection, key);
+        this.tileCache.set(tileCoordKey, tile);
+      } else {
+        tile = this.tileCache.get(tileCoordKey);
+        if (tile.key != key) {
+          // The source's params changed. If the tile has an interim tile and if we
+          // can use it then we use it. Otherwise we create a new tile.  In both
+          // cases we attempt to assign an interim tile to the new tile.
+          var interimTile = tile;
+          tile = this.createTile_(z, x, y, pixelRatio, projection, key);
+
+          //make the new tile the head of the list,
+          if (interimTile.getState() == _TileState.default.IDLE) {
+            //the old tile hasn't begun loading yet, and is now outdated, so we can simply discard it
+            tile.interimTile = interimTile.interimTile;
+          } else {
+            tile.interimTile = interimTile;
+          }
+          tile.refreshInterimChain();
+          this.tileCache.replace(tileCoordKey, tile);
+        }
+      }
+      return tile;
+    }
+
+    /**
+     * Sets whether to render reprojection edges or not (usually for debugging).
+     * @param {boolean} render Render the edges.
+     * @api
+     */
+  }, {
+    key: "setRenderReprojectionEdges",
+    value: function setRenderReprojectionEdges(render) {
+      if (this.renderReprojectionEdges_ == render) {
+        return;
+      }
+      this.renderReprojectionEdges_ = render;
+      for (var id in this.tileCacheForProjection) {
+        this.tileCacheForProjection[id].clear();
+      }
+      this.changed();
+    }
+
+    /**
+     * Sets the tile grid to use when reprojecting the tiles to the given
+     * projection instead of the default tile grid for the projection.
+     *
+     * This can be useful when the default tile grid cannot be created
+     * (e.g. projection has no extent defined) or
+     * for optimization reasons (custom tile size, resolutions, ...).
+     *
+     * @param {import("../proj.js").ProjectionLike} projection Projection.
+     * @param {import("../tilegrid/TileGrid.js").default} tilegrid Tile grid to use for the projection.
+     * @api
+     */
+  }, {
+    key: "setTileGridForProjection",
+    value: function setTileGridForProjection(projection, tilegrid) {
+      var proj = (0, _proj.get)(projection);
+      if (proj) {
+        var projKey = (0, _util.getUid)(proj);
+        if (!(projKey in this.tileGridForProjection)) {
+          this.tileGridForProjection[projKey] = tilegrid;
+        }
+      }
+    }
+  }, {
+    key: "clear",
+    value: function clear() {
+      _get(_getPrototypeOf(TileImage.prototype), "clear", this).call(this);
+      for (var id in this.tileCacheForProjection) {
+        this.tileCacheForProjection[id].clear();
+      }
+    }
+  }]);
+  return TileImage;
+}(_UrlTile2.default);
+/**
+ * @param {ImageTile} imageTile Image tile.
+ * @param {string} src Source.
+ */
+function defaultTileLoadFunction(imageTile, src) {
+  /** @type {HTMLImageElement|HTMLVideoElement} */imageTile.getImage().src = src;
+}
+var _default = TileImage;
+exports.default = _default;
+},{"../events/EventType.js":"node_modules/ol/events/EventType.js","../ImageTile.js":"node_modules/ol/ImageTile.js","../reproj/Tile.js":"node_modules/ol/reproj/Tile.js","../TileCache.js":"node_modules/ol/TileCache.js","../TileState.js":"node_modules/ol/TileState.js","./UrlTile.js":"node_modules/ol/source/UrlTile.js","../proj.js":"node_modules/ol/proj.js","../tilecoord.js":"node_modules/ol/tilecoord.js","../tilegrid.js":"node_modules/ol/tilegrid.js","../util.js":"node_modules/ol/util.js"}],"node_modules/ol/source/XYZ.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _TileImage2 = _interopRequireDefault(require("./TileImage.js"));
+var _tilegrid = require("../tilegrid.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/source/XYZ
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+ * @property {boolean} [attributionsCollapsible=true] Attributions are collapsible.
+ * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
+ * @property {null|string} [crossOrigin] The `crossOrigin` attribute for loaded images.  Note that
+ * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
+ * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
+ * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
+ * @property {boolean} [opaque=false] Whether the layer is opaque.
+ * @property {import("../proj.js").ProjectionLike} [projection='EPSG:3857'] Projection.
+ * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
+ * Higher values can increase reprojection performance, but decrease precision.
+ * @property {number} [maxZoom=42] Optional max zoom level. Not used if `tileGrid` is provided.
+ * @property {number} [minZoom=0] Optional min zoom level. Not used if `tileGrid` is provided.
+ * @property {number} [maxResolution] Optional tile grid resolution at level zero. Not used if `tileGrid` is provided.
+ * @property {import("../tilegrid/TileGrid.js").default} [tileGrid] Tile grid.
+ * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
+ * ```js
+ * function(imageTile, src) {
+ *   imageTile.getImage().src = src;
+ * };
+ * ```
+ * @property {number} [tilePixelRatio=1] The pixel ratio used by the tile service.
+ * For example, if the tile service advertizes 256px by 256px tiles but actually sends 512px
+ * by 512px images (for retina/hidpi devices) then `tilePixelRatio`
+ * should be set to `2`.
+ * @property {number|import("../size.js").Size} [tileSize=[256, 256]] The tile size used by the tile service.
+ * Not used if `tileGrid` is provided.
+ * @property {number} [gutter=0] The size in pixels of the gutter around image tiles to ignore.
+ * This allows artifacts of rendering at tile edges to be ignored.
+ * Supported images should be wider and taller than the tile size by a value of `2 x gutter`.
+ * @property {import("../Tile.js").UrlFunction} [tileUrlFunction] Optional function to get
+ * tile URL given a tile coordinate and the projection.
+ * Required if `url` or `urls` are not provided.
+ * @property {string} [url] URL template. Must include `{x}`, `{y}` or `{-y}`,
+ * and `{z}` placeholders. A `{?-?}` template pattern, for example `subdomain{a-f}.domain.com`,
+ * may be used instead of defining each one separately in the `urls` option.
+ * @property {Array<string>} [urls] An array of URL templates.
+ * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
+ * @property {number} [transition=250] Duration of the opacity transition for rendering.
+ * To disable the opacity transition, pass `transition: 0`.
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
+ * Choose whether to use tiles with a higher or lower zoom level when between integer
+ * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+ */
+/**
+ * @classdesc
+ * Layer source for tile data with URLs in a set XYZ format that are
+ * defined in a URL template. By default, this follows the widely-used
+ * Google grid where `x` 0 and `y` 0 are in the top left. Grids like
+ * TMS where `x` 0 and `y` 0 are in the bottom left can be used by
+ * using the `{-y}` placeholder in the URL template, so long as the
+ * source does not have a custom tile grid. In this case
+ * a `tileUrlFunction` can be used, such as:
+ * ```js
+ *  tileUrlFunction: function(coordinate) {
+ *    return 'http://mapserver.com/' + coordinate[0] + '/' +
+ *      coordinate[1] + '/' + (-coordinate[2] - 1) + '.png';
+ *  }
+ * ```
+ * @api
+ */
+var XYZ = /*#__PURE__*/function (_TileImage) {
+  _inherits(XYZ, _TileImage);
+  var _super = _createSuper(XYZ);
+  /**
+   * @param {Options} [options] XYZ options.
+   */
+  function XYZ(options) {
+    var _this;
+    _classCallCheck(this, XYZ);
+    options = options || {};
+    var projection = options.projection !== undefined ? options.projection : 'EPSG:3857';
+    var tileGrid = options.tileGrid !== undefined ? options.tileGrid : (0, _tilegrid.createXYZ)({
+      extent: (0, _tilegrid.extentFromProjection)(projection),
+      maxResolution: options.maxResolution,
+      maxZoom: options.maxZoom,
+      minZoom: options.minZoom,
+      tileSize: options.tileSize
+    });
+    _this = _super.call(this, {
+      attributions: options.attributions,
+      cacheSize: options.cacheSize,
+      crossOrigin: options.crossOrigin,
+      interpolate: options.interpolate,
+      opaque: options.opaque,
+      projection: projection,
+      reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+      tileGrid: tileGrid,
+      tileLoadFunction: options.tileLoadFunction,
+      tilePixelRatio: options.tilePixelRatio,
+      tileUrlFunction: options.tileUrlFunction,
+      url: options.url,
+      urls: options.urls,
+      wrapX: options.wrapX !== undefined ? options.wrapX : true,
+      transition: options.transition,
+      attributionsCollapsible: options.attributionsCollapsible,
+      zDirection: options.zDirection
+    });
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.gutter_ = options.gutter !== undefined ? options.gutter : 0;
+    return _this;
+  }
+
+  /**
+   * @return {number} Gutter.
+   */
+  _createClass(XYZ, [{
+    key: "getGutter",
+    value: function getGutter() {
+      return this.gutter_;
+    }
+  }]);
+  return XYZ;
+}(_TileImage2.default);
+var _default = XYZ;
+exports.default = _default;
+},{"./TileImage.js":"node_modules/ol/source/TileImage.js","../tilegrid.js":"node_modules/ol/tilegrid.js"}],"node_modules/ol/source/OSM.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = exports.ATTRIBUTION = void 0;
+var _XYZ2 = _interopRequireDefault(require("./XYZ.js"));
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/source/OSM
+                                                                                                                                                                                                                      */
+/**
+ * The attribution containing a link to the OpenStreetMap Copyright and License
+ * page.
+ * @const
+ * @type {string}
+ * @api
+ */
+var ATTRIBUTION = '&#169; ' + '<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> ' + 'contributors.';
+
+/**
+ * @typedef {Object} Options
+ * @property {import("./Source.js").AttributionLike} [attributions] Attributions.
+ * @property {number} [cacheSize] Initial tile cache size. Will auto-grow to hold at least the number of tiles in the viewport.
+ * @property {null|string} [crossOrigin='anonymous'] The `crossOrigin` attribute for loaded images.  Note that
+ * you must provide a `crossOrigin` value if you want to access pixel data with the Canvas renderer.
+ * See https://developer.mozilla.org/en-US/docs/Web/HTML/CORS_enabled_image for more detail.
+ * @property {boolean} [interpolate=true] Use interpolated values when resampling.  By default,
+ * linear interpolation is used when resampling.  Set to false to use the nearest neighbor instead.
+ * @property {number} [maxZoom=19] Max zoom.
+ * @property {boolean} [opaque=true] Whether the layer is opaque.
+ * @property {number} [reprojectionErrorThreshold=0.5] Maximum allowed reprojection error (in pixels).
+ * Higher values can increase reprojection performance, but decrease precision.
+ * @property {import("../Tile.js").LoadFunction} [tileLoadFunction] Optional function to load a tile given a URL. The default is
+ * ```js
+ * function(imageTile, src) {
+ *   imageTile.getImage().src = src;
+ * };
+ * ```
+ * @property {number} [transition=250] Duration of the opacity transition for rendering.
+ * To disable the opacity transition, pass `transition: 0`.
+ * @property {string} [url='https://tile.openstreetmap.org/{z}/{x}/{y}.png'] URL template.
+ * Must include `{x}`, `{y}` or `{-y}`, and `{z}` placeholders.
+ * @property {boolean} [wrapX=true] Whether to wrap the world horizontally.
+ * @property {number|import("../array.js").NearestDirectionFunction} [zDirection=0]
+ * Choose whether to use tiles with a higher or lower zoom level when between integer
+ * zoom levels. See {@link module:ol/tilegrid/TileGrid~TileGrid#getZForResolution}.
+ */
+
+/**
+ * @classdesc
+ * Layer source for the OpenStreetMap tile server.
+ * @api
+ */
+exports.ATTRIBUTION = ATTRIBUTION;
+var OSM = /*#__PURE__*/function (_XYZ) {
+  _inherits(OSM, _XYZ);
+  var _super = _createSuper(OSM);
+  /**
+   * @param {Options} [options] Open Street Map options.
+   */
+  function OSM(options) {
+    _classCallCheck(this, OSM);
+    options = options || {};
+    var attributions;
+    if (options.attributions !== undefined) {
+      attributions = options.attributions;
+    } else {
+      attributions = [ATTRIBUTION];
+    }
+    var crossOrigin = options.crossOrigin !== undefined ? options.crossOrigin : 'anonymous';
+    var url = options.url !== undefined ? options.url : 'https://tile.openstreetmap.org/{z}/{x}/{y}.png';
+    return _super.call(this, {
+      attributions: attributions,
+      attributionsCollapsible: false,
+      cacheSize: options.cacheSize,
+      crossOrigin: crossOrigin,
+      interpolate: options.interpolate,
+      maxZoom: options.maxZoom !== undefined ? options.maxZoom : 19,
+      opaque: options.opaque !== undefined ? options.opaque : true,
+      reprojectionErrorThreshold: options.reprojectionErrorThreshold,
+      tileLoadFunction: options.tileLoadFunction,
+      transition: options.transition,
+      url: url,
+      wrapX: options.wrapX,
+      zDirection: options.zDirection
+    });
+  }
+  return _createClass(OSM);
+}(_XYZ2.default);
+var _default = OSM;
+exports.default = _default;
+},{"./XYZ.js":"node_modules/ol/source/XYZ.js"}],"node_modules/ol/interaction/DblClickDragZoom.js":[function(require,module,exports) {
 "use strict";
 
 Object.defineProperty(exports, "__esModule", {
@@ -45338,18 +51474,2436 @@ var _Snap = _interopRequireDefault(require("./interaction/Snap.js"));
 var _Translate = _interopRequireDefault(require("./interaction/Translate.js"));
 var _defaults = require("./interaction/defaults.js");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
-},{"./interaction/DoubleClickZoom.js":"node_modules/ol/interaction/DoubleClickZoom.js","./interaction/DblClickDragZoom.js":"node_modules/ol/interaction/DblClickDragZoom.js","./interaction/DragAndDrop.js":"node_modules/ol/interaction/DragAndDrop.js","./interaction/DragBox.js":"node_modules/ol/interaction/DragBox.js","./interaction/DragPan.js":"node_modules/ol/interaction/DragPan.js","./interaction/DragRotate.js":"node_modules/ol/interaction/DragRotate.js","./interaction/DragRotateAndZoom.js":"node_modules/ol/interaction/DragRotateAndZoom.js","./interaction/DragZoom.js":"node_modules/ol/interaction/DragZoom.js","./interaction/Draw.js":"node_modules/ol/interaction/Draw.js","./interaction/Extent.js":"node_modules/ol/interaction/Extent.js","./interaction/Interaction.js":"node_modules/ol/interaction/Interaction.js","./interaction/KeyboardPan.js":"node_modules/ol/interaction/KeyboardPan.js","./interaction/KeyboardZoom.js":"node_modules/ol/interaction/KeyboardZoom.js","./interaction/Link.js":"node_modules/ol/interaction/Link.js","./interaction/Modify.js":"node_modules/ol/interaction/Modify.js","./interaction/MouseWheelZoom.js":"node_modules/ol/interaction/MouseWheelZoom.js","./interaction/PinchRotate.js":"node_modules/ol/interaction/PinchRotate.js","./interaction/PinchZoom.js":"node_modules/ol/interaction/PinchZoom.js","./interaction/Pointer.js":"node_modules/ol/interaction/Pointer.js","./interaction/Select.js":"node_modules/ol/interaction/Select.js","./interaction/Snap.js":"node_modules/ol/interaction/Snap.js","./interaction/Translate.js":"node_modules/ol/interaction/Translate.js","./interaction/defaults.js":"node_modules/ol/interaction/defaults.js"}],"main.js":[function(require,module,exports) {
+},{"./interaction/DoubleClickZoom.js":"node_modules/ol/interaction/DoubleClickZoom.js","./interaction/DblClickDragZoom.js":"node_modules/ol/interaction/DblClickDragZoom.js","./interaction/DragAndDrop.js":"node_modules/ol/interaction/DragAndDrop.js","./interaction/DragBox.js":"node_modules/ol/interaction/DragBox.js","./interaction/DragPan.js":"node_modules/ol/interaction/DragPan.js","./interaction/DragRotate.js":"node_modules/ol/interaction/DragRotate.js","./interaction/DragRotateAndZoom.js":"node_modules/ol/interaction/DragRotateAndZoom.js","./interaction/DragZoom.js":"node_modules/ol/interaction/DragZoom.js","./interaction/Draw.js":"node_modules/ol/interaction/Draw.js","./interaction/Extent.js":"node_modules/ol/interaction/Extent.js","./interaction/Interaction.js":"node_modules/ol/interaction/Interaction.js","./interaction/KeyboardPan.js":"node_modules/ol/interaction/KeyboardPan.js","./interaction/KeyboardZoom.js":"node_modules/ol/interaction/KeyboardZoom.js","./interaction/Link.js":"node_modules/ol/interaction/Link.js","./interaction/Modify.js":"node_modules/ol/interaction/Modify.js","./interaction/MouseWheelZoom.js":"node_modules/ol/interaction/MouseWheelZoom.js","./interaction/PinchRotate.js":"node_modules/ol/interaction/PinchRotate.js","./interaction/PinchZoom.js":"node_modules/ol/interaction/PinchZoom.js","./interaction/Pointer.js":"node_modules/ol/interaction/Pointer.js","./interaction/Select.js":"node_modules/ol/interaction/Select.js","./interaction/Snap.js":"node_modules/ol/interaction/Snap.js","./interaction/Translate.js":"node_modules/ol/interaction/Translate.js","./interaction/defaults.js":"node_modules/ol/interaction/defaults.js"}],"node_modules/ol/control/FullScreen.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _MapProperty = _interopRequireDefault(require("../MapProperty.js"));
+var _css = require("../css.js");
+var _events = require("../events.js");
+var _dom = require("../dom.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && iter[Symbol.iterator] != null || iter["@@iterator"] != null) return Array.from(iter); }
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) arr2[i] = arr[i]; return arr2; }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/FullScreen
+                                                                                                                                                                                                                      */
+var events = ['fullscreenchange', 'webkitfullscreenchange', 'MSFullscreenChange'];
+
+/**
+ * @enum {string}
+ */
+var FullScreenEventType = {
+  /**
+   * Triggered after the map entered fullscreen.
+   * @event FullScreenEventType#enterfullscreen
+   * @api
+   */
+  ENTERFULLSCREEN: 'enterfullscreen',
+  /**
+   * Triggered after the map leave fullscreen.
+   * @event FullScreenEventType#leavefullscreen
+   * @api
+   */
+  LEAVEFULLSCREEN: 'leavefullscreen'
+};
+
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes|
+ *     'enterfullscreen'|'leavefullscreen', import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types, import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|
+ *     'enterfullscreen'|'leavefullscreen'|import("../ObjectEventType").Types, Return>} FullScreenOnSignature
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-full-screen'] CSS class name.
+ * @property {string|Text|HTMLElement} [label='\u2922'] Text label to use for the button.
+ * Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {string|Text|HTMLElement} [labelActive='\u00d7'] Text label to use for the
+ * button when full-screen is active.
+ * Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {string} [activeClassName=className + '-true'] CSS class name for the button
+ * when full-screen is active.
+ * @property {string} [inactiveClassName=className + '-false'] CSS class name for the button
+ * when full-screen is inactive.
+ * @property {string} [tipLabel='Toggle full-screen'] Text label to use for the button tip.
+ * @property {boolean} [keys=false] Full keyboard access.
+ * @property {HTMLElement|string} [target] Specify a target if you want the
+ * control to be rendered outside of the map's viewport.
+ * @property {HTMLElement|string} [source] The element to be displayed
+ * fullscreen. When not provided, the element containing the map viewport will
+ * be displayed fullscreen.
+ */
+
+/**
+ * @classdesc
+ * Provides a button that when clicked fills up the full screen with the map.
+ * The full screen source element is by default the element containing the map viewport unless
+ * overridden by providing the `source` option. In which case, the dom
+ * element introduced using this parameter will be displayed in full screen.
+ *
+ * When in full screen mode, a close button is shown to exit full screen mode.
+ * The [Fullscreen API](https://www.w3.org/TR/fullscreen/) is used to
+ * toggle the map in full screen mode.
+ *
+ * @fires FullScreenEventType#enterfullscreen
+ * @fires FullScreenEventType#leavefullscreen
+ * @api
+ */
+var FullScreen = /*#__PURE__*/function (_Control) {
+  _inherits(FullScreen, _Control);
+  var _super = _createSuper(FullScreen);
+  /**
+   * @param {Options} [options] Options.
+   */
+  function FullScreen(options) {
+    var _this;
+    _classCallCheck(this, FullScreen);
+    options = options ? options : {};
+    _this = _super.call(this, {
+      element: document.createElement('div'),
+      target: options.target
+    });
+
+    /***
+     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {FullScreenOnSignature<import("../events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {FullScreenOnSignature<void>}
+     */
+    _this.un;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.keys_ = options.keys !== undefined ? options.keys : false;
+
+    /**
+     * @private
+     * @type {HTMLElement|string|undefined}
+     */
+    _this.source_ = options.source;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    _this.isInFullscreen_ = false;
+
+    /**
+     * @private
+     */
+    _this.boundHandleMapTargetChange_ = _this.handleMapTargetChange_.bind(_assertThisInitialized(_this));
+
+    /**
+     * @private
+     * @type {string}
+     */
+    _this.cssClassName_ = options.className !== undefined ? options.className : 'ol-full-screen';
+
+    /**
+     * @private
+     * @type {Array<import("../events.js").EventsKey>}
+     */
+    _this.documentListeners_ = [];
+
+    /**
+     * @private
+     * @type {Array<string>}
+     */
+    _this.activeClassName_ = options.activeClassName !== undefined ? options.activeClassName.split(' ') : [_this.cssClassName_ + '-true'];
+
+    /**
+     * @private
+     * @type {Array<string>}
+     */
+    _this.inactiveClassName_ = options.inactiveClassName !== undefined ? options.inactiveClassName.split(' ') : [_this.cssClassName_ + '-false'];
+    var label = options.label !== undefined ? options.label : "\u2922";
+
+    /**
+     * @private
+     * @type {Text|HTMLElement}
+     */
+    _this.labelNode_ = typeof label === 'string' ? document.createTextNode(label) : label;
+    var labelActive = options.labelActive !== undefined ? options.labelActive : "\xD7";
+
+    /**
+     * @private
+     * @type {Text|HTMLElement}
+     */
+    _this.labelActiveNode_ = typeof labelActive === 'string' ? document.createTextNode(labelActive) : labelActive;
+    var tipLabel = options.tipLabel ? options.tipLabel : 'Toggle full-screen';
+
+    /**
+     * @private
+     * @type {HTMLElement}
+     */
+    _this.button_ = document.createElement('button');
+    _this.button_.title = tipLabel;
+    _this.button_.setAttribute('type', 'button');
+    _this.button_.appendChild(_this.labelNode_);
+    _this.button_.addEventListener(_EventType.default.CLICK, _this.handleClick_.bind(_assertThisInitialized(_this)), false);
+    _this.setClassName_(_this.button_, _this.isInFullscreen_);
+    _this.element.className = "".concat(_this.cssClassName_, " ").concat(_css.CLASS_UNSELECTABLE, " ").concat(_css.CLASS_CONTROL);
+    _this.element.appendChild(_this.button_);
+    return _this;
+  }
+
+  /**
+   * @param {MouseEvent} event The event to handle
+   * @private
+   */
+  _createClass(FullScreen, [{
+    key: "handleClick_",
+    value: function handleClick_(event) {
+      event.preventDefault();
+      this.handleFullScreen_();
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "handleFullScreen_",
+    value: function handleFullScreen_() {
+      var map = this.getMap();
+      if (!map) {
+        return;
+      }
+      var doc = map.getOwnerDocument();
+      if (!isFullScreenSupported(doc)) {
+        return;
+      }
+      if (isFullScreen(doc)) {
+        exitFullScreen(doc);
+      } else {
+        var element;
+        if (this.source_) {
+          element = typeof this.source_ === 'string' ? doc.getElementById(this.source_) : this.source_;
+        } else {
+          element = map.getTargetElement();
+        }
+        if (this.keys_) {
+          requestFullScreenWithKeys(element);
+        } else {
+          requestFullScreen(element);
+        }
+      }
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "handleFullScreenChange_",
+    value: function handleFullScreenChange_() {
+      var map = this.getMap();
+      if (!map) {
+        return;
+      }
+      var wasInFullscreen = this.isInFullscreen_;
+      this.isInFullscreen_ = isFullScreen(map.getOwnerDocument());
+      if (wasInFullscreen !== this.isInFullscreen_) {
+        this.setClassName_(this.button_, this.isInFullscreen_);
+        if (this.isInFullscreen_) {
+          (0, _dom.replaceNode)(this.labelActiveNode_, this.labelNode_);
+          this.dispatchEvent(FullScreenEventType.ENTERFULLSCREEN);
+        } else {
+          (0, _dom.replaceNode)(this.labelNode_, this.labelActiveNode_);
+          this.dispatchEvent(FullScreenEventType.LEAVEFULLSCREEN);
+        }
+        map.updateSize();
+      }
+    }
+
+    /**
+     * @param {HTMLElement} element Target element
+     * @param {boolean} fullscreen True if fullscreen class name should be active
+     * @private
+     */
+  }, {
+    key: "setClassName_",
+    value: function setClassName_(element, fullscreen) {
+      if (fullscreen) {
+        var _element$classList, _element$classList2;
+        (_element$classList = element.classList).remove.apply(_element$classList, _toConsumableArray(this.inactiveClassName_));
+        (_element$classList2 = element.classList).add.apply(_element$classList2, _toConsumableArray(this.activeClassName_));
+      } else {
+        var _element$classList3, _element$classList4;
+        (_element$classList3 = element.classList).remove.apply(_element$classList3, _toConsumableArray(this.activeClassName_));
+        (_element$classList4 = element.classList).add.apply(_element$classList4, _toConsumableArray(this.inactiveClassName_));
+      }
+    }
+
+    /**
+     * Remove the control from its current map and attach it to the new map.
+     * Pass `null` to just remove the control from the current map.
+     * Subclasses may set up event handlers to get notified about changes to
+     * the map here.
+     * @param {import("../Map.js").default|null} map Map.
+     * @api
+     */
+  }, {
+    key: "setMap",
+    value: function setMap(map) {
+      var oldMap = this.getMap();
+      if (oldMap) {
+        oldMap.removeChangeListener(_MapProperty.default.TARGET, this.boundHandleMapTargetChange_);
+      }
+      _get(_getPrototypeOf(FullScreen.prototype), "setMap", this).call(this, map);
+      this.handleMapTargetChange_();
+      if (map) {
+        map.addChangeListener(_MapProperty.default.TARGET, this.boundHandleMapTargetChange_);
+      }
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "handleMapTargetChange_",
+    value: function handleMapTargetChange_() {
+      var listeners = this.documentListeners_;
+      for (var i = 0, ii = listeners.length; i < ii; ++i) {
+        (0, _events.unlistenByKey)(listeners[i]);
+      }
+      listeners.length = 0;
+      var map = this.getMap();
+      if (map) {
+        var doc = map.getOwnerDocument();
+        if (isFullScreenSupported(doc)) {
+          this.element.classList.remove(_css.CLASS_UNSUPPORTED);
+        } else {
+          this.element.classList.add(_css.CLASS_UNSUPPORTED);
+        }
+        for (var _i = 0, _ii = events.length; _i < _ii; ++_i) {
+          listeners.push((0, _events.listen)(doc, events[_i], this.handleFullScreenChange_, this));
+        }
+        this.handleFullScreenChange_();
+      }
+    }
+  }]);
+  return FullScreen;
+}(_Control2.default);
+/**
+ * @param {Document} doc The root document to check.
+ * @return {boolean} Fullscreen is supported by the current platform.
+ */
+function isFullScreenSupported(doc) {
+  var body = doc.body;
+  return !!(body['webkitRequestFullscreen'] || body.requestFullscreen && doc.fullscreenEnabled);
+}
+
+/**
+ * @param {Document} doc The root document to check.
+ * @return {boolean} Element is currently in fullscreen.
+ */
+function isFullScreen(doc) {
+  return !!(doc['webkitIsFullScreen'] || doc.fullscreenElement);
+}
+
+/**
+ * Request to fullscreen an element.
+ * @param {HTMLElement} element Element to request fullscreen
+ */
+function requestFullScreen(element) {
+  if (element.requestFullscreen) {
+    element.requestFullscreen();
+  } else if (element['webkitRequestFullscreen']) {
+    element['webkitRequestFullscreen']();
+  }
+}
+
+/**
+ * Request to fullscreen an element with keyboard input.
+ * @param {HTMLElement} element Element to request fullscreen
+ */
+function requestFullScreenWithKeys(element) {
+  if (element['webkitRequestFullscreen']) {
+    element['webkitRequestFullscreen']();
+  } else {
+    requestFullScreen(element);
+  }
+}
+
+/**
+ * Exit fullscreen.
+ * @param {Document} doc The document to exit fullscren from
+ */
+function exitFullScreen(doc) {
+  if (doc.exitFullscreen) {
+    doc.exitFullscreen();
+  } else if (doc['webkitExitFullscreen']) {
+    doc['webkitExitFullscreen']();
+  }
+}
+var _default = FullScreen;
+exports.default = _default;
+},{"./Control.js":"node_modules/ol/control/Control.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../MapProperty.js":"node_modules/ol/MapProperty.js","../css.js":"node_modules/ol/css.js","../events.js":"node_modules/ol/events.js","../dom.js":"node_modules/ol/dom.js"}],"node_modules/ol/control/MousePosition.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _EventType = _interopRequireDefault(require("../pointer/EventType.js"));
+var _proj = require("../proj.js");
+var _events = require("../events.js");
+var _coordinate = require("../coordinate.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/MousePosition
+                                                                                                                                                                                                                      */
+/**
+ * @type {string}
+ */
+var PROJECTION = 'projection';
+
+/**
+ * @type {string}
+ */
+var COORDINATE_FORMAT = 'coordinateFormat';
+
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
+ *     'change:coordinateFormat'|'change:projection', import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types|
+ *     'change:coordinateFormat'|'change:projection', Return>} MousePositionOnSignature
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-mouse-position'] CSS class name.
+ * @property {import("../coordinate.js").CoordinateFormat} [coordinateFormat] Coordinate format.
+ * @property {import("../proj.js").ProjectionLike} [projection] Projection. Default is the view projection.
+ * @property {function(import("../MapEvent.js").default):void} [render] Function called when the
+ * control should be re-rendered. This is called in a `requestAnimationFrame`
+ * callback.
+ * @property {HTMLElement|string} [target] Specify a target if you want the
+ * control to be rendered outside of the map's viewport.
+ * @property {string} [placeholder] Markup to show when the mouse position is not
+ * available (e.g. when the pointer leaves the map viewport).  By default, a non-breaking space is rendered
+ * initially and the last position is retained when the mouse leaves the viewport.
+ * When a string is provided (e.g. `'no position'` or `''` for an empty string) it is used as a
+ * placeholder.
+ * @property {boolean} [wrapX=true] Wrap the world horizontally on the projection's antimeridian, if it
+ * is a global projection.
+ */
+
+/**
+ * @classdesc
+ * A control to show the 2D coordinates of the mouse cursor. By default, these
+ * are in the view projection, but can be in any supported projection.
+ * By default the control is shown in the top right corner of the map, but this
+ * can be changed by using the css selector `.ol-mouse-position`.
+ *
+ * On touch devices, which usually do not have a mouse cursor, the coordinates
+ * of the currently touched position are shown.
+ *
+ * @api
+ */
+var MousePosition = /*#__PURE__*/function (_Control) {
+  _inherits(MousePosition, _Control);
+  var _super = _createSuper(MousePosition);
+  /**
+   * @param {Options} [options] Mouse position options.
+   */
+  function MousePosition(options) {
+    var _this;
+    _classCallCheck(this, MousePosition);
+    options = options ? options : {};
+    var element = document.createElement('div');
+    element.className = options.className !== undefined ? options.className : 'ol-mouse-position';
+    _this = _super.call(this, {
+      element: element,
+      render: options.render,
+      target: options.target
+    });
+
+    /***
+     * @type {MousePositionOnSignature<import("../events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {MousePositionOnSignature<import("../events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {MousePositionOnSignature<void>}
+     */
+    _this.un;
+    _this.addChangeListener(PROJECTION, _this.handleProjectionChanged_);
+    if (options.coordinateFormat) {
+      _this.setCoordinateFormat(options.coordinateFormat);
+    }
+    if (options.projection) {
+      _this.setProjection(options.projection);
+    }
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.renderOnMouseOut_ = options.placeholder !== undefined;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    _this.placeholder_ = _this.renderOnMouseOut_ ? options.placeholder : '&#160;';
+
+    /**
+     * @private
+     * @type {string}
+     */
+    _this.renderedHTML_ = element.innerHTML;
+
+    /**
+     * @private
+     * @type {?import("../proj/Projection.js").default}
+     */
+    _this.mapProjection_ = null;
+
+    /**
+     * @private
+     * @type {?import("../proj.js").TransformFunction}
+     */
+    _this.transform_ = null;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.wrapX_ = options.wrapX === false ? false : true;
+    return _this;
+  }
+
+  /**
+   * @private
+   */
+  _createClass(MousePosition, [{
+    key: "handleProjectionChanged_",
+    value: function handleProjectionChanged_() {
+      this.transform_ = null;
+    }
+
+    /**
+     * Return the coordinate format type used to render the current position or
+     * undefined.
+     * @return {import("../coordinate.js").CoordinateFormat|undefined} The format to render the current
+     *     position in.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getCoordinateFormat",
+    value: function getCoordinateFormat() {
+      return (/** @type {import("../coordinate.js").CoordinateFormat|undefined} */
+        this.get(COORDINATE_FORMAT)
+      );
+    }
+
+    /**
+     * Return the projection that is used to report the mouse position.
+     * @return {import("../proj/Projection.js").default|undefined} The projection to report mouse
+     *     position in.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "getProjection",
+    value: function getProjection() {
+      return (/** @type {import("../proj/Projection.js").default|undefined} */
+        this.get(PROJECTION)
+      );
+    }
+
+    /**
+     * @param {MouseEvent} event Browser event.
+     * @protected
+     */
+  }, {
+    key: "handleMouseMove",
+    value: function handleMouseMove(event) {
+      var map = this.getMap();
+      this.updateHTML_(map.getEventPixel(event));
+    }
+
+    /**
+     * @param {Event} event Browser event.
+     * @protected
+     */
+  }, {
+    key: "handleMouseOut",
+    value: function handleMouseOut(event) {
+      this.updateHTML_(null);
+    }
+
+    /**
+     * Remove the control from its current map and attach it to the new map.
+     * Pass `null` to just remove the control from the current map.
+     * Subclasses may set up event handlers to get notified about changes to
+     * the map here.
+     * @param {import("../Map.js").default|null} map Map.
+     * @api
+     */
+  }, {
+    key: "setMap",
+    value: function setMap(map) {
+      _get(_getPrototypeOf(MousePosition.prototype), "setMap", this).call(this, map);
+      if (map) {
+        var viewport = map.getViewport();
+        this.listenerKeys.push((0, _events.listen)(viewport, _EventType.default.POINTERMOVE, this.handleMouseMove, this));
+        if (this.renderOnMouseOut_) {
+          this.listenerKeys.push((0, _events.listen)(viewport, _EventType.default.POINTEROUT, this.handleMouseOut, this));
+        }
+        this.updateHTML_(null);
+      }
+    }
+
+    /**
+     * Set the coordinate format type used to render the current position.
+     * @param {import("../coordinate.js").CoordinateFormat} format The format to render the current
+     *     position in.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setCoordinateFormat",
+    value: function setCoordinateFormat(format) {
+      this.set(COORDINATE_FORMAT, format);
+    }
+
+    /**
+     * Set the projection that is used to report the mouse position.
+     * @param {import("../proj.js").ProjectionLike} projection The projection to report mouse
+     *     position in.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setProjection",
+    value: function setProjection(projection) {
+      this.set(PROJECTION, (0, _proj.get)(projection));
+    }
+
+    /**
+     * @param {?import("../pixel.js").Pixel} pixel Pixel.
+     * @private
+     */
+  }, {
+    key: "updateHTML_",
+    value: function updateHTML_(pixel) {
+      var html = this.placeholder_;
+      if (pixel && this.mapProjection_) {
+        if (!this.transform_) {
+          var projection = this.getProjection();
+          if (projection) {
+            this.transform_ = (0, _proj.getTransformFromProjections)(this.mapProjection_, projection);
+          } else {
+            this.transform_ = _proj.identityTransform;
+          }
+        }
+        var map = this.getMap();
+        var coordinate = map.getCoordinateFromPixelInternal(pixel);
+        if (coordinate) {
+          var userProjection = (0, _proj.getUserProjection)();
+          if (userProjection) {
+            this.transform_ = (0, _proj.getTransformFromProjections)(this.mapProjection_, userProjection);
+          }
+          this.transform_(coordinate, coordinate);
+          if (this.wrapX_) {
+            var _projection = userProjection || this.getProjection() || this.mapProjection_;
+            (0, _coordinate.wrapX)(coordinate, _projection);
+          }
+          var coordinateFormat = this.getCoordinateFormat();
+          if (coordinateFormat) {
+            html = coordinateFormat(coordinate);
+          } else {
+            html = coordinate.toString();
+          }
+        }
+      }
+      if (!this.renderedHTML_ || html !== this.renderedHTML_) {
+        this.element.innerHTML = html;
+        this.renderedHTML_ = html;
+      }
+    }
+
+    /**
+     * Update the projection. Rendering of the coordinates is done in
+     * `handleMouseMove` and `handleMouseUp`.
+     * @param {import("../MapEvent.js").default} mapEvent Map event.
+     * @override
+     */
+  }, {
+    key: "render",
+    value: function render(mapEvent) {
+      var frameState = mapEvent.frameState;
+      if (!frameState) {
+        this.mapProjection_ = null;
+      } else {
+        if (this.mapProjection_ != frameState.viewState.projection) {
+          this.mapProjection_ = frameState.viewState.projection;
+          this.transform_ = null;
+        }
+      }
+    }
+  }]);
+  return MousePosition;
+}(_Control2.default);
+var _default = MousePosition;
+exports.default = _default;
+},{"./Control.js":"node_modules/ol/control/Control.js","../pointer/EventType.js":"node_modules/ol/pointer/EventType.js","../proj.js":"node_modules/ol/proj.js","../events.js":"node_modules/ol/events.js","../coordinate.js":"node_modules/ol/coordinate.js"}],"node_modules/ol/control/OverviewMap.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Collection = _interopRequireDefault(require("../Collection.js"));
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _Map = _interopRequireDefault(require("../Map.js"));
+var _MapEventType = _interopRequireDefault(require("../MapEventType.js"));
+var _MapProperty = _interopRequireDefault(require("../MapProperty.js"));
+var _ObjectEventType = _interopRequireDefault(require("../ObjectEventType.js"));
+var _Overlay = _interopRequireDefault(require("../Overlay.js"));
+var _View = _interopRequireDefault(require("../View.js"));
+var _ViewProperty = _interopRequireDefault(require("../ViewProperty.js"));
+var _css = require("../css.js");
+var _extent = require("../extent.js");
+var _events = require("../events.js");
+var _Polygon = require("../geom/Polygon.js");
+var _dom = require("../dom.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/OverviewMap
+                                                                                                                                                                                                                      */
+/**
+ * Maximum width and/or height extent ratio that determines when the overview
+ * map should be zoomed out.
+ * @type {number}
+ */
+var MAX_RATIO = 0.75;
+
+/**
+ * Minimum width and/or height extent ratio that determines when the overview
+ * map should be zoomed in.
+ * @type {number}
+ */
+var MIN_RATIO = 0.1;
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-overviewmap'] CSS class name.
+ * @property {boolean} [collapsed=true] Whether the control should start collapsed or not (expanded).
+ * @property {string|HTMLElement} [collapseLabel='‹'] Text label to use for the
+ * expanded overviewmap button. Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {boolean} [collapsible=true] Whether the control can be collapsed or not.
+ * @property {string|HTMLElement} [label='›'] Text label to use for the collapsed
+ * overviewmap button. Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {Array<import("../layer/Base.js").default>|import("../Collection.js").default<import("../layer/Base.js").default>} [layers]
+ * Layers for the overview map.
+ * @property {function(import("../MapEvent.js").default):void} [render] Function called when the control
+ * should be re-rendered. This is called in a `requestAnimationFrame` callback.
+ * @property {boolean} [rotateWithView=false] Whether the control view should rotate with the main map view.
+ * @property {HTMLElement|string} [target] Specify a target if you want the control
+ * to be rendered outside of the map's viewport.
+ * @property {string} [tipLabel='Overview map'] Text label to use for the button tip.
+ * @property {View} [view] Custom view for the overview map (should use same projection as main map). If not provided,
+ * a default view with the same projection as the main map will be used.
+ */
+
+/**
+ * Create a new control with a map acting as an overview map for another
+ * defined map.
+ *
+ * @api
+ */
+var OverviewMap = /*#__PURE__*/function (_Control) {
+  _inherits(OverviewMap, _Control);
+  var _super = _createSuper(OverviewMap);
+  /**
+   * @param {Options} [options] OverviewMap options.
+   */
+  function OverviewMap(options) {
+    var _this;
+    _classCallCheck(this, OverviewMap);
+    options = options ? options : {};
+    _this = _super.call(this, {
+      element: document.createElement('div'),
+      render: options.render,
+      target: options.target
+    });
+
+    /**
+     * @private
+     */
+    _this.boundHandleRotationChanged_ = _this.handleRotationChanged_.bind(_assertThisInitialized(_this));
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    _this.collapsed_ = options.collapsed !== undefined ? options.collapsed : true;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.collapsible_ = options.collapsible !== undefined ? options.collapsible : true;
+    if (!_this.collapsible_) {
+      _this.collapsed_ = false;
+    }
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.rotateWithView_ = options.rotateWithView !== undefined ? options.rotateWithView : false;
+
+    /**
+     * @private
+     * @type {import("../extent.js").Extent|undefined}
+     */
+    _this.viewExtent_ = undefined;
+    var className = options.className !== undefined ? options.className : 'ol-overviewmap';
+    var tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Overview map';
+    var collapseLabel = options.collapseLabel !== undefined ? options.collapseLabel : "\u2039";
+    if (typeof collapseLabel === 'string') {
+      /**
+       * @private
+       * @type {HTMLElement}
+       */
+      _this.collapseLabel_ = document.createElement('span');
+      _this.collapseLabel_.textContent = collapseLabel;
+    } else {
+      _this.collapseLabel_ = collapseLabel;
+    }
+    var label = options.label !== undefined ? options.label : "\u203A";
+    if (typeof label === 'string') {
+      /**
+       * @private
+       * @type {HTMLElement}
+       */
+      _this.label_ = document.createElement('span');
+      _this.label_.textContent = label;
+    } else {
+      _this.label_ = label;
+    }
+    var activeLabel = _this.collapsible_ && !_this.collapsed_ ? _this.collapseLabel_ : _this.label_;
+    var button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.title = tipLabel;
+    button.appendChild(activeLabel);
+    button.addEventListener(_EventType.default.CLICK, _this.handleClick_.bind(_assertThisInitialized(_this)), false);
+
+    /**
+     * @type {HTMLElement}
+     * @private
+     */
+    _this.ovmapDiv_ = document.createElement('div');
+    _this.ovmapDiv_.className = 'ol-overviewmap-map';
+
+    /**
+     * Explicitly given view to be used instead of a view derived from the main map.
+     * @type {View}
+     * @private
+     */
+    _this.view_ = options.view;
+    var ovmap = new _Map.default({
+      view: options.view,
+      controls: new _Collection.default(),
+      interactions: new _Collection.default()
+    });
+
+    /**
+     * @type {Map}
+     * @private
+     */
+    _this.ovmap_ = ovmap;
+    if (options.layers) {
+      options.layers.forEach(function (layer) {
+        ovmap.addLayer(layer);
+      });
+    }
+    var box = document.createElement('div');
+    box.className = 'ol-overviewmap-box';
+    box.style.boxSizing = 'border-box';
+
+    /**
+     * @type {import("../Overlay.js").default}
+     * @private
+     */
+    _this.boxOverlay_ = new _Overlay.default({
+      position: [0, 0],
+      positioning: 'center-center',
+      element: box
+    });
+    _this.ovmap_.addOverlay(_this.boxOverlay_);
+    var cssClasses = className + ' ' + _css.CLASS_UNSELECTABLE + ' ' + _css.CLASS_CONTROL + (_this.collapsed_ && _this.collapsible_ ? ' ' + _css.CLASS_COLLAPSED : '') + (_this.collapsible_ ? '' : ' ol-uncollapsible');
+    var element = _this.element;
+    element.className = cssClasses;
+    element.appendChild(_this.ovmapDiv_);
+    element.appendChild(button);
+
+    /* Interactive map */
+
+    var scope = _assertThisInitialized(_this);
+    var overlay = _this.boxOverlay_;
+    var overlayBox = _this.boxOverlay_.getElement();
+
+    /* Functions definition */
+
+    var computeDesiredMousePosition = function computeDesiredMousePosition(mousePosition) {
+      return {
+        clientX: mousePosition.clientX,
+        clientY: mousePosition.clientY
+      };
+    };
+    var move = function move(event) {
+      var position = /** @type {?} */computeDesiredMousePosition(event);
+      var coordinates = ovmap.getEventCoordinateInternal( /** @type {MouseEvent} */position);
+      overlay.setPosition(coordinates);
+    };
+    var endMoving = function endMoving(event) {
+      var coordinates = ovmap.getEventCoordinateInternal(event);
+      scope.getMap().getView().setCenterInternal(coordinates);
+      window.removeEventListener('mousemove', move);
+      window.removeEventListener('mouseup', endMoving);
+    };
+
+    /* Binding */
+
+    overlayBox.addEventListener('mousedown', function () {
+      window.addEventListener('mousemove', move);
+      window.addEventListener('mouseup', endMoving);
+    });
+    return _this;
+  }
+
+  /**
+   * Remove the control from its current map and attach it to the new map.
+   * Pass `null` to just remove the control from the current map.
+   * Subclasses may set up event handlers to get notified about changes to
+   * the map here.
+   * @param {import("../Map.js").default|null} map Map.
+   * @api
+   */
+  _createClass(OverviewMap, [{
+    key: "setMap",
+    value: function setMap(map) {
+      var oldMap = this.getMap();
+      if (map === oldMap) {
+        return;
+      }
+      if (oldMap) {
+        var oldView = oldMap.getView();
+        if (oldView) {
+          this.unbindView_(oldView);
+        }
+        this.ovmap_.setTarget(null);
+      }
+      _get(_getPrototypeOf(OverviewMap.prototype), "setMap", this).call(this, map);
+      if (map) {
+        this.ovmap_.setTarget(this.ovmapDiv_);
+        this.listenerKeys.push((0, _events.listen)(map, _ObjectEventType.default.PROPERTYCHANGE, this.handleMapPropertyChange_, this));
+        var view = map.getView();
+        if (view) {
+          this.bindView_(view);
+          if (view.isDef()) {
+            this.ovmap_.updateSize();
+            this.resetExtent_();
+          }
+        }
+        if (!this.ovmap_.isRendered()) {
+          this.updateBoxAfterOvmapIsRendered_();
+        }
+      }
+    }
+
+    /**
+     * Handle map property changes.  This only deals with changes to the map's view.
+     * @param {import("../Object.js").ObjectEvent} event The propertychange event.
+     * @private
+     */
+  }, {
+    key: "handleMapPropertyChange_",
+    value: function handleMapPropertyChange_(event) {
+      if (event.key === _MapProperty.default.VIEW) {
+        var oldView = /** @type {import("../View.js").default} */
+        event.oldValue;
+        if (oldView) {
+          this.unbindView_(oldView);
+        }
+        var newView = this.getMap().getView();
+        this.bindView_(newView);
+      } else if (!this.ovmap_.isRendered() && (event.key === _MapProperty.default.TARGET || event.key === _MapProperty.default.SIZE)) {
+        this.ovmap_.updateSize();
+      }
+    }
+
+    /**
+     * Register listeners for view property changes.
+     * @param {import("../View.js").default} view The view.
+     * @private
+     */
+  }, {
+    key: "bindView_",
+    value: function bindView_(view) {
+      if (!this.view_) {
+        // Unless an explicit view definition was given, derive default from whatever main map uses.
+        var newView = new _View.default({
+          projection: view.getProjection()
+        });
+        this.ovmap_.setView(newView);
+      }
+      view.addChangeListener(_ViewProperty.default.ROTATION, this.boundHandleRotationChanged_);
+      // Sync once with the new view
+      this.handleRotationChanged_();
+    }
+
+    /**
+     * Unregister listeners for view property changes.
+     * @param {import("../View.js").default} view The view.
+     * @private
+     */
+  }, {
+    key: "unbindView_",
+    value: function unbindView_(view) {
+      view.removeChangeListener(_ViewProperty.default.ROTATION, this.boundHandleRotationChanged_);
+    }
+
+    /**
+     * Handle rotation changes to the main map.
+     * @private
+     */
+  }, {
+    key: "handleRotationChanged_",
+    value: function handleRotationChanged_() {
+      if (this.rotateWithView_) {
+        this.ovmap_.getView().setRotation(this.getMap().getView().getRotation());
+      }
+    }
+
+    /**
+     * Reset the overview map extent if the box size (width or
+     * height) is less than the size of the overview map size times minRatio
+     * or is greater than the size of the overview size times maxRatio.
+     *
+     * If the map extent was not reset, the box size can fits in the defined
+     * ratio sizes. This method then checks if is contained inside the overview
+     * map current extent. If not, recenter the overview map to the current
+     * main map center location.
+     * @private
+     */
+  }, {
+    key: "validateExtent_",
+    value: function validateExtent_() {
+      var map = this.getMap();
+      var ovmap = this.ovmap_;
+      if (!map.isRendered() || !ovmap.isRendered()) {
+        return;
+      }
+      var mapSize = /** @type {import("../size.js").Size} */map.getSize();
+      var view = map.getView();
+      var extent = view.calculateExtentInternal(mapSize);
+      if (this.viewExtent_ && (0, _extent.equals)(extent, this.viewExtent_)) {
+        // repeats of the same extent may indicate constraint conflicts leading to an endless cycle
+        return;
+      }
+      this.viewExtent_ = extent;
+      var ovmapSize = /** @type {import("../size.js").Size} */
+      ovmap.getSize();
+      var ovview = ovmap.getView();
+      var ovextent = ovview.calculateExtentInternal(ovmapSize);
+      var topLeftPixel = ovmap.getPixelFromCoordinateInternal((0, _extent.getTopLeft)(extent));
+      var bottomRightPixel = ovmap.getPixelFromCoordinateInternal((0, _extent.getBottomRight)(extent));
+      var boxWidth = Math.abs(topLeftPixel[0] - bottomRightPixel[0]);
+      var boxHeight = Math.abs(topLeftPixel[1] - bottomRightPixel[1]);
+      var ovmapWidth = ovmapSize[0];
+      var ovmapHeight = ovmapSize[1];
+      if (boxWidth < ovmapWidth * MIN_RATIO || boxHeight < ovmapHeight * MIN_RATIO || boxWidth > ovmapWidth * MAX_RATIO || boxHeight > ovmapHeight * MAX_RATIO) {
+        this.resetExtent_();
+      } else if (!(0, _extent.containsExtent)(ovextent, extent)) {
+        this.recenter_();
+      }
+    }
+
+    /**
+     * Reset the overview map extent to half calculated min and max ratio times
+     * the extent of the main map.
+     * @private
+     */
+  }, {
+    key: "resetExtent_",
+    value: function resetExtent_() {
+      if (MAX_RATIO === 0 || MIN_RATIO === 0) {
+        return;
+      }
+      var map = this.getMap();
+      var ovmap = this.ovmap_;
+      var mapSize = /** @type {import("../size.js").Size} */map.getSize();
+      var view = map.getView();
+      var extent = view.calculateExtentInternal(mapSize);
+      var ovview = ovmap.getView();
+
+      // get how many times the current map overview could hold different
+      // box sizes using the min and max ratio, pick the step in the middle used
+      // to calculate the extent from the main map to set it to the overview map,
+      var steps = Math.log(MAX_RATIO / MIN_RATIO) / Math.LN2;
+      var ratio = 1 / (Math.pow(2, steps / 2) * MIN_RATIO);
+      (0, _extent.scaleFromCenter)(extent, ratio);
+      ovview.fitInternal((0, _Polygon.fromExtent)(extent));
+    }
+
+    /**
+     * Set the center of the overview map to the map center without changing its
+     * resolution.
+     * @private
+     */
+  }, {
+    key: "recenter_",
+    value: function recenter_() {
+      var map = this.getMap();
+      var ovmap = this.ovmap_;
+      var view = map.getView();
+      var ovview = ovmap.getView();
+      ovview.setCenterInternal(view.getCenterInternal());
+    }
+
+    /**
+     * Update the box using the main map extent
+     * @private
+     */
+  }, {
+    key: "updateBox_",
+    value: function updateBox_() {
+      var map = this.getMap();
+      var ovmap = this.ovmap_;
+      if (!map.isRendered() || !ovmap.isRendered()) {
+        return;
+      }
+      var mapSize = /** @type {import("../size.js").Size} */map.getSize();
+      var view = map.getView();
+      var ovview = ovmap.getView();
+      var rotation = this.rotateWithView_ ? 0 : -view.getRotation();
+      var overlay = this.boxOverlay_;
+      var box = this.boxOverlay_.getElement();
+      var center = view.getCenterInternal();
+      var resolution = view.getResolution();
+      var ovresolution = ovview.getResolution();
+      var width = mapSize[0] * resolution / ovresolution;
+      var height = mapSize[1] * resolution / ovresolution;
+
+      // set position using center coordinates
+      overlay.setPosition(center);
+
+      // set box size calculated from map extent size and overview map resolution
+      if (box) {
+        box.style.width = width + 'px';
+        box.style.height = height + 'px';
+        var transform = 'rotate(' + rotation + 'rad)';
+        box.style.transform = transform;
+      }
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "updateBoxAfterOvmapIsRendered_",
+    value: function updateBoxAfterOvmapIsRendered_() {
+      if (this.ovmapPostrenderKey_) {
+        return;
+      }
+      this.ovmapPostrenderKey_ = (0, _events.listenOnce)(this.ovmap_, _MapEventType.default.POSTRENDER, function (event) {
+        delete this.ovmapPostrenderKey_;
+        this.updateBox_();
+      }, this);
+    }
+
+    /**
+     * @param {MouseEvent} event The event to handle
+     * @private
+     */
+  }, {
+    key: "handleClick_",
+    value: function handleClick_(event) {
+      event.preventDefault();
+      this.handleToggle_();
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "handleToggle_",
+    value: function handleToggle_() {
+      this.element.classList.toggle(_css.CLASS_COLLAPSED);
+      if (this.collapsed_) {
+        (0, _dom.replaceNode)(this.collapseLabel_, this.label_);
+      } else {
+        (0, _dom.replaceNode)(this.label_, this.collapseLabel_);
+      }
+      this.collapsed_ = !this.collapsed_;
+
+      // manage overview map if it had not been rendered before and control
+      // is expanded
+      var ovmap = this.ovmap_;
+      if (!this.collapsed_) {
+        if (ovmap.isRendered()) {
+          this.viewExtent_ = undefined;
+          ovmap.render();
+          return;
+        }
+        ovmap.updateSize();
+        this.resetExtent_();
+        this.updateBoxAfterOvmapIsRendered_();
+      }
+    }
+
+    /**
+     * Return `true` if the overview map is collapsible, `false` otherwise.
+     * @return {boolean} True if the widget is collapsible.
+     * @api
+     */
+  }, {
+    key: "getCollapsible",
+    value: function getCollapsible() {
+      return this.collapsible_;
+    }
+
+    /**
+     * Set whether the overview map should be collapsible.
+     * @param {boolean} collapsible True if the widget is collapsible.
+     * @api
+     */
+  }, {
+    key: "setCollapsible",
+    value: function setCollapsible(collapsible) {
+      if (this.collapsible_ === collapsible) {
+        return;
+      }
+      this.collapsible_ = collapsible;
+      this.element.classList.toggle('ol-uncollapsible');
+      if (!collapsible && this.collapsed_) {
+        this.handleToggle_();
+      }
+    }
+
+    /**
+     * Collapse or expand the overview map according to the passed parameter. Will
+     * not do anything if the overview map isn't collapsible or if the current
+     * collapsed state is already the one requested.
+     * @param {boolean} collapsed True if the widget is collapsed.
+     * @api
+     */
+  }, {
+    key: "setCollapsed",
+    value: function setCollapsed(collapsed) {
+      if (!this.collapsible_ || this.collapsed_ === collapsed) {
+        return;
+      }
+      this.handleToggle_();
+    }
+
+    /**
+     * Determine if the overview map is collapsed.
+     * @return {boolean} The overview map is collapsed.
+     * @api
+     */
+  }, {
+    key: "getCollapsed",
+    value: function getCollapsed() {
+      return this.collapsed_;
+    }
+
+    /**
+     * Return `true` if the overview map view can rotate, `false` otherwise.
+     * @return {boolean} True if the control view can rotate.
+     * @api
+     */
+  }, {
+    key: "getRotateWithView",
+    value: function getRotateWithView() {
+      return this.rotateWithView_;
+    }
+
+    /**
+     * Set whether the overview map view should rotate with the main map view.
+     * @param {boolean} rotateWithView True if the control view should rotate.
+     * @api
+     */
+  }, {
+    key: "setRotateWithView",
+    value: function setRotateWithView(rotateWithView) {
+      if (this.rotateWithView_ === rotateWithView) {
+        return;
+      }
+      this.rotateWithView_ = rotateWithView;
+      if (this.getMap().getView().getRotation() !== 0) {
+        if (this.rotateWithView_) {
+          this.handleRotationChanged_();
+        } else {
+          this.ovmap_.getView().setRotation(0);
+        }
+        this.viewExtent_ = undefined;
+        this.validateExtent_();
+        this.updateBox_();
+      }
+    }
+
+    /**
+     * Return the overview map.
+     * @return {import("../Map.js").default} Overview map.
+     * @api
+     */
+  }, {
+    key: "getOverviewMap",
+    value: function getOverviewMap() {
+      return this.ovmap_;
+    }
+
+    /**
+     * Update the overview map element.
+     * @param {import("../MapEvent.js").default} mapEvent Map event.
+     * @override
+     */
+  }, {
+    key: "render",
+    value: function render(mapEvent) {
+      this.validateExtent_();
+      this.updateBox_();
+    }
+  }]);
+  return OverviewMap;
+}(_Control2.default);
+var _default = OverviewMap;
+exports.default = _default;
+},{"../Collection.js":"node_modules/ol/Collection.js","./Control.js":"node_modules/ol/control/Control.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../Map.js":"node_modules/ol/Map.js","../MapEventType.js":"node_modules/ol/MapEventType.js","../MapProperty.js":"node_modules/ol/MapProperty.js","../ObjectEventType.js":"node_modules/ol/ObjectEventType.js","../Overlay.js":"node_modules/ol/Overlay.js","../View.js":"node_modules/ol/View.js","../ViewProperty.js":"node_modules/ol/ViewProperty.js","../css.js":"node_modules/ol/css.js","../extent.js":"node_modules/ol/extent.js","../events.js":"node_modules/ol/events.js","../geom/Polygon.js":"node_modules/ol/geom/Polygon.js","../dom.js":"node_modules/ol/dom.js"}],"node_modules/ol/control/ScaleLine.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _css = require("../css.js");
+var _proj = require("../proj.js");
+var _asserts = require("../asserts.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/ScaleLine
+                                                                                                                                                                                                                      */
+/**
+ * @type {string}
+ */
+var UNITS_PROP = 'units';
+
+/**
+ * @typedef {'degrees' | 'imperial' | 'nautical' | 'metric' | 'us'} Units
+ * Units for the scale line.
+ */
+
+/**
+ * @const
+ * @type {Array<number>}
+ */
+var LEADING_DIGITS = [1, 2, 5];
+
+/**
+ * @const
+ * @type {number}
+ */
+var DEFAULT_DPI = 25.4 / 0.28;
+
+/***
+ * @template Return
+ * @typedef {import("../Observable").OnSignature<import("../Observable").EventTypes, import("../events/Event.js").default, Return> &
+ *   import("../Observable").OnSignature<import("../ObjectEventType").Types|
+ *     'change:units', import("../Object").ObjectEvent, Return> &
+ *   import("../Observable").CombinedOnSignature<import("../Observable").EventTypes|import("../ObjectEventType").Types
+ *     |'change:units', Return>} ScaleLineOnSignature
+ */
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className] CSS class name. The default is `ol-scale-bar` when configured with
+ * `bar: true`. Otherwise the default is `ol-scale-line`.
+ * @property {number} [minWidth=64] Minimum width in pixels at the OGC default dpi. The width will be
+ * adjusted to match the dpi used.
+ * @property {number} [maxWidth] Maximum width in pixels at the OGC default dpi. The width will be
+ * adjusted to match the dpi used.
+ * @property {function(import("../MapEvent.js").default):void} [render] Function called when the control
+ * should be re-rendered. This is called in a `requestAnimationFrame` callback.
+ * @property {HTMLElement|string} [target] Specify a target if you want the control
+ * to be rendered outside of the map's viewport.
+ * @property {Units} [units='metric'] Units.
+ * @property {boolean} [bar=false] Render scalebars instead of a line.
+ * @property {number} [steps=4] Number of steps the scalebar should use. Use even numbers
+ * for best results. Only applies when `bar` is `true`.
+ * @property {boolean} [text=false] Render the text scale above of the scalebar. Only applies
+ * when `bar` is `true`.
+ * @property {number|undefined} [dpi=undefined] dpi of output device such as printer. Only applies
+ * when `bar` is `true`. If undefined the OGC default screen pixel size of 0.28mm will be assumed.
+ */
+
+/**
+ * @classdesc
+ * A control displaying rough y-axis distances, calculated for the center of the
+ * viewport. For conformal projections (e.g. EPSG:3857, the default view
+ * projection in OpenLayers), the scale is valid for all directions.
+ * No scale line will be shown when the y-axis distance of a pixel at the
+ * viewport center cannot be calculated in the view projection.
+ * By default the scale line will show in the bottom left portion of the map,
+ * but this can be changed by using the css selector `.ol-scale-line`.
+ * When specifying `bar` as `true`, a scalebar will be rendered instead
+ * of a scaleline.
+ *
+ * @api
+ */
+var ScaleLine = /*#__PURE__*/function (_Control) {
+  _inherits(ScaleLine, _Control);
+  var _super = _createSuper(ScaleLine);
+  /**
+   * @param {Options} [options] Scale line options.
+   */
+  function ScaleLine(options) {
+    var _this;
+    _classCallCheck(this, ScaleLine);
+    options = options ? options : {};
+    var element = document.createElement('div');
+    element.style.pointerEvents = 'none';
+    _this = _super.call(this, {
+      element: element,
+      render: options.render,
+      target: options.target
+    });
+
+    /***
+     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     */
+    _this.on;
+
+    /***
+     * @type {ScaleLineOnSignature<import("../events").EventsKey>}
+     */
+    _this.once;
+
+    /***
+     * @type {ScaleLineOnSignature<void>}
+     */
+    _this.un;
+    var className = options.className !== undefined ? options.className : options.bar ? 'ol-scale-bar' : 'ol-scale-line';
+
+    /**
+     * @private
+     * @type {HTMLElement}
+     */
+    _this.innerElement_ = document.createElement('div');
+    _this.innerElement_.className = className + '-inner';
+    _this.element.className = className + ' ' + _css.CLASS_UNSELECTABLE;
+    _this.element.appendChild(_this.innerElement_);
+
+    /**
+     * @private
+     * @type {?import("../View.js").State}
+     */
+    _this.viewState_ = null;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.minWidth_ = options.minWidth !== undefined ? options.minWidth : 64;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    _this.maxWidth_ = options.maxWidth;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.renderedVisible_ = false;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    _this.renderedWidth_ = undefined;
+
+    /**
+     * @private
+     * @type {string}
+     */
+    _this.renderedHTML_ = '';
+    _this.addChangeListener(UNITS_PROP, _this.handleUnitsChanged_);
+    _this.setUnits(options.units || 'metric');
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.scaleBar_ = options.bar || false;
+
+    /**
+     * @private
+     * @type {number}
+     */
+    _this.scaleBarSteps_ = options.steps || 4;
+
+    /**
+     * @private
+     * @type {boolean}
+     */
+    _this.scaleBarText_ = options.text || false;
+
+    /**
+     * @private
+     * @type {number|undefined}
+     */
+    _this.dpi_ = options.dpi || undefined;
+    return _this;
+  }
+
+  /**
+   * Return the units to use in the scale line.
+   * @return {Units} The units
+   * to use in the scale line.
+   * @observable
+   * @api
+   */
+  _createClass(ScaleLine, [{
+    key: "getUnits",
+    value: function getUnits() {
+      return this.get(UNITS_PROP);
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "handleUnitsChanged_",
+    value: function handleUnitsChanged_() {
+      this.updateElement_();
+    }
+
+    /**
+     * Set the units to use in the scale line.
+     * @param {Units} units The units to use in the scale line.
+     * @observable
+     * @api
+     */
+  }, {
+    key: "setUnits",
+    value: function setUnits(units) {
+      this.set(UNITS_PROP, units);
+    }
+
+    /**
+     * Specify the dpi of output device such as printer.
+     * @param {number|undefined} dpi The dpi of output device.
+     * @api
+     */
+  }, {
+    key: "setDpi",
+    value: function setDpi(dpi) {
+      this.dpi_ = dpi;
+    }
+
+    /**
+     * @private
+     */
+  }, {
+    key: "updateElement_",
+    value: function updateElement_() {
+      var viewState = this.viewState_;
+      if (!viewState) {
+        if (this.renderedVisible_) {
+          this.element.style.display = 'none';
+          this.renderedVisible_ = false;
+        }
+        return;
+      }
+      var center = viewState.center;
+      var projection = viewState.projection;
+      var units = this.getUnits();
+      var pointResolutionUnits = units == 'degrees' ? 'degrees' : 'm';
+      var pointResolution = (0, _proj.getPointResolution)(projection, viewState.resolution, center, pointResolutionUnits);
+      var minWidth = this.minWidth_ * (this.dpi_ || DEFAULT_DPI) / DEFAULT_DPI;
+      var maxWidth = this.maxWidth_ !== undefined ? this.maxWidth_ * (this.dpi_ || DEFAULT_DPI) / DEFAULT_DPI : undefined;
+      var nominalCount = minWidth * pointResolution;
+      var suffix = '';
+      if (units == 'degrees') {
+        var metersPerDegree = _proj.METERS_PER_UNIT.degrees;
+        nominalCount *= metersPerDegree;
+        if (nominalCount < metersPerDegree / 60) {
+          suffix = "\u2033"; // seconds
+          pointResolution *= 3600;
+        } else if (nominalCount < metersPerDegree) {
+          suffix = "\u2032"; // minutes
+          pointResolution *= 60;
+        } else {
+          suffix = "\xB0"; // degrees
+        }
+      } else if (units == 'imperial') {
+        if (nominalCount < 0.9144) {
+          suffix = 'in';
+          pointResolution /= 0.0254;
+        } else if (nominalCount < 1609.344) {
+          suffix = 'ft';
+          pointResolution /= 0.3048;
+        } else {
+          suffix = 'mi';
+          pointResolution /= 1609.344;
+        }
+      } else if (units == 'nautical') {
+        pointResolution /= 1852;
+        suffix = 'NM';
+      } else if (units == 'metric') {
+        if (nominalCount < 0.001) {
+          suffix = 'μm';
+          pointResolution *= 1000000;
+        } else if (nominalCount < 1) {
+          suffix = 'mm';
+          pointResolution *= 1000;
+        } else if (nominalCount < 1000) {
+          suffix = 'm';
+        } else {
+          suffix = 'km';
+          pointResolution /= 1000;
+        }
+      } else if (units == 'us') {
+        if (nominalCount < 0.9144) {
+          suffix = 'in';
+          pointResolution *= 39.37;
+        } else if (nominalCount < 1609.344) {
+          suffix = 'ft';
+          pointResolution /= 0.30480061;
+        } else {
+          suffix = 'mi';
+          pointResolution /= 1609.3472;
+        }
+      } else {
+        (0, _asserts.assert)(false, 33); // Invalid units
+      }
+
+      var i = 3 * Math.floor(Math.log(minWidth * pointResolution) / Math.log(10));
+      var count, width, decimalCount;
+      var previousCount, previousWidth, previousDecimalCount;
+      while (true) {
+        decimalCount = Math.floor(i / 3);
+        var decimal = Math.pow(10, decimalCount);
+        count = LEADING_DIGITS[(i % 3 + 3) % 3] * decimal;
+        width = Math.round(count / pointResolution);
+        if (isNaN(width)) {
+          this.element.style.display = 'none';
+          this.renderedVisible_ = false;
+          return;
+        }
+        if (maxWidth !== undefined && width >= maxWidth) {
+          count = previousCount;
+          width = previousWidth;
+          decimalCount = previousDecimalCount;
+          break;
+        } else if (width >= minWidth) {
+          break;
+        }
+        previousCount = count;
+        previousWidth = width;
+        previousDecimalCount = decimalCount;
+        ++i;
+      }
+      var html = this.scaleBar_ ? this.createScaleBar(width, count, suffix) : count.toFixed(decimalCount < 0 ? -decimalCount : 0) + ' ' + suffix;
+      if (this.renderedHTML_ != html) {
+        this.innerElement_.innerHTML = html;
+        this.renderedHTML_ = html;
+      }
+      if (this.renderedWidth_ != width) {
+        this.innerElement_.style.width = width + 'px';
+        this.renderedWidth_ = width;
+      }
+      if (!this.renderedVisible_) {
+        this.element.style.display = '';
+        this.renderedVisible_ = true;
+      }
+    }
+
+    /**
+     * @private
+     * @param {number} width The current width of the scalebar.
+     * @param {number} scale The current scale.
+     * @param {string} suffix The suffix to append to the scale text.
+     * @return {string} The stringified HTML of the scalebar.
+     */
+  }, {
+    key: "createScaleBar",
+    value: function createScaleBar(width, scale, suffix) {
+      var resolutionScale = this.getScaleForResolution();
+      var mapScale = resolutionScale < 1 ? Math.round(1 / resolutionScale).toLocaleString() + ' : 1' : '1 : ' + Math.round(resolutionScale).toLocaleString();
+      var steps = this.scaleBarSteps_;
+      var stepWidth = width / steps;
+      var scaleSteps = [this.createMarker('absolute')];
+      for (var i = 0; i < steps; ++i) {
+        var cls = i % 2 === 0 ? 'ol-scale-singlebar-odd' : 'ol-scale-singlebar-even';
+        scaleSteps.push('<div>' + '<div ' + "class=\"ol-scale-singlebar ".concat(cls, "\" ") + "style=\"width: ".concat(stepWidth, "px;\"") + '>' + '</div>' + this.createMarker('relative') + (
+        // render text every second step, except when only 2 steps
+        i % 2 === 0 || steps === 2 ? this.createStepText(i, width, false, scale, suffix) : '') + '</div>');
+      }
+      // render text at the end
+      scaleSteps.push(this.createStepText(steps, width, true, scale, suffix));
+      var scaleBarText = this.scaleBarText_ ? "<div class=\"ol-scale-text\" style=\"width: ".concat(width, "px;\">") + mapScale + '</div>' : '';
+      return scaleBarText + scaleSteps.join('');
+    }
+
+    /**
+     * Creates a marker at given position
+     * @param {'absolute'|'relative'} position The position, absolute or relative
+     * @return {string} The stringified div containing the marker
+     */
+  }, {
+    key: "createMarker",
+    value: function createMarker(position) {
+      var top = position === 'absolute' ? 3 : -10;
+      return '<div ' + 'class="ol-scale-step-marker" ' + "style=\"position: ".concat(position, "; top: ").concat(top, "px;\"") + '></div>';
+    }
+
+    /**
+     * Creates the label for a marker marker at given position
+     * @param {number} i The iterator
+     * @param {number} width The width the scalebar will currently use
+     * @param {boolean} isLast Flag indicating if we add the last step text
+     * @param {number} scale The current scale for the whole scalebar
+     * @param {string} suffix The suffix for the scale
+     * @return {string} The stringified div containing the step text
+     */
+  }, {
+    key: "createStepText",
+    value: function createStepText(i, width, isLast, scale, suffix) {
+      var length = i === 0 ? 0 : Math.round(scale / this.scaleBarSteps_ * i * 100) / 100;
+      var lengthString = length + (i === 0 ? '' : ' ' + suffix);
+      var margin = i === 0 ? -3 : width / this.scaleBarSteps_ * -1;
+      var minWidth = i === 0 ? 0 : width / this.scaleBarSteps_ * 2;
+      return '<div ' + 'class="ol-scale-step-text" ' + 'style="' + "margin-left: ".concat(margin, "px;") + "text-align: ".concat(i === 0 ? 'left' : 'center', ";") + "min-width: ".concat(minWidth, "px;") + "left: ".concat(isLast ? width + 'px' : 'unset', ";") + '">' + lengthString + '</div>';
+    }
+
+    /**
+     * Returns the appropriate scale for the given resolution and units.
+     * @return {number} The appropriate scale.
+     */
+  }, {
+    key: "getScaleForResolution",
+    value: function getScaleForResolution() {
+      var resolution = (0, _proj.getPointResolution)(this.viewState_.projection, this.viewState_.resolution, this.viewState_.center, 'm');
+      var dpi = this.dpi_ || DEFAULT_DPI;
+      var inchesPerMeter = 1000 / 25.4;
+      return resolution * inchesPerMeter * dpi;
+    }
+
+    /**
+     * Update the scale line element.
+     * @param {import("../MapEvent.js").default} mapEvent Map event.
+     * @override
+     */
+  }, {
+    key: "render",
+    value: function render(mapEvent) {
+      var frameState = mapEvent.frameState;
+      if (!frameState) {
+        this.viewState_ = null;
+      } else {
+        this.viewState_ = frameState.viewState;
+      }
+      this.updateElement_();
+    }
+  }]);
+  return ScaleLine;
+}(_Control2.default);
+var _default = ScaleLine;
+exports.default = _default;
+},{"./Control.js":"node_modules/ol/control/Control.js","../css.js":"node_modules/ol/css.js","../proj.js":"node_modules/ol/proj.js","../asserts.js":"node_modules/ol/asserts.js"}],"node_modules/ol/control/ZoomSlider.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _EventType2 = _interopRequireDefault(require("../pointer/EventType.js"));
+var _css = require("../css.js");
+var _math = require("../math.js");
+var _easing = require("../easing.js");
+var _events = require("../events.js");
+var _Event = require("../events/Event.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _get() { if (typeof Reflect !== "undefined" && Reflect.get) { _get = Reflect.get.bind(); } else { _get = function _get(target, property, receiver) { var base = _superPropBase(target, property); if (!base) return; var desc = Object.getOwnPropertyDescriptor(base, property); if (desc.get) { return desc.get.call(arguments.length < 3 ? target : receiver); } return desc.value; }; } return _get.apply(this, arguments); }
+function _superPropBase(object, property) { while (!Object.prototype.hasOwnProperty.call(object, property)) { object = _getPrototypeOf(object); if (object === null) break; } return object; }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/ZoomSlider
+                                                                                                                                                                                                                      */
+/**
+ * The enum for available directions.
+ *
+ * @enum {number}
+ */
+var Direction = {
+  VERTICAL: 0,
+  HORIZONTAL: 1
+};
+
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-zoomslider'] CSS class name.
+ * @property {number} [duration=200] Animation duration in milliseconds.
+ * @property {function(import("../MapEvent.js").default):void} [render] Function called when the control
+ * should be re-rendered. This is called in a `requestAnimationFrame` callback.
+ */
+
+/**
+ * @classdesc
+ * A slider type of control for zooming.
+ *
+ * Example:
+ *
+ *     map.addControl(new ZoomSlider());
+ *
+ * @api
+ */
+var ZoomSlider = /*#__PURE__*/function (_Control) {
+  _inherits(ZoomSlider, _Control);
+  var _super = _createSuper(ZoomSlider);
+  /**
+   * @param {Options} [options] Zoom slider options.
+   */
+  function ZoomSlider(options) {
+    var _this;
+    _classCallCheck(this, ZoomSlider);
+    options = options ? options : {};
+    _this = _super.call(this, {
+      element: document.createElement('div'),
+      render: options.render
+    });
+
+    /**
+     * @type {!Array<import("../events.js").EventsKey>}
+     * @private
+     */
+    _this.dragListenerKeys_ = [];
+
+    /**
+     * Will hold the current resolution of the view.
+     *
+     * @type {number|undefined}
+     * @private
+     */
+    _this.currentResolution_ = undefined;
+
+    /**
+     * The direction of the slider. Will be determined from actual display of the
+     * container and defaults to Direction.VERTICAL.
+     *
+     * @type {Direction}
+     * @private
+     */
+    _this.direction_ = Direction.VERTICAL;
+
+    /**
+     * @type {boolean}
+     * @private
+     */
+    _this.dragging_;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    _this.heightLimit_ = 0;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    _this.widthLimit_ = 0;
+
+    /**
+     * @type {number|undefined}
+     * @private
+     */
+    _this.startX_;
+
+    /**
+     * @type {number|undefined}
+     * @private
+     */
+    _this.startY_;
+
+    /**
+     * The calculated thumb size (border box plus margins).  Set when initSlider_
+     * is called.
+     * @type {import("../size.js").Size}
+     * @private
+     */
+    _this.thumbSize_ = null;
+
+    /**
+     * Whether the slider is initialized.
+     * @type {boolean}
+     * @private
+     */
+    _this.sliderInitialized_ = false;
+
+    /**
+     * @type {number}
+     * @private
+     */
+    _this.duration_ = options.duration !== undefined ? options.duration : 200;
+    var className = options.className !== undefined ? options.className : 'ol-zoomslider';
+    var thumbElement = document.createElement('button');
+    thumbElement.setAttribute('type', 'button');
+    thumbElement.className = className + '-thumb ' + _css.CLASS_UNSELECTABLE;
+    var containerElement = _this.element;
+    containerElement.className = className + ' ' + _css.CLASS_UNSELECTABLE + ' ' + _css.CLASS_CONTROL;
+    containerElement.appendChild(thumbElement);
+    containerElement.addEventListener(_EventType2.default.POINTERDOWN, _this.handleDraggerStart_.bind(_assertThisInitialized(_this)), false);
+    containerElement.addEventListener(_EventType2.default.POINTERMOVE, _this.handleDraggerDrag_.bind(_assertThisInitialized(_this)), false);
+    containerElement.addEventListener(_EventType2.default.POINTERUP, _this.handleDraggerEnd_.bind(_assertThisInitialized(_this)), false);
+    containerElement.addEventListener(_EventType.default.CLICK, _this.handleContainerClick_.bind(_assertThisInitialized(_this)), false);
+    thumbElement.addEventListener(_EventType.default.CLICK, _Event.stopPropagation, false);
+    return _this;
+  }
+
+  /**
+   * Remove the control from its current map and attach it to the new map.
+   * Pass `null` to just remove the control from the current map.
+   * Subclasses may set up event handlers to get notified about changes to
+   * the map here.
+   * @param {import("../Map.js").default|null} map Map.
+   * @api
+   */
+  _createClass(ZoomSlider, [{
+    key: "setMap",
+    value: function setMap(map) {
+      _get(_getPrototypeOf(ZoomSlider.prototype), "setMap", this).call(this, map);
+      if (map) {
+        map.render();
+      }
+    }
+
+    /**
+     * Initializes the slider element. This will determine and set this controls
+     * direction_ and also constrain the dragging of the thumb to always be within
+     * the bounds of the container.
+     *
+     * @return {boolean} Initialization successful
+     * @private
+     */
+  }, {
+    key: "initSlider_",
+    value: function initSlider_() {
+      var container = this.element;
+      var containerWidth = container.offsetWidth;
+      var containerHeight = container.offsetHeight;
+      if (containerWidth === 0 && containerHeight === 0) {
+        return this.sliderInitialized_ = false;
+      }
+      var containerStyle = getComputedStyle(container);
+      containerWidth -= parseFloat(containerStyle['paddingRight']) + parseFloat(containerStyle['paddingLeft']);
+      containerHeight -= parseFloat(containerStyle['paddingTop']) + parseFloat(containerStyle['paddingBottom']);
+      var thumb = /** @type {HTMLElement} */container.firstElementChild;
+      var thumbStyle = getComputedStyle(thumb);
+      var thumbWidth = thumb.offsetWidth + parseFloat(thumbStyle['marginRight']) + parseFloat(thumbStyle['marginLeft']);
+      var thumbHeight = thumb.offsetHeight + parseFloat(thumbStyle['marginTop']) + parseFloat(thumbStyle['marginBottom']);
+      this.thumbSize_ = [thumbWidth, thumbHeight];
+      if (containerWidth > containerHeight) {
+        this.direction_ = Direction.HORIZONTAL;
+        this.widthLimit_ = containerWidth - thumbWidth;
+      } else {
+        this.direction_ = Direction.VERTICAL;
+        this.heightLimit_ = containerHeight - thumbHeight;
+      }
+      return this.sliderInitialized_ = true;
+    }
+
+    /**
+     * @param {PointerEvent} event The browser event to handle.
+     * @private
+     */
+  }, {
+    key: "handleContainerClick_",
+    value: function handleContainerClick_(event) {
+      var view = this.getMap().getView();
+      var relativePosition = this.getRelativePosition_(event.offsetX - this.thumbSize_[0] / 2, event.offsetY - this.thumbSize_[1] / 2);
+      var resolution = this.getResolutionForPosition_(relativePosition);
+      var zoom = view.getConstrainedZoom(view.getZoomForResolution(resolution));
+      view.animateInternal({
+        zoom: zoom,
+        duration: this.duration_,
+        easing: _easing.easeOut
+      });
+    }
+
+    /**
+     * Handle dragger start events.
+     * @param {PointerEvent} event The drag event.
+     * @private
+     */
+  }, {
+    key: "handleDraggerStart_",
+    value: function handleDraggerStart_(event) {
+      if (!this.dragging_ && event.target === this.element.firstElementChild) {
+        var element = /** @type {HTMLElement} */
+        this.element.firstElementChild;
+        this.getMap().getView().beginInteraction();
+        this.startX_ = event.clientX - parseFloat(element.style.left);
+        this.startY_ = event.clientY - parseFloat(element.style.top);
+        this.dragging_ = true;
+        if (this.dragListenerKeys_.length === 0) {
+          var drag = this.handleDraggerDrag_;
+          var end = this.handleDraggerEnd_;
+          var doc = this.getMap().getOwnerDocument();
+          this.dragListenerKeys_.push((0, _events.listen)(doc, _EventType2.default.POINTERMOVE, drag, this), (0, _events.listen)(doc, _EventType2.default.POINTERUP, end, this));
+        }
+      }
+    }
+
+    /**
+     * Handle dragger drag events.
+     *
+     * @param {PointerEvent} event The drag event.
+     * @private
+     */
+  }, {
+    key: "handleDraggerDrag_",
+    value: function handleDraggerDrag_(event) {
+      if (this.dragging_) {
+        var deltaX = event.clientX - this.startX_;
+        var deltaY = event.clientY - this.startY_;
+        var relativePosition = this.getRelativePosition_(deltaX, deltaY);
+        this.currentResolution_ = this.getResolutionForPosition_(relativePosition);
+        this.getMap().getView().setResolution(this.currentResolution_);
+      }
+    }
+
+    /**
+     * Handle dragger end events.
+     * @param {PointerEvent} event The drag event.
+     * @private
+     */
+  }, {
+    key: "handleDraggerEnd_",
+    value: function handleDraggerEnd_(event) {
+      if (this.dragging_) {
+        var view = this.getMap().getView();
+        view.endInteraction();
+        this.dragging_ = false;
+        this.startX_ = undefined;
+        this.startY_ = undefined;
+        this.dragListenerKeys_.forEach(_events.unlistenByKey);
+        this.dragListenerKeys_.length = 0;
+      }
+    }
+
+    /**
+     * Positions the thumb inside its container according to the given resolution.
+     *
+     * @param {number} res The res.
+     * @private
+     */
+  }, {
+    key: "setThumbPosition_",
+    value: function setThumbPosition_(res) {
+      var position = this.getPositionForResolution_(res);
+      var thumb = /** @type {HTMLElement} */this.element.firstElementChild;
+      if (this.direction_ == Direction.HORIZONTAL) {
+        thumb.style.left = this.widthLimit_ * position + 'px';
+      } else {
+        thumb.style.top = this.heightLimit_ * position + 'px';
+      }
+    }
+
+    /**
+     * Calculates the relative position of the thumb given x and y offsets.  The
+     * relative position scales from 0 to 1.  The x and y offsets are assumed to be
+     * in pixel units within the dragger limits.
+     *
+     * @param {number} x Pixel position relative to the left of the slider.
+     * @param {number} y Pixel position relative to the top of the slider.
+     * @return {number} The relative position of the thumb.
+     * @private
+     */
+  }, {
+    key: "getRelativePosition_",
+    value: function getRelativePosition_(x, y) {
+      var amount;
+      if (this.direction_ === Direction.HORIZONTAL) {
+        amount = x / this.widthLimit_;
+      } else {
+        amount = y / this.heightLimit_;
+      }
+      return (0, _math.clamp)(amount, 0, 1);
+    }
+
+    /**
+     * Calculates the corresponding resolution of the thumb given its relative
+     * position (where 0 is the minimum and 1 is the maximum).
+     *
+     * @param {number} position The relative position of the thumb.
+     * @return {number} The corresponding resolution.
+     * @private
+     */
+  }, {
+    key: "getResolutionForPosition_",
+    value: function getResolutionForPosition_(position) {
+      var fn = this.getMap().getView().getResolutionForValueFunction();
+      return fn(1 - position);
+    }
+
+    /**
+     * Determines the relative position of the slider for the given resolution.  A
+     * relative position of 0 corresponds to the minimum view resolution.  A
+     * relative position of 1 corresponds to the maximum view resolution.
+     *
+     * @param {number} res The resolution.
+     * @return {number} The relative position value (between 0 and 1).
+     * @private
+     */
+  }, {
+    key: "getPositionForResolution_",
+    value: function getPositionForResolution_(res) {
+      var fn = this.getMap().getView().getValueForResolutionFunction();
+      return (0, _math.clamp)(1 - fn(res), 0, 1);
+    }
+
+    /**
+     * Update the zoomslider element.
+     * @param {import("../MapEvent.js").default} mapEvent Map event.
+     * @override
+     */
+  }, {
+    key: "render",
+    value: function render(mapEvent) {
+      if (!mapEvent.frameState) {
+        return;
+      }
+      if (!this.sliderInitialized_ && !this.initSlider_()) {
+        return;
+      }
+      var res = mapEvent.frameState.viewState.resolution;
+      this.currentResolution_ = res;
+      this.setThumbPosition_(res);
+    }
+  }]);
+  return ZoomSlider;
+}(_Control2.default);
+var _default = ZoomSlider;
+exports.default = _default;
+},{"./Control.js":"node_modules/ol/control/Control.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../pointer/EventType.js":"node_modules/ol/pointer/EventType.js","../css.js":"node_modules/ol/css.js","../math.js":"node_modules/ol/math.js","../easing.js":"node_modules/ol/easing.js","../events.js":"node_modules/ol/events.js","../events/Event.js":"node_modules/ol/events/Event.js"}],"node_modules/ol/control/ZoomToExtent.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var _Control2 = _interopRequireDefault(require("./Control.js"));
+var _EventType = _interopRequireDefault(require("../events/EventType.js"));
+var _css = require("../css.js");
+var _Polygon = require("../geom/Polygon.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _typeof(obj) { "@babel/helpers - typeof"; return _typeof = "function" == typeof Symbol && "symbol" == typeof Symbol.iterator ? function (obj) { return typeof obj; } : function (obj) { return obj && "function" == typeof Symbol && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }, _typeof(obj); }
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, _toPropertyKey(descriptor.key), descriptor); } }
+function _createClass(Constructor, protoProps, staticProps) { if (protoProps) _defineProperties(Constructor.prototype, protoProps); if (staticProps) _defineProperties(Constructor, staticProps); Object.defineProperty(Constructor, "prototype", { writable: false }); return Constructor; }
+function _toPropertyKey(arg) { var key = _toPrimitive(arg, "string"); return _typeof(key) === "symbol" ? key : String(key); }
+function _toPrimitive(input, hint) { if (_typeof(input) !== "object" || input === null) return input; var prim = input[Symbol.toPrimitive]; if (prim !== undefined) { var res = prim.call(input, hint || "default"); if (_typeof(res) !== "object") return res; throw new TypeError("@@toPrimitive must return a primitive value."); } return (hint === "string" ? String : Number)(input); }
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function"); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, writable: true, configurable: true } }); Object.defineProperty(subClass, "prototype", { writable: false }); if (superClass) _setPrototypeOf(subClass, superClass); }
+function _setPrototypeOf(o, p) { _setPrototypeOf = Object.setPrototypeOf ? Object.setPrototypeOf.bind() : function _setPrototypeOf(o, p) { o.__proto__ = p; return o; }; return _setPrototypeOf(o, p); }
+function _createSuper(Derived) { var hasNativeReflectConstruct = _isNativeReflectConstruct(); return function _createSuperInternal() { var Super = _getPrototypeOf(Derived), result; if (hasNativeReflectConstruct) { var NewTarget = _getPrototypeOf(this).constructor; result = Reflect.construct(Super, arguments, NewTarget); } else { result = Super.apply(this, arguments); } return _possibleConstructorReturn(this, result); }; }
+function _possibleConstructorReturn(self, call) { if (call && (_typeof(call) === "object" || typeof call === "function")) { return call; } else if (call !== void 0) { throw new TypeError("Derived constructors may only return object or undefined"); } return _assertThisInitialized(self); }
+function _assertThisInitialized(self) { if (self === void 0) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return self; }
+function _isNativeReflectConstruct() { if (typeof Reflect === "undefined" || !Reflect.construct) return false; if (Reflect.construct.sham) return false; if (typeof Proxy === "function") return true; try { Boolean.prototype.valueOf.call(Reflect.construct(Boolean, [], function () {})); return true; } catch (e) { return false; } }
+function _getPrototypeOf(o) { _getPrototypeOf = Object.setPrototypeOf ? Object.getPrototypeOf.bind() : function _getPrototypeOf(o) { return o.__proto__ || Object.getPrototypeOf(o); }; return _getPrototypeOf(o); } /**
+                                                                                                                                                                                                                      * @module ol/control/ZoomToExtent
+                                                                                                                                                                                                                      */
+/**
+ * @typedef {Object} Options
+ * @property {string} [className='ol-zoom-extent'] Class name.
+ * @property {HTMLElement|string} [target] Specify a target if you want the control
+ * to be rendered outside of the map's viewport.
+ * @property {string|HTMLElement} [label='E'] Text label to use for the button.
+ * Instead of text, also an element (e.g. a `span` element) can be used.
+ * @property {string} [tipLabel='Fit to extent'] Text label to use for the button tip.
+ * @property {import("../extent.js").Extent} [extent] The extent to zoom to. If undefined the validity
+ * extent of the view projection is used.
+ */
+/**
+ * @classdesc
+ * A button control which, when pressed, changes the map view to a specific
+ * extent. To style this control use the css selector `.ol-zoom-extent`.
+ *
+ * @api
+ */
+var ZoomToExtent = /*#__PURE__*/function (_Control) {
+  _inherits(ZoomToExtent, _Control);
+  var _super = _createSuper(ZoomToExtent);
+  /**
+   * @param {Options} [options] Options.
+   */
+  function ZoomToExtent(options) {
+    var _this;
+    _classCallCheck(this, ZoomToExtent);
+    options = options ? options : {};
+    _this = _super.call(this, {
+      element: document.createElement('div'),
+      target: options.target
+    });
+
+    /**
+     * @type {?import("../extent.js").Extent|null}
+     * @protected
+     */
+    _this.extent = options.extent ? options.extent : null;
+    var className = options.className !== undefined ? options.className : 'ol-zoom-extent';
+    var label = options.label !== undefined ? options.label : 'E';
+    var tipLabel = options.tipLabel !== undefined ? options.tipLabel : 'Fit to extent';
+    var button = document.createElement('button');
+    button.setAttribute('type', 'button');
+    button.title = tipLabel;
+    button.appendChild(typeof label === 'string' ? document.createTextNode(label) : label);
+    button.addEventListener(_EventType.default.CLICK, _this.handleClick_.bind(_assertThisInitialized(_this)), false);
+    var cssClasses = className + ' ' + _css.CLASS_UNSELECTABLE + ' ' + _css.CLASS_CONTROL;
+    var element = _this.element;
+    element.className = cssClasses;
+    element.appendChild(button);
+    return _this;
+  }
+
+  /**
+   * @param {MouseEvent} event The event to handle
+   * @private
+   */
+  _createClass(ZoomToExtent, [{
+    key: "handleClick_",
+    value: function handleClick_(event) {
+      event.preventDefault();
+      this.handleZoomToExtent();
+    }
+
+    /**
+     * @protected
+     */
+  }, {
+    key: "handleZoomToExtent",
+    value: function handleZoomToExtent() {
+      var map = this.getMap();
+      var view = map.getView();
+      var extent = !this.extent ? view.getProjection().getExtent() : this.extent;
+      view.fitInternal((0, _Polygon.fromExtent)(extent));
+    }
+  }]);
+  return ZoomToExtent;
+}(_Control2.default);
+var _default = ZoomToExtent;
+exports.default = _default;
+},{"./Control.js":"node_modules/ol/control/Control.js","../events/EventType.js":"node_modules/ol/events/EventType.js","../css.js":"node_modules/ol/css.js","../geom/Polygon.js":"node_modules/ol/geom/Polygon.js"}],"node_modules/ol/control.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+Object.defineProperty(exports, "Attribution", {
+  enumerable: true,
+  get: function () {
+    return _Attribution.default;
+  }
+});
+Object.defineProperty(exports, "Control", {
+  enumerable: true,
+  get: function () {
+    return _Control.default;
+  }
+});
+Object.defineProperty(exports, "FullScreen", {
+  enumerable: true,
+  get: function () {
+    return _FullScreen.default;
+  }
+});
+Object.defineProperty(exports, "MousePosition", {
+  enumerable: true,
+  get: function () {
+    return _MousePosition.default;
+  }
+});
+Object.defineProperty(exports, "OverviewMap", {
+  enumerable: true,
+  get: function () {
+    return _OverviewMap.default;
+  }
+});
+Object.defineProperty(exports, "Rotate", {
+  enumerable: true,
+  get: function () {
+    return _Rotate.default;
+  }
+});
+Object.defineProperty(exports, "ScaleLine", {
+  enumerable: true,
+  get: function () {
+    return _ScaleLine.default;
+  }
+});
+Object.defineProperty(exports, "Zoom", {
+  enumerable: true,
+  get: function () {
+    return _Zoom.default;
+  }
+});
+Object.defineProperty(exports, "ZoomSlider", {
+  enumerable: true,
+  get: function () {
+    return _ZoomSlider.default;
+  }
+});
+Object.defineProperty(exports, "ZoomToExtent", {
+  enumerable: true,
+  get: function () {
+    return _ZoomToExtent.default;
+  }
+});
+Object.defineProperty(exports, "defaults", {
+  enumerable: true,
+  get: function () {
+    return _defaults.defaults;
+  }
+});
+var _Attribution = _interopRequireDefault(require("./control/Attribution.js"));
+var _Control = _interopRequireDefault(require("./control/Control.js"));
+var _FullScreen = _interopRequireDefault(require("./control/FullScreen.js"));
+var _MousePosition = _interopRequireDefault(require("./control/MousePosition.js"));
+var _OverviewMap = _interopRequireDefault(require("./control/OverviewMap.js"));
+var _Rotate = _interopRequireDefault(require("./control/Rotate.js"));
+var _ScaleLine = _interopRequireDefault(require("./control/ScaleLine.js"));
+var _Zoom = _interopRequireDefault(require("./control/Zoom.js"));
+var _ZoomSlider = _interopRequireDefault(require("./control/ZoomSlider.js"));
+var _ZoomToExtent = _interopRequireDefault(require("./control/ZoomToExtent.js"));
+var _defaults = require("./control/defaults.js");
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+},{"./control/Attribution.js":"node_modules/ol/control/Attribution.js","./control/Control.js":"node_modules/ol/control/Control.js","./control/FullScreen.js":"node_modules/ol/control/FullScreen.js","./control/MousePosition.js":"node_modules/ol/control/MousePosition.js","./control/OverviewMap.js":"node_modules/ol/control/OverviewMap.js","./control/Rotate.js":"node_modules/ol/control/Rotate.js","./control/ScaleLine.js":"node_modules/ol/control/ScaleLine.js","./control/Zoom.js":"node_modules/ol/control/Zoom.js","./control/ZoomSlider.js":"node_modules/ol/control/ZoomSlider.js","./control/ZoomToExtent.js":"node_modules/ol/control/ZoomToExtent.js","./control/defaults.js":"node_modules/ol/control/defaults.js"}],"main.js":[function(require,module,exports) {
 "use strict";
 
 var _GeoJSON = _interopRequireDefault(require("ol/format/GeoJSON.js"));
 var _Map = _interopRequireDefault(require("ol/Map.js"));
+var _Overlay = _interopRequireDefault(require("ol/Overlay.js"));
+var _proj = _interopRequireDefault(require("ol/proj.js"));
+var _coordinate = _interopRequireDefault(require("ol/coordinate.js"));
 var _Vector = _interopRequireDefault(require("ol/layer/Vector.js"));
 var _Vector2 = _interopRequireDefault(require("ol/source/Vector.js"));
 var _View = _interopRequireDefault(require("ol/View.js"));
+var _Tile = _interopRequireDefault(require("ol/layer/Tile.js"));
+var _Tile2 = _interopRequireDefault(require("ol/source/Tile.js"));
+var _OSM = _interopRequireDefault(require("ol/source/OSM.js"));
 var _interaction = require("ol/interaction.js");
 var _style2 = require("ol/style.js");
 var _extent2 = require("ol/extent.js");
 var _condition = require("ol/events/condition.js");
+var _control = require("ol/control");
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 var vectorSource = new _Vector2.default({
   url: 'https://raw.githubusercontent.com/AnniProvietti/AnniProvietti.github.io/main/estados.geojson',
@@ -45357,32 +53911,60 @@ var vectorSource = new _Vector2.default({
 });
 var _style = new _style2.Style({
   fill: new _style2.Fill({
-    color: '#32CD32'
+    color: 'rgba(128, 128, 0, 0.2)'
   })
 });
+
+//Botão de controle
+var zoomToExtentControl = new _control.ZoomToExtent({
+  extent: [-11409874, -41280857, 11409874, 41280857]
+});
+
+//Adiciona a escala do mapa
+
+function scaleControl() {
+  var control = new _control.ScaleLine({
+    units: "metric",
+    bar: true,
+    steps: 4,
+    text: true,
+    minWidth: 140
+  });
+  return control;
+}
+;
+
+//create map geojson  
 var map = new _Map.default({
-  layers: [new _Vector.default({
+  layers: [new _Tile.default({
+    source: new _OSM.default()
+  }), new _Vector.default({
     source: vectorSource,
-    background: '#00008B',
+    // background: '#00008B',
     style: function style(feature) {
-      var color = feature.get('COLOR_BIO') || '#32CD32';
+      var color = feature.get('COLOR_BIO') || 'rgba(128, 128, 0, 0.2)';
       _style.getFill().setColor(color);
       return _style;
     }
   })],
   target: 'map',
   view: new _View.default({
-    center: [0, 0],
-    zoom: 2,
+    center: [-6000000, -1100000],
+    zoom: 4,
     constrainRotation: 16
-  })
+  }),
+  controls: (0, _control.defaults)({
+    attributionOptions: {
+      collapsible: true
+    }
+  }).extend([zoomToExtentControl, scaleControl()])
 });
 var selectedStyle = new _style2.Style({
   fill: new _style2.Fill({
-    color: 'rgba(255, 255, 0, 0.6)'
+    color: 'rgba(238, 232, 170, 0.6)'
   }),
   stroke: new _style2.Stroke({
-    color: 'rgba(255, 255, 0, 0.7)',
+    color: 'rgba(238, 232, 170, 0.7)',
     width: 2
   })
 });
@@ -45390,8 +53972,8 @@ var selectedStyle = new _style2.Style({
 // a normal select interaction to handle click
 var select = new _interaction.Select({
   style: function style(feature) {
-    var color = feature.get('COLOR_BIO') || '#FFFF00';
-    selectedStyle.getFill().setColor(color);
+    var color = feature.get('COLOR_BIO') || '#EEE8AA';
+    selectedStyle.getStroke().setColor(color);
     return selectedStyle;
   }
 });
@@ -45466,11 +54048,50 @@ selectedFeatures.on(['add', 'remove'], function () {
   });
   if (names.length > 0) {
     infoBox.innerHTML = names.join(', ');
+    content.innerHTML = names.join(',');
   } else {
     infoBox.innerHTML = 'None';
+    content.innerHTML = 'None';
   }
 });
-},{"ol/format/GeoJSON.js":"node_modules/ol/format/GeoJSON.js","ol/Map.js":"node_modules/ol/Map.js","ol/layer/Vector.js":"node_modules/ol/layer/Vector.js","ol/source/Vector.js":"node_modules/ol/source/Vector.js","ol/View.js":"node_modules/ol/View.js","ol/interaction.js":"node_modules/ol/interaction.js","ol/style.js":"node_modules/ol/style.js","ol/extent.js":"node_modules/ol/extent.js","ol/events/condition.js":"node_modules/ol/events/condition.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+// //pop-up
+var container = document.getElementById('popup');
+var content = document.getElementById('popup-content');
+var closer = document.getElementById('popup-closer');
+var overlay = new _Overlay.default({
+  element: container,
+  autoPan: true,
+  autoPanAnimation: {
+    duration: 2
+  }
+});
+map.addOverlay(overlay);
+closer.click = function () {
+  overlay.setPosition(undefined);
+  closer.blur();
+  return false;
+};
+map.on(['click', 'boxstart'], function (event) {
+  if (map.hasFeatureAtPixel(event.pixel) === true) {
+    var coordinate = event.coordinate;
+    var names = selectedFeatures.getArray().map(function (feature) {
+      return feature.get('name');
+    });
+    if (names.values != 0) {
+      // content.innerHTML = names.join(',');
+      overlay.setPosition(coordinate);
+    } else {
+      content.innerHTML = 'None';
+      overlay.setPosition(coordinate);
+    }
+    ;
+  } else {
+    overlay.setPosition(undefined);
+    closer.blur();
+  }
+});
+},{"ol/format/GeoJSON.js":"node_modules/ol/format/GeoJSON.js","ol/Map.js":"node_modules/ol/Map.js","ol/Overlay.js":"node_modules/ol/Overlay.js","ol/proj.js":"node_modules/ol/proj.js","ol/coordinate.js":"node_modules/ol/coordinate.js","ol/layer/Vector.js":"node_modules/ol/layer/Vector.js","ol/source/Vector.js":"node_modules/ol/source/Vector.js","ol/View.js":"node_modules/ol/View.js","ol/layer/Tile.js":"node_modules/ol/layer/Tile.js","ol/source/Tile.js":"node_modules/ol/source/Tile.js","ol/source/OSM.js":"node_modules/ol/source/OSM.js","ol/interaction.js":"node_modules/ol/interaction.js","ol/style.js":"node_modules/ol/style.js","ol/extent.js":"node_modules/ol/extent.js","ol/events/condition.js":"node_modules/ol/events/condition.js","ol/control":"node_modules/ol/control.js"}],"node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -45495,7 +54116,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "59655" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "65073" + '/');
   ws.onmessage = function (event) {
     checkedAssets = {};
     assetsToAccept = [];

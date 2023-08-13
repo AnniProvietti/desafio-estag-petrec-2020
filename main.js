@@ -1,13 +1,12 @@
 import GeoJSON from 'ol/format/GeoJSON.js';
 import Map from 'ol/Map.js';
 import Overlay from 'ol/Overlay.js';
-import proj from 'ol/proj.js';
-import coordinate from 'ol/coordinate.js';
+import Interaction from 'ol/interaction.js';
+import { Coordinate } from 'ol/coordinate';
 import VectorLayer from 'ol/layer/Vector.js';
 import VectorSource from 'ol/source/Vector.js';
 import View from 'ol/View.js';
 import TileLayer from "ol/layer/Tile.js";
-import TileWMS from "ol/source/Tile.js";
 import OSM from "ol/source/OSM.js";
 import {DragBox, Select} from 'ol/interaction.js';
 import {Fill, Stroke, Style} from 'ol/style.js';
@@ -45,12 +44,26 @@ function scaleControl() {
   let control = new ScaleLine({
     units: "metric",
     bar: true,
-    steps: 4,
+    steps: 5,
     text: true,
-    minWidth: 140,
+    minWidth: 200,
   });
   return control;
 };
+
+//overview
+const overviewMapControl = new OverviewMap({
+  // see in overviewmap-custom.html to see the custom CSS used
+  className: 'ol-overviewmap ol-custom-overviewmap',
+  layers: [
+    new TileLayer({
+      source: new OSM(),
+    })
+  ],
+  collapseLabel: '\u00BB',
+  label: '\u00AB',
+  collapsed: false
+});
 
 //create map geojson  
 const map = new Map({
@@ -76,7 +89,7 @@ const map = new Map({
   }),
   controls: defaultControls({
     attributionOptions: { collapsible: true },
-  }).extend([zoomToExtentControl,scaleControl()]),
+  }).extend([overviewMapControl,zoomToExtentControl,scaleControl()]),
 });
 
 const selectedStyle = new Style({
@@ -180,7 +193,6 @@ selectedFeatures.on(['add', 'remove'], function () {
     content.innerHTML = names.join(',');
   } else {
     infoBox.innerHTML = 'None';
-    content.innerHTML = 'None';
   }
 });
 
@@ -191,10 +203,11 @@ var closer = document.getElementById('popup-closer');
 
 var overlay = new Overlay({
     element: container,
-    autoPan: true,
-    autoPanAnimation: {
-        duration: 2
-     }
+    autoPan: {
+      animation: {
+          duration: 1
+      },     
+  }
  });
 map.addOverlay(overlay);
 
@@ -212,16 +225,20 @@ map.on(['click','boxstart'], function (event) {
           return feature.get('name');
         });
         if (names.values != 0) {
-          // content.innerHTML = names.join(',');
+          content.innerHTML = names.join(',');
           overlay.setPosition(coordinate);
+          overlay.setPositioning('top-right');
         } else {
           content.innerHTML = 'None';
           overlay.setPosition(coordinate);
+          overlay.setPositioning('top-right');
+
         };
          
     } else {
         overlay.setPosition(undefined);
         closer.blur();
+        return false;
     }
   });
 

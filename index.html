@@ -3,7 +3,9 @@
   <head>
     <meta charset="UTF-8">
     <title>Mapa do Brasil</title>
+  
     <link rel="stylesheet" href="node_modules/ol/ol.css">
+    
     <style>
       .map {
         width: 100%;
@@ -25,10 +27,50 @@
         left: -40px;
         min-width: 110px;
       }
+      .ol-custom-overviewmap,
+      .ol-custom-overviewmap.ol-uncollapsible {
+        bottom: auto;
+        left: auto;
+        right: 0;
+        top: 0;
+      }
+
+      .ol-custom-overviewmap:not(.ol-collapsed)  {
+        border: 1px solid black;
+      }
+
+      .ol-custom-overviewmap .ol-overviewmap-map {
+        border: none;
+        width: 600px;
+      }
+
+      .ol-custom-overviewmap .ol-overviewmap-box {
+        border: 2px solid red;
+      }
+
+      .ol-custom-overviewmap:not(.ol-collapsed) button{
+        bottom: auto;
+        left: auto;
+        right: 1px;
+        top: 1px;
+      }
+
+      .ol-rotate {
+        top: 170px;
+        right: 0;
+      }
+
+
     </style>
   </head>
   <body>
-    <div id="map" class="map"></div>
+    <!-- <div class="container-fluid">
+
+      <div class="row-fluid">
+        <div class="span12"> -->
+      <div id="map" class="map"></div>
+        <!-- </div>
+      </div> -->
     <div id='info' style="background-color: white; border-radius: 10px; border: 1px solid black; padding: 5px 10px;">
       <label>Estados Selecionados</label>
     </div>

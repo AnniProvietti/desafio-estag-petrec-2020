@@ -2,7 +2,7 @@
 Desafio Frontend
 
 # Arquivos 
-Faça Download dos arquivos da pasta (index.html, main.js, package.json)
+Faça Download dos arquivos da pasta (index.html, main.js)
 
 # Prepare o ambiente
 Para colocar o projeto em prática é necessário seguir as instruções abaixo de acordo com o sistema operacional:
@@ -38,6 +38,12 @@ Adicione o OpenLayers e o Parcel:
     npm install --save-dev parcel-bundler
 
 # Teste
+
+Modificar o <script> do arquivo package.json criado com a inicialização do node:
+    
+    "start": "parcel index.html",
+    "build": "parcel build --public-url . index.html"
+        
 Para executar o código:
 
     npm start

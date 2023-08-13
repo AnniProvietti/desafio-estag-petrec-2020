@@ -192,11 +192,11 @@ selectedFeatures.on(['add', 'remove'], function () {
     infoBox.innerHTML = names.join(', ');
     content.innerHTML = names.join(',');
   } else {
-    infoBox.innerHTML = 'None';
+    infoBox.innerHTML = 'Selecione um Estado ou destaque uma área';
   }
 });
 
-// //pop-up
+// Adicona Overlay 
 var container = document.getElementById('popup');
 var content = document.getElementById('popup-content');
 var closer = document.getElementById('popup-closer');
@@ -212,24 +212,22 @@ var overlay = new Overlay({
 map.addOverlay(overlay);
 
 closer.click = function() {
-    overlay.setPosition(undefined);
-    closer.blur();
-    return false;
- };
- 
+  overlay.setPosition(undefined);
+  closer.blur();
+  return false;
+};
 
-map.on(['click','boxstart'], function (event) {
+map.on(['click'], function (event) {
     if (map.hasFeatureAtPixel(event.pixel) === true) {
-      var coordinate = event.coordinate;
+      const coordinate = event.coordinate;
       const names = selectedFeatures.getArray().map((feature) => {
           return feature.get('name');
         });
         if (names.values != 0) {
-          content.innerHTML = names.join(',');
+          // content.innerHTML = names.join(',');
           overlay.setPosition(coordinate);
           overlay.setPositioning('top-right');
         } else {
-          content.innerHTML = 'None';
           overlay.setPosition(coordinate);
           overlay.setPositioning('top-right');
 
